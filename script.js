@@ -251,7 +251,6 @@ const timelineEvents = [
                 [32.4280, 35.3048], // Lebanese forces
                 [31.2000, 35.0000]  // Jordanian forces from Amman
             ],
-            color: "#dc2626",
             startTime: "1948-05-15",
             endTime: "1948-07-20"
         },
@@ -298,7 +297,6 @@ const timelineEvents = [
                 [31.3525, 34.3050], // Gaza Strip
                 [31.7683, 35.2137]  // Jerusalem capture
             ],
-            color: "#2563eb",
             startTime: "1967-06-05",
             endTime: "1967-06-10"
         },
@@ -394,7 +392,6 @@ const timelineEvents = [
                 [33.1000, 35.7000], // Syrian Golan advance
                 [31.2500, 34.2500]  // Central Israel
             ],
-            color: "#dc2626",
             startTime: "1973-10-06",
             endTime: "1973-10-25"
         },
@@ -678,16 +675,16 @@ const timelineEvents = [
     },
     {
         date: "2006",
-        title: "Hamas Wins Palestinian Elections",
-        description: "Hamas wins parliamentary elections, surprising international community. Israel and West cut off aid to Palestinian Authority.",
+        title: "Hamas Wins Palestinian Elections: PA-Hamas Split",
+        description: "Hamas wins 2006 parliamentary elections, ending Fatah's dominance. This creates unprecedented political split between West Bank (PA/Fatah) and Gaza (Hamas), leading to civil war and 17-year Gaza blockade.",
         category: "political",
         era: "2006-2023",
-        impact: "Creates political crisis and leads to Hamas-Fatah conflict.",
+        impact: "Without Hamas rival, Fatah would remain sole Palestinian representative, enabling unified governance and avoiding Gaza-West Bank division that complicates peace negotiations.",
         geography: {
             type: "political",
             coordinates: [31.9522, 35.2332],
             affectedArea: [[31.7, 35.0], [32.2, 35.4]],
-            intensity: "medium",
+            intensity: "high",
             icon: "election"
         },
         territoryControl: { israeli: 85, palestinian: 15 }
@@ -716,7 +713,6 @@ const timelineEvents = [
                 [33.5000, 35.8000], // Beka Valley
                 [33.3000, 35.4000]  // Litani River area
             ],
-            color: "#2563eb",
             startTime: "2006-07-12",
             endTime: "2006-08-14"
         },
@@ -1085,7 +1081,6 @@ const timelineEvents = [
                 [31.3000, 34.2800], // Khan Younis area
                 [31.2500, 34.2500]  // Reaching deeper into Israel
             ],
-            color: "#dc2626",
             startTime: "2023-10-07",
             endTime: "2023-10-08"
         },
@@ -1940,6 +1935,21 @@ function drawAllEventMarkers(events) {
     });
 }
 
+// Get faction-specific colors
+function getFactionColor(faction) {
+    const colors = {
+        'idf': '#2563eb',           // Israeli Defense Force - Blue
+        'hamas': '#dc2626',         // Hamas - Red
+        'egyptian_syrian': '#dc2626', // Egypt/Syria - Red
+        'arab_forces': '#dc2626',     // Arab Forces - Red
+        'pij': '#ea580c',           // Palestinian Islamic Jihad - Orange
+        'hezbollah': '#7c3aed',       // Hezbollah - Purple
+        'fatah': '#16a34a',         // Fatah - Green
+        'iran': '#991b1b'            // Iran - Dark Red
+    };
+    return colors[faction] || '#6b7280'; // Default gray
+}
+
 // Draw military movement paths with animations
 function drawMovementPaths(events) {
     if (!mapState.showMovements) return;
@@ -1949,9 +1959,12 @@ function drawMovementPaths(events) {
     movementEvents.forEach(event => {
         const movement = event.movementData;
         
+        // Get faction color
+        const factionColor = getFactionColor(movement.faction);
+        
         // Create animated movement path
         const path = L.polyline(movement.coordinates, {
-            color: movement.color,
+            color: factionColor,
             weight: 3,
             opacity: 0.8,
             dashArray: '10, 5',
@@ -1964,7 +1977,7 @@ function drawMovementPaths(events) {
                 const nextCoord = movement.coordinates[index + 1];
                 const bearing = calculateBearing(coord, nextCoord);
                 
-                const arrowIcon = createMovementArrow(movement.color, bearing);
+                const arrowIcon = createMovementArrow(factionColor, bearing);
                 const arrowMarker = L.marker(coord, {
                     icon: arrowIcon,
                     opacity: 0.8
