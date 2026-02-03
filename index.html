@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Israel-Hamas Conflict: A Historical Timeline (1900-2025)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-    <header>
-        <h1>Understanding the Historical Tension</h1>
-        <h2>A Timeline of the Israel-Hamas Conflict (1900-2025)</h2>
-        <p>An educational resource exploring the complex historical events that shaped this ongoing conflict</p>
-    </header>
+
 
     <main>
         <section class="intro">
+               <h1>Understanding the Historical Tension</h1>
+        <h2>A Timeline of the Israel-Hamas Conflict (1900-2025)</h2>
+        <p>An educational resource exploring the complex historical events that shaped this ongoing conflict</p>
+        <br>
             <div class="accuracy-badge">
                 <div class="badge-text">
-                    <strong>Scientifically Verified</strong><br>
+                    <strong>Scientifically Verified</strong>
                     <small>Peer-reviewed sources • Multiple verification • Academic standards</small>
                 </div>
             </div>
@@ -98,31 +101,7 @@
                 </div>
             </div>
         </section>
-
-        <section class="timeline-controls">
-            <button id="filter-all" class="filter-btn active">All Events</button>
-            <button id="filter-political" class="filter-btn">Political</button>
-            <button id="filter-military" class="filter-btn">Military</button>
-            <button id="filter-social" class="filter-btn">Social</button>
-            <div class="era-selector">
-                <label for="era-select">Jump to Era:</label>
-                <select id="era-select">
-                    <option value="all">All Time</option>
-                    <option value="1900-1947">Early Period (1900-1947)</option>
-                    <option value="1948-1966">Formation & Early Wars (1948-1966)</option>
-                    <option value="1967-1986">Occupation & Rise of Resistance (1967-1986)</option>
-                    <option value="1987-2005">First Intifada & Hamas Formation (1987-2005)</option>
-                    <option value="2006-2023">Gaza Conflicts & Wars (2006-2023)</option>
-                    <option value="2024-2025">Recent Developments (2024-2025)</option>
-                </select>
-            </div>
-        </section>
-
-        <section class="timeline" id="timeline">
-            <!-- Timeline events will be dynamically generated here -->
-        </section>
-
-        <section class="perspectives">
+                <section class="perspectives">
             <h3>Understanding Different Perspectives</h3>
             <div class="perspective-grid">
                 <div class="perspective-card">
@@ -139,9 +118,7 @@
                 </div>
             </div>
         </section>
-    </main>
-
-    <section class="sources">
+        <section class="sources">
         <h3>Sources & Methodology</h3>
         <div class="sources-grid">
             <div class="source-category">
@@ -190,9 +167,32 @@
             <p>All events are verified through multiple independent sources. Geographic coordinates use international standards. Territorial control percentages based on UN cartographic data and de facto control assessments. This resource presents multiple perspectives while maintaining academic neutrality and historical accuracy.</p>
         </div>
         <p class="source-link">
-            <a href="SOURCES.md" target="_blank">📚 View Complete Source Documentation</a>
+            <a href="SOURCES.md" target="_blank">View Complete Source Documentation</a>
         </p>
     </section>
+
+        <section class="timeline-controls">
+            <button id="filter-all" class="filter-btn active">All Events</button>
+            <button id="filter-political" class="filter-btn">Political</button>
+            <button id="filter-military" class="filter-btn">Military</button>
+            <button id="filter-social" class="filter-btn">Social</button>
+            <div class="era-selector">
+                <label for="era-select">Jump to Era:</label>
+                <select id="era-select">
+                    <option value="all">All Time</option>
+                    <option value="1900-1947">Early Period (1900-1947)</option>
+                    <option value="1948-1966">Formation & Early Wars (1948-1966)</option>
+                    <option value="1967-1986">Occupation & Rise of Resistance (1967-1986)</option>
+                    <option value="1987-2005">First Intifada & Hamas Formation (1987-2005)</option>
+                    <option value="2006-2023">Gaza Conflicts & Wars (2006-2023)</option>
+                    <option value="2024-2025">Recent Developments (2024-2025)</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="timeline" id="timeline">
+            <!-- Timeline events will be dynamically generated here -->
+        </section>
 
     <footer>
         <div class="footer-content">
@@ -210,11 +210,16 @@
             </div>
         </div>
         <div class="footer-bottom">
+              <p>© Shady Tawfik all rights reserved</p>
             <p>Last updated: 2025 | Educational Use Only | Version 1.0</p>
         </div>
     </footer>
+    </main>
+
+    
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>

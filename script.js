@@ -1107,7 +1107,7 @@ function initializeTimeline() {
     initializeMap();
     
     // Add scroll animations
-    observeTimelineEvents();
+    // observeTimelineEvents();
 }
 
 function createTimelineEvent(event, index) {
@@ -1123,7 +1123,7 @@ function createTimelineEvent(event, index) {
             <h3 class="event-title">${event.title}</h3>
             <p class="event-description">${event.description}</p>
             <div class="event-impact">
-                <strong>Impact:</strong> ${event.impact}
+                <strong style="color: #000;">Impact:</strong> <span style="color: #e74c3c;">${event.impact}</span>
             </div>
         </div>
     `;
@@ -1812,7 +1812,7 @@ function drawAllEventMarkers(events) {
                 
                 const popupContent = `
                     <div style="max-width: 250px;">
-                        <strong style="color: #2c3e50;">${event.title}</strong><br>
+                        <strong style="color: #000;">${event.title}</strong><br>
                         <span style="color: #7f8c8d; font-size: 12px;">${event.date}</span><br>
                         <hr style="margin: 5px 0;">
                         <span style="font-size: 13px;">${event.description}</span><br>
