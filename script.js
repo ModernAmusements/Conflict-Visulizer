@@ -1281,27 +1281,39 @@ function addMapLegend() {
                 </div>
                 <div style="margin-bottom: 6px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">EVENT MARKERS</div>
                 <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: #e74c3c; border: 2px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Military/Attack</span>
                 </div>
                 <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: #9b59b6; border: 2px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Political Events</span>
                 </div>
                 <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: #f39c12; border: 2px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Social Events</span>
                 </div>
                 <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: #3498db; border: 1px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Settlements</span>
                 </div>
                 <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: #27ae60; border: 2px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Territory Changes</span>
                 </div>
                 <div style="display: flex; align-items: center; margin-bottom: 6px;">
-                    <div style="width: 12px; height: 12px; background: #f39c12; border: 2px solid white; border-radius: 50%; margin-right: 5px;"></div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/>
+                    </svg>
                     <span>Major Cities</span>
                 </div>
                 <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
@@ -1616,79 +1628,236 @@ function drawTerritoryControl(events) {
     }
 }
 
-// Draw all event markers with proper layer management
-function drawAllEventMarkers(events) {
-    events.forEach(event => {
-        if (!event.geography || !event.geography.coordinates) return;
-        
-        let markerOptions = {
-            radius: 8,
-            fillColor: '#95a5a6',
-            color: '#fff',
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 0.8
-        };
-        
-        let shouldShow = false;
-        
-        // Determine marker style and visibility based on event type and category
-        if (event.category === 'military' || event.geography.type === 'attack') {
-            markerOptions.fillColor = '#e74c3c';
-            markerOptions.radius = event.geography.intensity === 'high' ? 10 : 8;
-            shouldShow = mapState.showAttacks;
-        } else if (event.geography.type === 'settlement') {
-            markerOptions.fillColor = '#3498db';
-            markerOptions.radius = 6;
-            markerOptions.weight = 1;
-            shouldShow = mapState.showSettlements;
-        } else if (event.category === 'political') {
-            markerOptions.fillColor = '#9b59b6';
-            markerOptions.radius = 7;
-            shouldShow = mapState.showPolitical;
-        } else if (event.category === 'social') {
-            markerOptions.fillColor = '#f39c12';
-            markerOptions.radius = 7;
-            shouldShow = mapState.showSocial;
-        } else if (event.geography.type === 'territory_change') {
-            markerOptions.fillColor = '#27ae60';
-            markerOptions.radius = 9;
-            shouldShow = mapState.showTerritory;
-        }
-        
-        // Only create marker if it should be shown
-        if (shouldShow) {
-            const marker = L.circleMarker(
-                [event.geography.coordinates[0], event.geography.coordinates[1]], 
-                markerOptions
-            );
-            
-            // Create enhanced popup content
-            const popupContent = `
-                <div style="max-width: 250px;">
-                    <strong style="color: #2c3e50;">${event.title}</strong><br>
-                    <span style="color: #7f8c8d; font-size: 12px;">${event.date}</span><br>
-                    <hr style="margin: 5px 0;">
-                    <span style="font-size: 13px;">${event.description}</span><br>
-                    <hr style="margin: 5px 0;">
-                    <em style="font-size: 12px; color: #34495e;"><strong>Impact:</strong> ${event.impact}</em>
-                </div>
+// Create custom marker shapes as SVG icons
+function createMarkerIcon(type, color, size = 20, intensity = 'medium') {
+    const scale = intensity === 'high' ? 1.3 : intensity === 'low' ? 0.8 : 1;
+    const actualSize = size * scale;
+    
+    let svgContent = '';
+    let iconSize = [actualSize, actualSize];
+    let iconAnchor = [actualSize/2, actualSize/2];
+    
+    switch(type) {
+        case 'attack':
+        case 'military':
+            // Triangle pointing up for attacks
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 22,20 2,20" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
             `;
+            iconAnchor = [actualSize/2, actualSize-2];
+            break;
             
-            marker.bindPopup(popupContent);
+        case 'settlement':
+            // Square for settlements
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
+            `;
+            break;
             
-            // Add pulsing animation for high-intensity events
-            if (event.geography.intensity === 'high') {
-                setInterval(() => {
-                    const currentRadius = marker.getRadius();
-                    marker.setRadius(currentRadius === markerOptions.radius ? markerOptions.radius + 3 : markerOptions.radius);
-                }, 1000);
-            }
+        case 'political':
+            // Diamond for political events
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 22,12 12,22 2,12" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
+            `;
+            break;
             
-            marker.addTo(mapState.markerLayer);
-        }
+        case 'social':
+            // Star for social events
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
+            `;
+            break;
+            
+        case 'territory_change':
+            // Hexagon for territory changes
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
+            `;
+            break;
+            
+        default:
+            // Circle fallback
+            svgContent = `
+                <svg width="${actualSize}" height="${actualSize}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="${color}" stroke="white" stroke-width="2"/>
+                </svg>
+            `;
+            break;
+    }
+    
+    return L.divIcon({
+        html: svgContent,
+        className: 'custom-marker',
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+        popupAnchor: [0, -actualSize/2]
     });
 }
+
+// Group events by coordinates to handle overlapping markers
+function groupEventsByCoordinates(events, threshold = 0.01) {
+    const groups = [];
+    const processed = new Set();
+    
+    events.forEach((event, index) => {
+        if (processed.has(index)) return;
+        
+        if (!event.geography || !event.geography.coordinates) return;
+        
+        const [lat, lng] = event.geography.coordinates;
+        const currentGroup = [event];
+        processed.add(index);
+        
+        // Find events with similar coordinates
+        events.forEach((otherEvent, otherIndex) => {
+            if (processed.has(otherIndex)) return;
+            
+            if (!otherEvent.geography || !otherEvent.geography.coordinates) return;
+            
+            const [otherLat, otherLng] = otherEvent.geography.coordinates;
+            const distance = Math.sqrt(Math.pow(lat - otherLat, 2) + Math.pow(lng - otherLng, 2));
+            
+            if (distance < threshold) {
+                currentGroup.push(otherEvent);
+                processed.add(otherIndex);
+            }
+        });
+        
+        groups.push(currentGroup);
+    });
+    
+    return groups;
+}
+
+// Calculate offset positions in a spiral pattern
+function getSpiralOffset(index, total, spacing = 0.008) {
+    if (total === 1) return { latOffset: 0, lngOffset: 0 };
+    
+    const angle = index * (2 * Math.PI / 3); // 120 degrees between markers
+    const radius = spacing * Math.ceil(index / 3); // Increase radius every 3 markers
+    
+    const latOffset = radius * Math.cos(angle);
+    const lngOffset = radius * Math.sin(angle);
+    
+    return { latOffset, lngOffset };
+}
+
+// Draw all event markers with proper layer management and overlap handling
+function drawAllEventMarkers(events) {
+    // Group events by coordinates to handle overlaps
+    const eventGroups = groupEventsByCoordinates(events);
+    
+    eventGroups.forEach(group => {
+        group.forEach((event, indexInGroup) => {
+            if (!event.geography || !event.geography.coordinates) return;
+            
+            let markerType = 'default';
+            let markerColor = '#95a5a6';
+            let shouldShow = false;
+            
+            // Determine marker type, color, and visibility based on event type and category
+            if (event.category === 'military' || event.geography.type === 'attack') {
+                markerType = 'attack';
+                markerColor = '#e74c3c';
+                shouldShow = mapState.showAttacks;
+            } else if (event.geography.type === 'settlement') {
+                markerType = 'settlement';
+                markerColor = '#3498db';
+                shouldShow = mapState.showSettlements;
+            } else if (event.category === 'political') {
+                markerType = 'political';
+                markerColor = '#9b59b6';
+                shouldShow = mapState.showPolitical;
+            } else if (event.category === 'social') {
+                markerType = 'social';
+                markerColor = '#f39c12';
+                shouldShow = mapState.showSocial;
+            } else if (event.geography.type === 'territory_change') {
+                markerType = 'territory_change';
+                markerColor = '#27ae60';
+                shouldShow = mapState.showTerritory;
+            }
+            
+            // Only create marker if it should be shown
+            if (shouldShow) {
+                // Calculate offset for overlapping markers
+                const { latOffset, lngOffset } = getSpiralOffset(indexInGroup, group.length);
+                const adjustedCoords = [
+                    event.geography.coordinates[0] + latOffset,
+                    event.geography.coordinates[1] + lngOffset
+                ];
+                
+                const marker = L.marker(
+                    adjustedCoords, 
+                    {
+                        icon: createMarkerIcon(markerType, markerColor, 20, event.geography.intensity)
+                    }
+                );
+                
+                // Create enhanced popup content with overlap information
+                const overlapInfo = group.length > 1 ? 
+                    `<div style="font-size: 11px; color: #e74c3c; margin-top: 5px;">
+                        <em>⚠️ ${group.length} events at this location</em>
+                    </div>` : '';
+                
+                const popupContent = `
+                    <div style="max-width: 250px;">
+                        <strong style="color: #2c3e50;">${event.title}</strong><br>
+                        <span style="color: #7f8c8d; font-size: 12px;">${event.date}</span><br>
+                        <hr style="margin: 5px 0;">
+                        <span style="font-size: 13px;">${event.description}</span><br>
+                        <hr style="margin: 5px 0;">
+                        <em style="font-size: 12px; color: #34495e;"><strong>Impact:</strong> ${event.impact}</em>
+                        ${overlapInfo}
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                
+                // Add pulsing animation for high-intensity events
+                if (event.geography.intensity === 'high') {
+                    let pulsing = true;
+                    setInterval(() => {
+                        if (pulsing) {
+                            const currentSize = 20;
+                            const newSize = currentSize === 20 * 1.3 ? 20 : 20 * 1.3;
+                            marker.setIcon(createMarkerIcon(markerType, markerColor, newSize, 'high'));
+                        }
+                    }, 1000);
+                }
+                
+                marker.addTo(mapState.markerLayer);
+                
+                // Add connecting line for offset markers (subtle visual connection)
+                if (group.length > 1 && indexInGroup > 0) {
+                    const connectingLine = L.polyline(
+                        [
+                            event.geography.coordinates,
+                            adjustedCoords
+                        ],
+                        {
+                            color: 'rgba(149, 165, 166, 0.3)',
+                            weight: 1,
+                            dashArray: '2, 4',
+                            interactive: false
+                        }
+                    );
+                    connectingLine.addTo(mapState.markerLayer);
+                }
+            }
+        });
+    }); // <-- closes eventGroups.forEach
+} // <-- closes drawAllEventMarkers
 
 // Add major cities as reference points
 function addMajorCities() {
