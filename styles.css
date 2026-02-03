@@ -50,6 +50,390 @@ main {
     margin-bottom: 3rem;
 }
 
+.accuracy-badge {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(39, 174, 96, 0.3);
+}
+
+.badge-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+.badge-text strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.badge-text small {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.verification-panel {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    border-left: 4px solid #27ae60;
+}
+
+.verification-panel h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.verification-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.verification-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+}
+
+.check-mark {
+    color: #27ae60;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.map-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.map-header h3 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.map-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.map-btn {
+    padding: 0.5rem 1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.map-btn:hover {
+    background: #2ecc71;
+}
+
+.map-btn.pause {
+    background: #e74c3c;
+}
+
+.map-btn.pause:hover {
+    background: #c0392b;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.speed-control select {
+    padding: 0.3rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 3px;
+}
+
+.layer-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.layer-controls label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+}
+
+#map {
+    height: 500px;
+    background: #1a1a1a;
+    border: 2px solid #34495e;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.timeline-slider-container {
+    margin-top: 1.5rem;
+}
+
+.timeline-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #3498db, #e74c3c);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #2c3e50;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.timeline-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #2c3e50;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+#current-year {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.map-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #ecf0f1;
+    border-radius: 5px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.3rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Map overlay styles */
+.map-overlay {
+    position: absolute;
+    background: rgba(44, 62, 80, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.map-grid {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+}
+
+.map-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(44, 62, 80, 0.95);
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.2);
+    z-index: 500;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.israeli-legend {
+    background: rgba(52, 152, 219, 0.7);
+}
+
+.palestinian-legend {
+    background: rgba(155, 89, 182, 0.7);
+}
+
+.hamas-legend {
+    background: rgba(231, 76, 60, 0.7);
+}
+
+.contested-legend {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.3) 3px,
+        rgba(255, 255, 255, 0.5) 3px,
+        rgba(255, 255, 255, 0.5) 6px
+    );
+}
+
+.attack-marker {
+    width: 20px;
+    height: 20px;
+    background: #e74c3c;
+    border: 2px solid white;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 100;
+    animation: pulse 2s infinite;
+}
+
+.territory-zone {
+    position: absolute;
+    border: 2px solid rgba(255,255,255,0.3);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.israeli-control {
+    background: rgba(52, 152, 219, 0.3);
+    border-color: rgba(52, 152, 219, 0.6);
+}
+
+.palestinian-control {
+    background: rgba(155, 89, 182, 0.3);
+    border-color: rgba(155, 89, 182, 0.6);
+}
+
+.hamas-control {
+    background: rgba(231, 76, 60, 0.3);
+    border-color: rgba(231, 76, 60, 0.6);
+}
+
+.contested-area {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(255, 255, 255, 0.2) 10px,
+        rgba(255, 255, 255, 0.2) 20px
+    );
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Responsive design for map */
+@media (max-width: 768px) {
+    .map-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .map-controls {
+        justify-content: center;
+    }
+    
+    #map {
+        height: 350px;
+    }
+    
+    .map-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .layer-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 .timeline-controls {
     background: white;
     padding: 1.5rem;
@@ -234,12 +618,150 @@ main {
     color: #2c3e50;
 }
 
+.sources {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 3rem;
+}
+
+.sources h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+.sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.source-category {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.source-category:nth-child(2) {
+    border-left-color: #9b59b6;
+}
+
+.source-category:nth-child(3) {
+    border-left-color: #e74c3c;
+}
+
+.source-category:nth-child(4) {
+    border-left-color: #f39c12;
+}
+
+.source-category h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.source-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.source-category li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.9rem;
+    color: #34495e;
+}
+
+.source-category li:before {
+    content: "•";
+    color: #3498db;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.source-category:nth-child(2) li:before {
+    color: #9b59b6;
+}
+
+.source-category:nth-child(3) li:before {
+    color: #e74c3c;
+}
+
+.source-category:nth-child(4) li:before {
+    color: #f39c12;
+}
+
+.methodology-note {
+    background: #ecf0f1;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.methodology-note h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.methodology-note p {
+    line-height: 1.6;
+    color: #34495e;
+}
+
+.source-link {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.source-link a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.source-link a:hover {
+    background: #3498db;
+    color: white;
+}
+
 footer {
     background: #2c3e50;
     color: white;
-    text-align: center;
     padding: 2rem 1rem;
     margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: #ecf0f1;
+}
+
+.footer-section p {
+    line-height: 1.5;
+    color: #bdc3c7;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: #95a5a6;
 }
 
 @media (max-width: 768px) {
