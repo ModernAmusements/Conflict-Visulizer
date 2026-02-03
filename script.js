@@ -238,7 +238,22 @@ const timelineEvents = [
             coordinates: [32.0833, 34.7667],
             affectedArea: [[31.0, 34.0], [33.0, 35.8]],
             intensity: "high",
-            icon: "war"
+            icon: "independence"
+        },
+        movementData: {
+            type: "multi_front_invasion",
+            faction: "arab_forces",
+            coordinates: [
+                [30.0500, 31.2500], // Egyptian forces from Cairo
+                [31.7683, 35.2137], // Attack on Jerusalem
+                [32.0833, 34.7667], // Central front
+                [33.5000, 36.2500], // Syrian forces from Damascus
+                [32.4280, 35.3048], // Lebanese forces
+                [31.2000, 35.0000]  // Jordanian forces from Amman
+            ],
+            color: "#dc2626",
+            startTime: "1948-05-15",
+            endTime: "1948-07-20"
         },
         territoryControl: { israeli: 78, palestinian: 22 }
     },
@@ -271,6 +286,21 @@ const timelineEvents = [
             affectedArea: [[29.5, 34.2], [33.5, 35.8]],
             intensity: "high",
             icon: "conquest"
+        },
+        movementData: {
+            type: "preemptive_strike",
+            faction: "idf",
+            coordinates: [
+                [32.0853, 34.7818], // Tel Aviv (IDF command)
+                [30.0500, 31.2500], // Egyptian airfields
+                [33.5000, 36.2500], // Syrian airfields
+                [35.9300, 35.5000], // Syrian Golan advance
+                [31.3525, 34.3050], // Gaza Strip
+                [31.7683, 35.2137]  // Jerusalem capture
+            ],
+            color: "#2563eb",
+            startTime: "1967-06-05",
+            endTime: "1967-06-10"
         },
         territoryControl: { israeli: 85, palestinian: 15 }
     },
@@ -353,6 +383,20 @@ const timelineEvents = [
             affectedArea: [[29.5, 32.5], [33.0, 35.8]],
             intensity: "high",
             icon: "war"
+        },
+        movementData: {
+            type: "surprise_attack",
+            faction: "egyptian_syrian",
+            coordinates: [
+                [30.0500, 31.2500], // Egyptian forces from Suez
+                [29.5000, 32.5500], // Egyptian Sinai crossing
+                [33.5000, 36.2500], // Syrian forces from Damascus
+                [33.1000, 35.7000], // Syrian Golan advance
+                [31.2500, 34.2500]  // Central Israel
+            ],
+            color: "#dc2626",
+            startTime: "1973-10-06",
+            endTime: "1973-10-25"
         },
         territoryControl: { israeli: 85, palestinian: 15 }
     },
@@ -661,6 +705,20 @@ const timelineEvents = [
             affectedArea: [[33.5, 35.0], [34.5, 36.0]],
             intensity: "high",
             icon: "invasion"
+        },
+        movementData: {
+            type: "cross_border_invasion",
+            faction: "idf",
+            coordinates: [
+                [33.0000, 35.5000], // Northern Israel border
+                [33.8869, 35.5131], // Beirut advance
+                [33.2000, 35.2000], // Southern Lebanon
+                [33.5000, 35.8000], // Beka Valley
+                [33.3000, 35.4000]  // Litani River area
+            ],
+            color: "#2563eb",
+            startTime: "2006-07-12",
+            endTime: "2006-08-14"
         },
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
@@ -1016,6 +1074,21 @@ const timelineEvents = [
             intensity: "high",
             icon: "major_attack"
         },
+        movementData: {
+            type: "ground_incursion",
+            faction: "hamas",
+            coordinates: [
+                [31.3525, 34.3050], // Gaza Strip starting point
+                [31.4000, 34.3500], // Kfar Aza
+                [31.4500, 34.3800], // Sderot
+                [31.5500, 34.5000], // Ofakim
+                [31.3000, 34.2800], // Khan Younis area
+                [31.2500, 34.2500]  // Reaching deeper into Israel
+            ],
+            color: "#dc2626",
+            startTime: "2023-10-07",
+            endTime: "2023-10-08"
+        },
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
     {
@@ -1080,11 +1153,13 @@ let mapState = {
     showTerritory: true,
     showSettlements: true,
     showCities: true,
+    showMovements: false, // Default off for frictionless experience
     playSpeed: 1000,
     map: null,
     territoryLayer: null,
     markerLayer: null,
-    cityLayer: null
+    cityLayer: null,
+    movementLayer: null
 };
 
 // Initialize the timeline
@@ -1316,6 +1391,13 @@ function addMapLegend() {
                     </svg>
                     <span>Major Cities</span>
                 </div>
+                <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
+                        <line x1="2" y1="12" x2="22" y2="12" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
+                        <polygon points="20,10 22,12 20,14" fill="#2563eb"/>
+                    </svg>
+                    <span>Military Movements</span>
+                </div>
                 <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
                     Total Events: ${timelineEvents.length}
                 </div>
@@ -1346,6 +1428,7 @@ function setupMapControls() {
     const showTerritory = document.getElementById('show-territory');
     const showSettlements = document.getElementById('show-settlements');
     const showCities = document.getElementById('show-cities');
+    const showMovements = document.getElementById('show-movements');
     
     if (showAttacks) {
         showAttacks.addEventListener('change', (e) => {
@@ -1385,6 +1468,13 @@ function setupMapControls() {
     if (showCities) {
         showCities.addEventListener('change', (e) => {
             mapState.showCities = e.target.checked;
+            updateMapForYear(mapState.currentYear);
+        });
+    }
+    
+    if (showMovements) {
+        showMovements.addEventListener('change', (e) => {
+            mapState.showMovements = e.target.checked;
             updateMapForYear(mapState.currentYear);
         });
     }
@@ -1460,11 +1550,15 @@ function updateMapForYear(year) {
     if (mapState.cityLayer) {
         mapState.map.removeLayer(mapState.cityLayer);
     }
+    if (mapState.movementLayer) {
+        mapState.map.removeLayer(mapState.movementLayer);
+    }
     
     // Create new layers
     mapState.territoryLayer = L.layerGroup();
     mapState.markerLayer = L.layerGroup();
     mapState.cityLayer = L.layerGroup();
+    mapState.movementLayer = L.layerGroup();
     
     // Get events for this year and earlier
     const relevantEvents = timelineEvents.filter(event => {
@@ -1485,10 +1579,14 @@ function updateMapForYear(year) {
         addMajorCities();
     }
     
+    // Draw military movements
+    drawMovementPaths(relevantEvents);
+    
     // Add layers to map
     mapState.territoryLayer.addTo(mapState.map);
     mapState.markerLayer.addTo(mapState.map);
     mapState.cityLayer.addTo(mapState.map);
+    mapState.movementLayer.addTo(mapState.map);
     
     // Update statistics
     updateStatistics(relevantEvents);
@@ -1837,27 +1935,95 @@ function drawAllEventMarkers(events) {
                 }
                 
                 marker.addTo(mapState.markerLayer);
-                
-                // Add connecting line for offset markers (subtle visual connection)
-                if (group.length > 1 && indexInGroup > 0) {
-                    const connectingLine = L.polyline(
-                        [
-                            event.geography.coordinates,
-                            adjustedCoords
-                        ],
-                        {
-                            color: 'rgba(149, 165, 166, 0.3)',
-                            weight: 1,
-                            dashArray: '2, 4',
-                            interactive: false
-                        }
-                    );
-                    connectingLine.addTo(mapState.markerLayer);
-                }
             }
         });
-    }); // <-- closes eventGroups.forEach
-} // <-- closes drawAllEventMarkers
+    });
+}
+
+// Draw military movement paths with animations
+function drawMovementPaths(events) {
+    if (!mapState.showMovements) return;
+    
+    const movementEvents = events.filter(event => event.movementData);
+    
+    movementEvents.forEach(event => {
+        const movement = event.movementData;
+        
+        // Create animated movement path
+        const path = L.polyline(movement.coordinates, {
+            color: movement.color,
+            weight: 3,
+            opacity: 0.8,
+            dashArray: '10, 5',
+            className: 'movement-path'
+        });
+        
+        // Add directional arrows
+        movement.coordinates.forEach((coord, index) => {
+            if (index < movement.coordinates.length - 1) {
+                const nextCoord = movement.coordinates[index + 1];
+                const bearing = calculateBearing(coord, nextCoord);
+                
+                const arrowIcon = createMovementArrow(movement.color, bearing);
+                const arrowMarker = L.marker(coord, {
+                    icon: arrowIcon,
+                    opacity: 0.8
+                });
+                
+                arrowMarker.addTo(mapState.movementLayer);
+            }
+        });
+        
+        // Add popup with movement info
+        path.bindPopup(`
+            <div style="max-width: 250px;">
+                <strong style="color: #e1e8ed;">Military Movement</strong><br>
+                <span style="color: #9ca3af; font-size: 12px;">${event.date}</span><br>
+                <strong style="color: #e1e8ed;">${event.title}</strong><br>
+                <hr style="margin: 5px 0;">
+                <span style="color: #b0b8c0; font-size: 13px;">
+                    Type: ${movement.type.replace(/_/g, ' ').toUpperCase()}<br>
+                    Faction: ${movement.faction.replace(/_/g, ' ').toUpperCase()}<br>
+                    Duration: ${movement.startTime} to ${movement.endTime}
+                </span>
+            </div>
+        `);
+        
+        path.addTo(mapState.movementLayer);
+    });
+}
+
+// Calculate bearing between two coordinates for arrow direction
+function calculateBearing(start, end) {
+    const lat1 = start[0] * Math.PI / 180;
+    const lat2 = end[0] * Math.PI / 180;
+    const diffLng = (end[1] - start[1]) * Math.PI / 180;
+    
+    const x = Math.sin(diffLng) * Math.cos(lat2);
+    const y = Math.cos(lat1) * Math.sin(lat2) - 
+              Math.sin(lat1) * Math.cos(lat2) * Math.cos(diffLng);
+    
+    const bearing = Math.atan2(x, y) * 180 / Math.PI;
+    return (bearing + 360) % 360;
+}
+
+// Create arrow icon for movement direction
+function createMovementArrow(color, bearing) {
+    const svgContent = `
+        <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+             style="transform: rotate(${bearing}deg); transform-origin: center;">
+            <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" 
+                     fill="${color}" stroke="white" stroke-width="1"/>
+        </svg>
+    `;
+    
+    return L.divIcon({
+        html: svgContent,
+        className: 'movement-arrow',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+    });
+}
 
 // Add major cities as reference points
 function addMajorCities() {

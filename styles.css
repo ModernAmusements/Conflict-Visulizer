@@ -20,6 +20,22 @@
     transform: scale(1.1);
 }
 
+/* Military movement styles */
+.movement-path {
+    animation: dashMove 20s linear infinite;
+}
+
+.movement-arrow {
+    background: transparent !important;
+    border: none !important;
+}
+
+@keyframes dashMove {
+    to {
+        stroke-dashoffset: -30;
+    }
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 300;
