@@ -33,17 +33,113 @@ const timelineEvents = [
         territoryControl: { israeli: 6, palestinian: 94 }
     },
     {
-        date: "1920-1939",
-        title: "Arab Revolts and Growing Tensions",
-        description: "Multiple Arab uprisings against Jewish immigration and British rule. 1936-1939 Arab Revolt is particularly significant.",
+        date: "1920",
+        title: "San Remo Conference: British Mandate Formalized",
+        description: "Allied powers officially assign Palestine to British administration. Borders defined, beginning of systematic British rule.",
+        category: "political",
+        era: "1900-1947",
+        impact: "International recognition of British control, establishment of legal framework.",
+        geography: {
+            type: "political",
+            coordinates: [31.7683, 35.2137],
+            affectedArea: [[31.2, 34.8], [32.2, 35.5]],
+            intensity: "medium",
+            icon: "treaty"
+        },
+        territoryControl: { israeli: 6, palestinian: 94 }
+    },
+    {
+        date: "1921",
+        title: "Jaffa Riots: First Major Intercommunal Violence",
+        description: "Arab mobs attack Jewish population in Jaffa. 47 Jews killed, 146 injured. Marks new phase of violence.",
         category: "military",
         era: "1900-1947",
-        impact: "Violent conflicts establish pattern of resistance and counter-resistance.",
+        impact: "First major intercommunal violence of Mandate period.",
+        geography: {
+            type: "attack",
+            coordinates: [32.0833, 34.7500],
+            affectedArea: [[32.0, 34.6], [32.2, 34.9]],
+            intensity: "medium",
+            icon: "riot"
+        },
+        territoryControl: { israeli: 6, palestinian: 94 }
+    },
+    {
+        date: "1922",
+        title: "First British White Paper",
+        description: "Churchill White Paper limits Jewish immigration to economic capacity. Tensions between Zionist and Arab communities increase.",
+        category: "political",
+        era: "1900-1947",
+        impact: "British policy restrictions fuel nationalist sentiments on both sides.",
+        geography: {
+            type: "political",
+            coordinates: [31.7683, 35.2137],
+            affectedArea: [[31.2, 34.8], [32.2, 35.5]],
+            intensity: "medium",
+            icon: "policy"
+        },
+        territoryControl: { israeli: 6, palestinian: 94 }
+    },
+    {
+        date: "1929",
+        title: "Western Wall Riots",
+        description: "Violent clashes between Arabs and Jews over access to Western Wall. 133 Jews killed, 339 injured. Hebron Jewish community attacked.",
+        category: "military",
+        era: "1900-1947",
+        impact: "First major intercommunal violence under British Mandate.",
+        geography: {
+            type: "attack",
+            coordinates: [31.7785, 35.2353],
+            affectedArea: [[31.7, 35.2], [31.8, 35.3]],
+            intensity: "high",
+            icon: "riot"
+        },
+        territoryControl: { israeli: 7, palestinian: 93 }
+    },
+    {
+        date: "1933",
+        title: "Arab General Strike and Riots",
+        description: "Six-month general strike against British rule and Jewish immigration. Widespread protests and violence across Palestine.",
+        category: "social",
+        era: "1900-1947",
+        impact: "Demonstrates growing Palestinian nationalism and resistance.",
+        geography: {
+            type: "social",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.5, 34.8], [32.5, 35.8]],
+            intensity: "high",
+            icon: "uprising"
+        },
+        territoryControl: { israeli: 7, palestinian: 93 }
+    },
+    {
+        date: "1936",
+        title: "Arab Higher Committee Formed",
+        description: "Grand Mufti Haj Amin al-Husseini forms political leadership. Coordinates Arab resistance to British Mandate and Jewish immigration.",
+        category: "political",
+        era: "1900-1947",
+        impact: "Creates unified Arab political leadership during crucial period.",
+        geography: {
+            type: "political",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.7, 35.0], [32.2, 35.4]],
+            intensity: "medium",
+            icon: "formation"
+        },
+        territoryControl: { israeli: 8, palestinian: 92 }
+    },
+    {
+        date: "1936-1939",
+        title: "Arab Revolt (Great Uprising)",
+        description: "Major three-year rebellion against British rule and Jewish immigration. Over 5,000 Arabs, 400 Jews killed. British harsh crackdown.",
+        category: "military",
+        era: "1900-1947",
+        impact: "Establishes pattern of armed resistance and British counter-insurgency tactics.",
         geography: {
             type: "attack",
             coordinates: [32.2222, 35.2544],
             affectedArea: [[31.7, 34.9], [32.5, 35.4]],
-            intensity: "medium",
+            intensity: "high",
             icon: "rebellion"
         },
         territoryControl: { israeli: 8, palestinian: 92 }
@@ -66,6 +162,70 @@ const timelineEvents = [
     },
 
     // Formation & Early Wars (1948-1966)
+    {
+        date: "1948",
+        title: "Altalena Affair: Irgun Ship Sunk",
+        description: "IDF fires on Irgun weapons ship Altalena off Tel Aviv. 16 Irgun members killed. Creates schism in Israeli leadership.",
+        category: "military",
+        era: "1948-1966",
+        impact: "First major internal Israeli conflict, establishes state authority over paramilitary groups.",
+        geography: {
+            type: "attack",
+            coordinates: [32.0853, 34.7818],
+            affectedArea: [[32.0, 34.6], [32.2, 34.9]],
+            intensity: "medium",
+            icon: "internal"
+        },
+        territoryControl: { israeli: 78, palestinian: 22 }
+    },
+    {
+        date: "1949",
+        title: "Lausanne Conference: Failed Peace Talks",
+        description: "Israel and Arab states meet in Switzerland to resolve 1948 war. No agreement reached. Armistice lines become de facto borders.",
+        category: "political",
+        era: "1948-1966",
+        impact: "Establishes pattern of failed diplomatic efforts, solidifies armistice borders.",
+        geography: {
+            type: "political",
+            coordinates: [46.5167, 6.6333], // Lausanne, Switzerland
+            affectedArea: [[46.4, 6.5], [46.6, 6.8]],
+            intensity: "medium",
+            icon: "conference"
+        },
+        territoryControl: { israeli: 78, palestinian: 22 }
+    },
+    {
+        date: "1950",
+        title: "Jordan Annexes West Bank",
+        description: "Jordan formally annexes West Bank and East Jerusalem. Palestinian representation and autonomy issues increase.",
+        category: "political",
+        era: "1948-1966",
+        impact: "Creates complex sovereignty issues over Palestinian territories.",
+        geography: {
+            type: "territory_change",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.7, 35.0], [32.4, 35.5]],
+            intensity: "medium",
+            icon: "annexation"
+        },
+        territoryControl: { israeli: 78, palestinian: 22 }
+    },
+    {
+        date: "1954",
+        title: "Lavon Affair: Failed Israeli Operation",
+        description: "Israeli intelligence operation in Egypt fails, leading to political scandal. Defense Minister Pinhas Lavon resigns.",
+        category: "military",
+        era: "1948-1966",
+        impact: "Demonstrates early Israeli covert operations and political accountability.",
+        geography: {
+            type: "attack",
+            coordinates: [30.0500, 31.2500], // Cairo, Egypt
+            affectedArea: [[30.0, 31.0], [30.5, 32.0]],
+            intensity: "medium",
+            icon: "covert"
+        },
+        territoryControl: { israeli: 78, palestinian: 22 }
+    },
     {
         date: "1948",
         title: "Israeli Declaration of Independence & War",
@@ -98,8 +258,6 @@ const timelineEvents = [
         },
         territoryControl: { israeli: 78, palestinian: 22 }
     },
-
-    // Occupation & Rise of Resistance (1967-1986)
     {
         date: "1967",
         title: "Six-Day War",
@@ -113,6 +271,72 @@ const timelineEvents = [
             affectedArea: [[29.5, 34.2], [33.5, 35.8]],
             intensity: "high",
             icon: "conquest"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1967",
+        title: "UN Security Council Resolution 242",
+        description: "UN calls for Israeli withdrawal from territories occupied in Six-Day War. 'Land for peace' principle established.",
+        category: "political",
+        era: "1967-1986",
+        impact: "International legal framework for Middle East peace process.",
+        geography: {
+            type: "political",
+            coordinates: [40.7128, -74.0060], // New York (UN Headquarters)
+            affectedArea: [[40.5, -74.5], [41.0, -73.5]],
+            intensity: "medium",
+            icon: "resolution"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1968",
+        title: "Karameh Pass Battle: PLO Emerges",
+        description: "IDF attacks PLO base in Jordan. First major Israeli-PLO confrontation. PLO regroups, gains legitimacy.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Establishes PLO as major military and political force.",
+        geography: {
+            type: "attack",
+            coordinates: [31.7828, 35.2334],
+            affectedArea: [[31.7, 35.0], [31.9, 35.4]],
+            intensity: "medium",
+            icon: "battle"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1970",
+        title: "War of Attrition: Border Conflict",
+        description: "Three-year low-intensity war between Egypt and Israel along Suez Canal. Both sides suffer casualties but no territorial changes.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Establishes pattern of border skirmishes and air combat.",
+        geography: {
+            type: "attack",
+            coordinates: [30.4500, 32.4000],
+            affectedArea: [[29.8, 32.0], [31.0, 33.0]],
+            intensity: "medium",
+            icon: "border"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+
+    // Occupation & Rise of Resistance (1967-1986) - Removed duplicate Six-Day War entry
+    {
+        date: "1972",
+        title: "Munich Olympics Attack",
+        description: "Black September group kills 11 Israeli athletes at Munich Olympics. International outrage, increases Israeli security concerns.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Introduces Palestinian militancy to international stage.",
+        geography: {
+            type: "attack",
+            coordinates: [48.1351, 11.5820], // Munich, Germany
+            affectedArea: [[48.0, 11.5], [48.2, 11.6]],
+            intensity: "high",
+            icon: "terrorism"
         },
         territoryControl: { israeli: 85, palestinian: 15 }
     },
@@ -148,8 +372,88 @@ const timelineEvents = [
         },
         territoryControl: { israeli: 85, palestinian: 15 }
     },
+    {
+        date: "1975",
+        title: "Sinai Interim Agreement",
+        description: "Israel and Egypt sign disengagement agreement. Israel withdraws from Sinai, establishes diplomatic relations.",
+        category: "political",
+        era: "1967-1986",
+        impact: "First major peace agreement between Israel and Arab state.",
+        geography: {
+            type: "territory_change",
+            coordinates: [30.0500, 31.2500], // Sinai
+            affectedArea: [[29.5, 32.5], [30.5, 33.0]],
+            intensity: "medium",
+            icon: "disengagement"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1978",
+        title: "Camp David Accords Signed",
+        description: "Egypt becomes first Arab state to sign peace treaty with Israel. Returns Sinai, establishes normal relations.",
+        category: "political",
+        era: "1967-1986",
+        impact: "Breakthrough in Arab-Israeli diplomacy, Egyptian model for others.",
+        geography: {
+            type: "territory_change",
+            coordinates: [30.0500, 31.2500], // Sinai
+            affectedArea: [[29.5, 32.5], [30.5, 33.0]],
+            intensity: "high",
+            icon: "peace"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1981",
+        title: "Osirak Nuclear Reactor Bombed",
+        description: "Israeli airstrike destroys Iraqi nuclear reactor. Establishes Israel's policy against regional nuclear proliferation.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Sets precedent for Israeli preemptive strikes on nuclear facilities.",
+        geography: {
+            type: "attack",
+            coordinates: [33.0650, 44.3000], // Osirak, Iraq
+            affectedArea: [[33.0, 44.0], [33.2, 44.5]],
+            intensity: "high",
+            icon: "nuclear"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1982",
+        title: "Lebanon War: First Israeli Invasion",
+        description: "Israel invades Lebanon to expel PLO. 15,000 killed, 30,000 wounded. PLO relocates to Tunisia.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Establishes Israeli military presence in Lebanon for decades.",
+        geography: {
+            type: "attack",
+            coordinates: [33.8869, 35.5131], // Beirut
+            affectedArea: [[33.5, 35.0], [34.5, 36.0]],
+            intensity: "high",
+            icon: "invasion"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1985",
+        title: "Operation Wooden Leg: Israeli Retaliation",
+        description: "IDF raids PLO headquarters in Tunisia in response to terrorist attacks. 60 Palestinians killed.",
+        category: "military",
+        era: "1967-1986",
+        impact: "Demonstrates Israel's long-reach counter-terrorism capabilities.",
+        geography: {
+            type: "attack",
+            coordinates: [36.8000, 10.2000], // Tunis
+            affectedArea: [[36.5, 10.0], [37.0, 10.5]],
+            intensity: "medium",
+            icon: "retaliation"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
 
-    // First Intifada & Hamas Formation (1987-2005)
+    // First Intifada & Hamas Formation (1987-2005) - Removed duplicate entries
     {
         date: "1987",
         title: "First Intifada Begins",
@@ -199,18 +503,66 @@ const timelineEvents = [
         territoryControl: { israeli: 85, palestinian: 15 }
     },
     {
+        date: "1988",
+        title: "Jordan Renounces Claims to West Bank",
+        description: "King Hussein officially renounces Jordan's claim to West Bank in favor of Palestinian representation. Major policy shift.",
+        category: "political",
+        era: "1987-2005",
+        impact: "Opens path for Palestinian leadership in West Bank, clears sovereignty issues.",
+        geography: {
+            type: "political",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.7, 35.0], [32.2, 35.4]],
+            intensity: "medium",
+            icon: "policy"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1991",
+        title: "Madrid Peace Conference",
+        description: "US and USSR co-host conference after Gulf War. Israel, Arab states, Palestinians meet for comprehensive peace talks.",
+        category: "political",
+        era: "1987-2005",
+        impact: "First attempt at comprehensive Arab-Israeli peace since 1978.",
+        geography: {
+            type: "political",
+            coordinates: [40.4168, -3.7038], // Madrid
+            affectedArea: [[40.3, -4.0], [40.5, -3.0]],
+            intensity: "medium",
+            icon: "conference"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
         date: "1993",
         title: "Oslo Accords",
-        description: "Israel and PLO sign peace agreement. Hamas opposes accord, escalates attacks against Israeli civilians.",
+        description: "Israel and PLO sign peace agreement. Mutual recognition, Palestinian self-rule established. Hamas opposes accord.",
         category: "political",
         era: "1987-2005",
         impact: "Creates division between secular Palestinian leadership and Hamas opposition.",
         geography: {
             type: "political",
-            coordinates: [32.0853, 34.7818],
-            affectedArea: [[31.5, 34.5], [32.5, 35.2]],
-            intensity: "medium",
+            coordinates: [59.9139, 10.7522], // Oslo
+            affectedArea: [[59.8, 10.6], [60.0, 11.0]],
+            intensity: "high",
             icon: "peace"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "1994",
+        title: "Gaza-Jericho Agreement: Palestinian Autonomy",
+        description: "Oslo II establishes Palestinian Authority control over Gaza Strip and Jericho. First self-government in decades.",
+        category: "political",
+        era: "1987-2005",
+        impact: "Creates Palestinian Authority as governing body for self-rule areas.",
+        geography: {
+            type: "territory_change",
+            coordinates: [31.3899, 34.3428],
+            affectedArea: [[31.2, 34.2], [31.6, 34.5]],
+            intensity: "medium",
+            icon: "autonomy"
         },
         territoryControl: { israeli: 85, palestinian: 15 }
     },
@@ -232,8 +584,24 @@ const timelineEvents = [
     },
     {
         date: "2000",
+        title: "Camp David Summit Failure",
+        description: "Clinton hosts Barak and Arafat at Camp David. Final status of Jerusalem and refugee issue unresolved. Summit collapses.",
+        category: "political",
+        era: "1987-2005",
+        impact: "Major missed opportunity for peace, leads to Second Intifada.",
+        geography: {
+            type: "political",
+            coordinates: [39.6010, -77.4733], // Camp David, USA
+            affectedArea: [[39.5, -77.8], [40.0, -77.0]],
+            intensity: "high",
+            icon: "summit"
+        },
+        territoryControl: { israeli: 85, palestinian: 15 }
+    },
+    {
+        date: "2000",
         title: "Second Intifada Begins",
-        description: "After failure of Camp David talks, Palestinians launch Second Intifada. Hamas becomes major armed resistance group.",
+        description: "After Camp David failure, Palestinians launch uprising. Hamas becomes major armed resistance group. Arafat loses control.",
         category: "military",
         era: "1987-2005",
         impact: "Extremely violent period with thousands dead on both sides, hardens positions.",
@@ -281,6 +649,54 @@ const timelineEvents = [
         territoryControl: { israeli: 85, palestinian: 15 }
     },
     {
+        date: "2006",
+        title: "Lebanon War: Second Israeli Invasion",
+        description: "Israel responds to Hezbollah rocket fire with massive invasion of Lebanon. 1,200 Lebanese killed, 165 Israelis killed.",
+        category: "military",
+        era: "2006-2023",
+        impact: "Establishes Hezbollah as major threat, creates pattern of periodic border wars.",
+        geography: {
+            type: "attack",
+            coordinates: [33.8869, 35.5131], // Beirut
+            affectedArea: [[33.5, 35.0], [34.5, 36.0]],
+            intensity: "high",
+            icon: "invasion"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2006",
+        title: "Palestinian President Abbas Elected",
+        description: "Mahmoud Abbas elected to replace Yasser Arafat after his death. Represents moderate Palestinian leadership.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Creates hope for peace process, though limited by Hamas control of Gaza.",
+        geography: {
+            type: "political",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.7, 35.0], [32.2, 35.4]],
+            intensity: "medium",
+            icon: "election"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2006",
+        title: "Israel-Lebanon War Cross-border Conflict",
+        description: "Conflict between Israel and Hezbollah along border. Ongoing artillery exchanges, casualties on both sides.",
+        category: "military",
+        era: "2006-2023",
+        impact: "Establishes Hezbollah as persistent threat to Israeli border communities.",
+        geography: {
+            type: "attack",
+            coordinates: [33.0585, 35.3594], // Border area
+            affectedArea: [[33.0, 35.0], [33.3, 35.7]],
+            intensity: "medium",
+            icon: "border"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
         date: "2007",
         title: "Hamas Takes Control of Gaza",
         description: "Hamas forces Fatah out of Gaza in violent conflict. Israel and Egypt impose blockade on Gaza.",
@@ -293,6 +709,22 @@ const timelineEvents = [
             affectedArea: [[31.2, 34.2], [31.6, 34.5]],
             intensity: "high",
             icon: "hamas_control"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2008",
+        title: "Gaza Blockade Tightened",
+        description: "Israel imposes sea and air blockade on Gaza after Hamas takes control. Creates humanitarian crisis.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Establishes Gaza as sealed territory under Israeli-Egyptian control.",
+        geography: {
+            type: "political",
+            coordinates: [31.3500, 34.3000], // Rafah crossing
+            affectedArea: [[31.2, 34.2], [31.5, 34.4]],
+            intensity: "high",
+            icon: "blockade"
         },
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
@@ -313,6 +745,38 @@ const timelineEvents = [
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
     {
+        date: "2010",
+        title: "Gaza Flotilla Attack",
+        description: "Israeli forces board Turkish flotilla attempting to break Gaza blockade. 9 Turkish activists killed. International condemnation.",
+        category: "military",
+        era: "2006-2023",
+        impact: "Increases international pressure on Gaza blockade, damages Israel-Turkey relations.",
+        geography: {
+            type: "attack",
+            coordinates: [31.5000, 32.0000], // Mediterranean
+            affectedArea: [[31.3, 31.8], [31.7, 32.2]],
+            intensity: "medium",
+            icon: "naval"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2011",
+        title: "Arab Spring: Regional Upheaval",
+        description: "Popular uprisings across Arab world. Palestinian statehood bid at UN. Israel concerned about regional instability.",
+        category: "social",
+        era: "2006-2023",
+        impact: "Reshapes Middle East politics, creates new opportunities and threats.",
+        geography: {
+            type: "social",
+            coordinates: [30.0500, 31.2500], // Egypt (Tahrir Square)
+            affectedArea: [[29.5, 30.5], [30.5, 32.0]],
+            intensity: "high",
+            icon: "uprising"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
         date: "2012",
         title: "Operation Pillar of Defense",
         description: "Israeli operation targeting Hamas rocket capabilities. Ahmed Jabari, Hamas military commander, killed.",
@@ -325,6 +789,22 @@ const timelineEvents = [
             affectedArea: [[31.2, 34.2], [31.6, 34.5]],
             intensity: "high",
             icon: "military"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2012",
+        title: "UN Palestinian State Recognition",
+        description: "UN General Assembly upgrades Palestinian status to 'non-member observer state'. Major diplomatic victory for Palestinians.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Provides platform for Palestinian statehood at international level.",
+        geography: {
+            type: "political",
+            coordinates: [40.7128, -74.0060], // UN Headquarters
+            affectedArea: [[40.5, -74.5], [41.0, -73.5]],
+            intensity: "medium",
+            icon: "recognition"
         },
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
@@ -345,6 +825,54 @@ const timelineEvents = [
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
     {
+        date: "2015",
+        title: "Jerusalem Stabbing Intifada",
+        description: "Series of lone-wolf attacks against Israelis in Jerusalem. Heightened security measures, tensions at holy sites.",
+        category: "military",
+        era: "2006-2023",
+        impact: "Shifts conflict tactics to individual attacks, creates new security challenges.",
+        geography: {
+            type: "attack",
+            coordinates: [31.7785, 35.2353],
+            affectedArea: [[31.7, 35.1], [31.9, 35.4]],
+            intensity: "medium",
+            icon: "terrorism"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2016",
+        title: "UN Security Council Resolution 2334",
+        description: "UN condemns Israeli settlements as illegal obstacle to peace. First UN resolution focused on settlement activity.",
+        category: "political",
+        era: "2006-2023",
+        impact: "International legal pressure on settlement expansion increases.",
+        geography: {
+            type: "political",
+            coordinates: [40.7128, -74.0060], // UN Headquarters
+            affectedArea: [[40.5, -74.5], [41.0, -73.5]],
+            intensity: "medium",
+            icon: "resolution"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2017",
+        title: "US Embassy Moved to Jerusalem",
+        description: "Trump recognizes Jerusalem as Israeli capital, moves embassy. International controversy, Palestinian protests.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Changes 70-year US policy, creates major diplomatic shift.",
+        geography: {
+            type: "political",
+            coordinates: [31.7683, 35.2137],
+            affectedArea: [[31.7, 35.1], [31.9, 35.4]],
+            intensity: "high",
+            icon: "embassy"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
         date: "2018-2019",
         title: "Great March of Return",
         description: "Palestinian protests along Gaza border. Israeli forces kill over 200 protesters, including medics and journalists.",
@@ -361,6 +889,54 @@ const timelineEvents = [
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
     {
+        date: "2019",
+        title: "Netanyahu Campaign Promise: West Bank Annexation",
+        description: "Netanyahu promises to annex West Bank if re-elected. Major shift in Israeli policy toward two-state solution.",
+        category: "political",
+        era: "2006-2023",
+        impact: "International alarm over potential end to two-state solution.",
+        geography: {
+            type: "political",
+            coordinates: [31.9522, 35.2332],
+            affectedArea: [[31.7, 35.0], [32.2, 35.4]],
+            intensity: "medium",
+            icon: "annexation"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2020",
+        title: "Abraham Accords: Historic Normalization",
+        description: "UAE, Bahrain, Morocco, Sudan normalize relations with Israel. Trump administration brokered deals. Palestinians angered.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Breaks decades of Arab consensus, creates new regional dynamics.",
+        geography: {
+            type: "political",
+            coordinates: [24.7136, 46.6753], // Abu Dhabi
+            affectedArea: [[20.0, 40.0], [30.0, 50.0]],
+            intensity: "high",
+            icon: "normalization"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2021",
+        title: "Jerusalem Evictions and Sheikh Jarrah Crisis",
+        description: "Israeli police evict Palestinian families from Sheikh Jarrah neighborhood. Leads to Gaza war and international condemnations.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Shows interconnection between Jerusalem issues and Gaza conflicts.",
+        geography: {
+            type: "political",
+            coordinates: [31.7828, 35.2353],
+            affectedArea: [[31.7, 35.1], [31.9, 35.4]],
+            intensity: "medium",
+            icon: "eviction"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
         date: "2021",
         title: "Gaza War and Jerusalem Tensions",
         description: "Conflict sparked by Jerusalem evictions and Al-Aqsa clashes. Hamas fires rockets, Israel responds with airstrikes.",
@@ -373,6 +949,54 @@ const timelineEvents = [
             affectedArea: [[31.2, 34.2], [32.5, 35.8]],
             intensity: "high",
             icon: "war"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2022",
+        title: "Abraham Accords Summit & Implementation",
+        description: "Summit in Negev with Israel, US, UAE, Bahrain. Implementation of normalization deals continues despite criticism.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Establishes new regional cooperation frameworks excluding Palestinians.",
+        geography: {
+            type: "political",
+            coordinates: [30.8500, 34.7500], // Negev
+            affectedArea: [[30.5, 34.5], [31.0, 35.0]],
+            intensity: "medium",
+            icon: "summit"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2022",
+        title: "UN Investigates War Crimes Allegations",
+        description: "UN opens investigations into possible war crimes in Gaza and occupied territories. Israel and Hamas both face scrutiny.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Increases international legal pressure on conflict parties.",
+        geography: {
+            type: "political",
+            coordinates: [40.7128, -74.0060], // UN Headquarters
+            affectedArea: [[40.5, -74.5], [41.0, -73.5]],
+            intensity: "medium",
+            icon: "legal"
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
+    },
+    {
+        date: "2023",
+        title: "Ben-Gvir National Security Minister",
+        description: "Far-right extremist Itamar Ben-Gvir appointed National Security Minister. Changes Israeli policing policies.",
+        category: "political",
+        era: "2006-2023",
+        impact: "Shifts Israeli government further right, increases tensions with Palestinians.",
+        geography: {
+            type: "political",
+            coordinates: [31.7683, 35.2137],
+            affectedArea: [[31.7, 35.1], [31.9, 35.4]],
+            intensity: "medium",
+            icon: "appointment"
         },
         territoryControl: { israeli: 85, palestinian: 15, hamas: 2 }
     },
@@ -879,10 +1503,10 @@ function drawTerritoryControl(events) {
         
         if (currentYear < 1948) {
             // Pre-1948: Ottoman/British Mandate Palestine
-            const mandataArea = [
+            const mandateArea = [
                 [29.5, 34.2], [33.5, 34.2], [33.5, 35.8], [29.5, 35.8], [29.5, 34.2]
             ];
-            L.polygon(mandataArea, {
+            L.polygon(mandateArea, {
                 fillColor: 'rgba(155, 89, 182, 0.3)',
                 color: 'rgba(155, 89, 182, 0.7)',
                 weight: 2,
@@ -1080,8 +1704,8 @@ function addMajorCities() {
     ];
     
     cities.forEach(city => {
-        let fillColor = '#f39c12';
-        let size = city.importance === 'high' ? 10 : city.importance === 'medium' ? 7 : 5;
+        const fillColor = '#f39c12';
+        const size = city.importance === 'high' ? 10 : city.importance === 'medium' ? 7 : 5;
         
         const marker = L.circleMarker(city.coords, {
             radius: size,
