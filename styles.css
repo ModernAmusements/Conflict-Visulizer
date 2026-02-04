@@ -36,6 +36,92 @@
     }
 }
 
+/* Faction marker styling - properly display icons */
+.faction-marker-icon {
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.faction-marker-icon svg {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Movement path animations */
+.movement-path {
+    animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -100;
+    }
+}
+
+/* Custom marker styling for overlap handling */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker svg {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.faction-marker:hover {
+    transform: scale(1.2);
+}
+
+/* Ensure SVG icons are visible */
+.faction-marker svg {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Leaflet marker override */
+.leaflet-marker-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Movement path animations */
+.movement-path {
+    stroke-dashoffset: 0;
+    animation: dashMove 20s linear infinite;
+}
+
+@keyframes dashMove {
+    to {
+        stroke-dashoffset: -30;
+    }
+}
+
+.movement-star {
+    stroke-dasharray: 12, 4;
+}
+
+.movement-triangle {
+    stroke-dasharray: 8, 6;
+}
+
+.movement-diamond {
+    stroke-dasharray: 10, 5;
+}
+
+.movement-circle {
+    stroke-dasharray: 15, 3;
+}
+
+.movement-hexagon {
+    stroke-dasharray: 6, 8;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 300;

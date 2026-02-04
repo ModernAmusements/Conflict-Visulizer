@@ -113,3 +113,44 @@ mapState = {
 - Timeline animation works smoothly
 - Filter controls hide/show correct markers
 - Mobile responsiveness maintained
+
+## Map Features
+
+### Base Functionality
+- Interactive timeline scrubbing (1948-2023)
+- Historical event markers with categorization
+- Territory control visualization
+- City/territory layer toggles
+- Detailed popup information for each event
+
+### Military Movement System (NEW)
+- **Faction-specific markers** with unique symbols:
+  - Hamas (green triangles)
+  - Israeli Defense Forces (blue stars)
+  - Palestinian Authority (purple circles)
+  - Hezbollah (yellow hexagons)
+  - Coalition Forces (orange diamonds)
+- **Directional markers** pointing toward attack direction
+- **Detailed popups** with operation type, timing, and waypoint information
+- **Movement toggle** in map controls to show/hide military movements
+- **October 7, 2023 Hamas Attack** implemented with full movement data:
+  - Multi-pronged attack routes from Gaza
+  - Land, sea, and air infiltration methods
+  - 15 Israeli communities targeted
+  - Real-time military movement visualization
+
+## Debug Attempts Summary
+1. **Initial Analysis**: Identified that cities and movement paths work, but faction markers not visible in legend
+2. **Template Literal Issue**: Legend template not rendering faction section properly 
+3. **Movement Function Debugging**: Added console logging to track marker creation
+4. **Syntax Error Fix**: Resolved duplicate code blocks causing JavaScript syntax errors
+5. **MapState Integration**: Added `showMovements`, `movementLayer`, and `isUpdating` properties
+6. **Recursive Call Prevention**: Implemented `isUpdating` flag to prevent infinite loops
+7. **October 7 Attack Implementation**: Added comprehensive Hamas movement data with 15 target locations
+8. **getEventYear Function Recovery**: Restored critical function that was accidentally removed during duplicate code cleanup, fixing ReferenceError timeline scrubbing issues
+4. **CSS Enhancements**: Improved faction marker visibility with !important declarations
+5. **Legend Fix Attempts**: Multiple attempts to fix template literal parsing
+6. **Current Issue**: Legend faction section completely missing from rendered HTML despite being in source code
+
+## Root Cause
+The issue appears to be in the `addMapLegend()` function template literal - JavaScript execution stops before reaching the faction section, causing it to be omitted from the rendered legend.

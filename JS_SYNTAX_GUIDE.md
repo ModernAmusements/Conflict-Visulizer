@@ -148,9 +148,159 @@ const str = num.toString();
 4. Validate data before processing
 
 ## Code Style
-
 - Use meaningful variable names
 - Keep functions small and focused
 - Add comments for complex logic
 - Use consistent indentation (2 or 4 spaces)
 - Follow naming conventions (camelCase for variables/functions)
+
+## Legend Fix Requirements
+- Template literals must use proper backtick escaping
+- Nested quotes in SVG need double quotes with escape sequences
+- Multi-line HTML requires proper string continuation
+- JavaScript errors can prevent template literal rendering
+
+## Critical Error Prevention
+- **NEVER include raw HTML outside of string literals or template literals**
+- **ALL HTML content must be inside backticks (`)**
+- **JavaScript syntax errors occur when HTML is mixed with JS code directly**
+- **Template literals can only contain valid HTML/JavaScript combinations**
+- **Stray closing div tags or other HTML breaks JavaScript execution**
+
+## Global
+
+```javascript
+'use strict';
+```
+
+- Semicolons are mandatory
+- Explicit code only
+- Fail fast (throw errors)
+
+---
+
+## Variables
+
+```javascript
+const value = 1;
+
+let counter = 0;
+counter += 1;
+```
+
+❌ Forbidden
+```javascript
+var x;
+```
+
+---
+
+## Functions
+
+```javascript
+function fn(a, b) {
+    return a + b;
+}
+
+const fnArrow = (a, b) => {
+    return a + b;
+};
+```
+
+Rules:
+- Block bodies only
+- Explicit `return`
+- No implicit `this`
+
+---
+
+## Arrays
+
+```javascript
+array.forEach((item) => {
+    doSideEffect(item);
+});
+
+const mapped = array.map((item) => {
+    return transform(item);
+});
+
+const filtered = array.filter((item) => {
+    return condition(item) === true;
+});
+```
+
+❌ Forbidden
+```javascript
+array.map(async () => {});
+```
+
+---
+
+## Conditionals
+
+```javascript
+if (value === true) {
+    doThing();
+} else {
+    throw new Error('Unhandled case');
+}
+
+const result = condition === true ? a : b;
+```
+
+Rules:
+- No truthy/falsy checks
+- Always handle default case
+
+---
+
+## DOM
+
+```javascript
+const el = document.querySelector('.x');
+if (!el) {
+    throw new Error('Element not found');
+}
+```
+
+---
+
+## Async
+
+```javascript
+async function load(url) {
+    const res = await fetch(url);
+    if (!res.ok) {
+        throw new Error('Request failed');
+    }
+    return await res.json();
+}
+```
+
+Rules:
+- async/await only
+- No `.then()`
+
+---
+
+## Equality
+
+```javascript
+===
+!==
+```
+
+---
+
+## Hard Bans
+
+```javascript
+var
+==
+!=
+if (x) {}
+implicit return
+.then()
+this
+```

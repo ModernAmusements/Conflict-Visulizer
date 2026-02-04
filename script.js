@@ -1139,22 +1139,15 @@ const timelineEvents = [
 // Strategic Map Variables
 let mapContainer;
 let mapState = {
-    currentYear: 1900,
-    isPlaying: false,
-    playInterval: null,
-    showAttacks: true,
-    showPolitical: true,
-    showSocial: true,
-    showTerritory: true,
-    showSettlements: true,
-    showCities: true,
-    showMovements: false, // Default off for frictionless experience
+    // ... existing properties ...
+    showMovements: true, // Enable faction markers by default
     playSpeed: 1000,
     map: null,
     territoryLayer: null,
     markerLayer: null,
     cityLayer: null,
-    movementLayer: null
+    movementLayer: null,
+    isUpdating: false // Add this important flag
 };
 
 // Initialize the timeline
@@ -1324,83 +1317,111 @@ function addMilitaryGrid() {
     gridLayer.addTo(mapState.map);
 }
 
+// Define military factions with their symbols and colors
+const militaryFactions = {
+    'IDF': {
+        name: 'IDF',
+        symbol: '★',
+        color: '#2563eb'
+    },
+    'Israeli Defense Force': {
+        name: 'IDF',
+        symbol: '★',
+        color: '#2563eb'
+    },
+    'Hamas': {
+        name: 'Hamas',
+        symbol: '▲',
+        color: '#dc2626'
+    },
+    'Palestinian Authority': {
+        name: 'Palestinian Authority',
+        symbol: '●',
+        color: '#16a34a'
+    },
+    'Fatah': {
+        name: 'Palestinian Authority',
+        symbol: '●',
+        color: '#16a34a'
+    },
+    'Hezbollah': {
+        name: 'Hezbollah',
+        symbol: '★',
+        color: '#7c3aed'
+    },
+    'Iran': {
+        name: 'Iran',
+        symbol: '⬢',
+        color: '#991b1b'
+    },
+    'Arab Forces': {
+        name: 'Arab Forces',
+        symbol: '⬟',
+        color: '#f97316'
+    },
+    'Egypt-Syria Coalition': {
+        name: 'Egypt-Syria Coalition',
+        symbol: '⬟',
+        color: '#ea580c'
+    }
+};
+
 // Add comprehensive map legend
 function addMapLegend() {
     const legend = L.control({ position: 'topright' });
     
     legend.onAdd = function(map) {
         const div = L.DomUtil.create('div', 'map-legend');
-        div.innerHTML = `
-            <div style="background: rgba(44, 62, 80, 0.95); padding: 12px; border-radius: 8px; color: white; font-size: 11px; min-width: 180px;">
-                <div style="margin-bottom: 8px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">TERRITORY CONTROL</div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: rgba(52, 152, 219, 0.3); border: 2px solid rgba(52, 152, 219, 0.7); margin-right: 5px;"></div>
-                    <span>Israeli Control</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: rgba(155, 89, 182, 0.3); border: 2px solid rgba(155, 89, 182, 0.7); margin-right: 5px;"></div>
-                    <span>Palestinian Control</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <div style="width: 12px; height: 12px; background: rgba(231, 76, 60, 0.4); border: 2px solid rgba(231, 76, 60, 0.8); margin-right: 5px;"></div>
-                    <span>Hamas Control</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 6px;">
-                    <div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 5px;"></div>
-                    <span>Occupied Areas</span>
-                </div>
-                <div style="margin-bottom: 6px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">EVENT MARKERS</div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Military/Attack</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Political Events</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Social Events</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Settlements</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Territory Changes</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 6px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Major Cities</span>
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 6px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;">
-                        <line x1="2" y1="12" x2="22" y2="12" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
-                        <polygon points="20,10 22,12 20,14" fill="#2563eb"/>
-                    </svg>
-                    <span>Military Movements</span>
-                </div>
-                <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
-                    Total Events: ${timelineEvents.length}
+        console.log('Creating legend...');
+        const legendContent = `<div style="background: rgba(44, 62, 80, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 240px; max-height: 600px; overflow-y: auto;">
+            <div style="margin-bottom: 8px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">TERRITORY CONTROL</div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(52, 152, 219, 0.3); border: 2px solid rgba(52, 152, 219, 0.7); margin-right: 5px;"></div><span>Israeli Control</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(155, 89, 182, 0.3); border: 2px solid rgba(155, 89, 182, 0.7); margin-right: 5px;"></div><span>Palestinian Control</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(231, 76, 60, 0.4); border: 2px solid rgba(231, 76, 60, 0.8); margin-right: 5px;"></div><span>Hamas Control</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 6px;"><div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 5px;"></div><span>Occupied Areas</span></div>
+            <div style="margin-bottom: 6px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">EVENT MARKERS</div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/></svg><span>Military/Attack</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/></svg><span>Political Events</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/></svg><span>Social Events</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/></svg><span>Settlements</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/></svg><span>Territory Changes</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/></svg><span>Major Cities</span></div>
+
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 10px; color: #9ca3af;">
+                <div style="font-weight: bold; margin-bottom: 5px; text-align: center;">MILITARY FACTIONS:</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 9px;">
+                    ${Object.entries(militaryFactions).map(([key, faction]) => {
+                        let icon = '';
+                        if (faction.symbol === '★') {
+                            icon = `<polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                        } else if (faction.symbol === '▲') {
+                            icon = `<polygon points="12,2 22,20 2,20" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                        } else if (faction.symbol === '●') {
+                            icon = `<circle cx="12" cy="12" r="8" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                        } else if (faction.symbol === '⬟') {
+                            icon = `<polygon points="12,2 22,12 12,22 2,12" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                        } else if (faction.symbol === '⬢') {
+                            icon = `<polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                        }
+                        return `<div style="display: flex; align-items: center;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 4px;">${icon}</svg><span>${faction.name}</span></div>`;
+                    }).join('')}
                 </div>
             </div>
-        `;
+            <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
+                Total Events: ${timelineEvents.length}
+            </div>
+            <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; text-align: center; font-size: 9px;">
+                TEST: Military Factions Section
+            </div>
+        </div>`;
+        console.log('Legend content created, length:', legendContent.length);
+        console.log('Factions section included:', legendContent.includes('MILITARY FACTIONS:'));
+        console.log('TEST section included:', legendContent.includes('TEST: Military Factions Section'));
+        div.innerHTML = legendContent;
+        console.log('Legend innerHTML set');
         return div;
     };
-    
+
     legend.addTo(mapState.map);
 }
 
@@ -1533,58 +1554,107 @@ function handleSpeedChange(e) {
     }
 }
 
-// Update map for specific year
+// Add helper function to prevent year parsing issues
+function getEventYear(dateString) {
+    // Handle "October 7, 2023" format
+    const yearMatch = dateString.match(/\d{4}/);
+    if (yearMatch) {
+        return parseInt(yearMatch[0]);
+    }
+    
+    // Handle "1948" or "1967" format
+    const year = parseInt(dateString.split('-')[0]);
+    return isNaN(year) ? 0 : year;
+}
+
+// Update map for specific year with recursion prevention
 function updateMapForYear(year) {
-    // Clear previous layers
-    if (mapState.territoryLayer) {
-        mapState.map.removeLayer(mapState.territoryLayer);
-    }
-    if (mapState.markerLayer) {
-        mapState.map.removeLayer(mapState.markerLayer);
-    }
-    if (mapState.cityLayer) {
-        mapState.map.removeLayer(mapState.cityLayer);
-    }
-    if (mapState.movementLayer) {
-        mapState.map.removeLayer(mapState.movementLayer);
+    console.log('🔄 updateMapForYear called with year:', year);
+    
+    // Prevent recursive calls
+    if (mapState.isUpdating) {
+        console.log('🚫 Preventing recursive call');
+        return;
     }
     
-    // Create new layers
-    mapState.territoryLayer = L.layerGroup();
-    mapState.markerLayer = L.layerGroup();
-    mapState.cityLayer = L.layerGroup();
-    mapState.movementLayer = L.layerGroup();
+    mapState.isUpdating = true;
     
-    // Get events for this year and earlier
-    const relevantEvents = timelineEvents.filter(event => {
-        const eventYear = parseInt(event.date.split('-')[0]);
-        return eventYear <= year;
-    });
-    
-    // Draw territory control
-    if (mapState.showTerritory) {
-        drawTerritoryControl(relevantEvents);
+    try {
+        // Clear previous layers
+        if (mapState.territoryLayer) {
+            mapState.map.removeLayer(mapState.territoryLayer);
+        }
+        if (mapState.markerLayer) {
+            mapState.map.removeLayer(mapState.markerLayer);
+        }
+        if (mapState.cityLayer) {
+            mapState.map.removeLayer(mapState.cityLayer);
+        }
+        if (mapState.movementLayer) {
+            mapState.map.removeLayer(mapState.movementLayer);
+        }
+        
+        // Create new layers
+        mapState.territoryLayer = L.layerGroup();
+        mapState.markerLayer = L.layerGroup();
+        mapState.cityLayer = L.layerGroup();
+        mapState.movementLayer = L.layerGroup();
+        
+        // Get events for this year and earlier
+        const relevantEvents = timelineEvents.filter(event => {
+            const eventYear = getEventYear(event.date);
+            return eventYear <= year;
+        });
+        
+        console.log('📊 Total relevant events:', relevantEvents.length);
+        console.log('📊 Events with movements:', 
+            relevantEvents.filter(e => e.movementData).map(e => ({
+                title: e.title,
+                year: getEventYear(e.date),
+                faction: e.movementData?.faction
+            }))
+        );
+        
+        // Draw territory control
+        if (mapState.showTerritory) {
+            drawTerritoryControl(relevantEvents);
+        }
+        
+        // Draw all event markers
+        drawAllEventMarkers(relevantEvents);
+        
+        // Draw cities
+        if (mapState.showCities) {
+            addMajorCities();
+        }
+        
+        // Draw military movements (only if enabled)
+        if (mapState.showMovements) {
+            console.log('🎯 Calling drawMovementPaths...');
+            drawMovementPaths(relevantEvents);
+        } else {
+            console.log('⏸️ Movement display is disabled');
+        }
+        
+        // Add layers to map
+        if (mapState.showTerritory) {
+            mapState.territoryLayer.addTo(mapState.map);
+        }
+        mapState.markerLayer.addTo(mapState.map);
+        if (mapState.showCities) {
+            mapState.cityLayer.addTo(mapState.map);
+        }
+        if (mapState.showMovements) {
+            mapState.movementLayer.addTo(mapState.map);
+            console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
+        }
+        
+        // Update statistics
+        updateStatistics(relevantEvents);
+    } finally {
+        mapState.isUpdating = false;
+        console.log('✅ updateMapForYear completed');
     }
-    
-    // Draw all event markers
-    drawAllEventMarkers(relevantEvents);
-    
-    // Draw cities
-    if (mapState.showCities) {
-        addMajorCities();
-    }
-    
-    // Draw military movements
-    drawMovementPaths(relevantEvents);
-    
-    // Add layers to map
-    mapState.territoryLayer.addTo(mapState.map);
-    mapState.markerLayer.addTo(mapState.map);
-    mapState.cityLayer.addTo(mapState.map);
-    mapState.movementLayer.addTo(mapState.map);
-    
-    // Update statistics
-    updateStatistics(relevantEvents);
 }
 
 // Draw territory control zones with real geographic polygons
@@ -1935,75 +2005,143 @@ function drawAllEventMarkers(events) {
     });
 }
 
-// Get faction-specific colors
+// Get faction-specific colors and symbols
 function getFactionColor(faction) {
-    const colors = {
-        'idf': '#2563eb',           // Israeli Defense Force - Blue
-        'hamas': '#dc2626',         // Hamas - Red
-        'egyptian_syrian': '#dc2626', // Egypt/Syria - Red
-        'arab_forces': '#dc2626',     // Arab Forces - Red
-        'pij': '#ea580c',           // Palestinian Islamic Jihad - Orange
-        'hezbollah': '#7c3aed',       // Hezbollah - Purple
-        'fatah': '#16a34a',         // Fatah - Green
-        'iran': '#991b1b'            // Iran - Dark Red
+    const factions = {
+        'idf': {
+            color: '#2563eb',           // IDF Blue
+            symbol: 'star',              // Star of David influence
+            name: 'Israeli Defense Force'
+        },
+        'hamas': {
+            color: '#dc2626',           // Hamas Red
+            symbol: 'triangle',           // Triangle attack symbol
+            name: 'Hamas'
+        },
+        'egyptian_syrian': {
+            color: '#ea580c',           // Egypt/Syria Orange
+            symbol: 'diamond',            // Diamond coalition
+            name: 'Egypt-Syria Coalition'
+        },
+        'arab_forces': {
+            color: '#f97316',           // Arab Forces Dark Orange
+            symbol: 'diamond',            // Diamond coalition
+            name: 'Arab Forces'
+        },
+        'pij': {
+            color: '#ea580c',           // PIJ Orange
+            symbol: 'triangle',           // Triangle militant
+            name: 'Palestinian Islamic Jihad'
+        },
+        'hezbollah': {
+            color: '#7c3aed',           // Hezbollah Purple
+            symbol: 'star',              // Star resistance
+            name: 'Hezbollah'
+        },
+        'fatah': {
+            color: '#16a34a',           // Fatah Green
+            symbol: 'circle',            // Circle governance
+            name: 'Fatah/Palestinian Authority'
+        },
+        'iran': {
+            color: '#991b1b',           // Iran Dark Red
+            symbol: 'hexagon',            // Hexagon support
+            name: 'Iran (Supporter)'
+        }
     };
-    return colors[faction] || '#6b7280'; // Default gray
+    return factions[faction] || { 
+        color: '#6b7280', 
+        symbol: 'circle', 
+        name: 'Unknown Faction' 
+    };
 }
 
-// Draw military movement paths with animations
+// Draw military movement paths with animations (fixed recursion prevention)
 function drawMovementPaths(events) {
-    if (!mapState.showMovements) return;
+    if (!mapState.showMovements) {
+        console.log('🚀 Movement display is disabled');
+        return;
+    }
     
     const movementEvents = events.filter(event => event.movementData);
+    console.log('🎯 Drawing movements for year - found:', movementEvents.length, 'events with movement data');
     
+    // Process each movement event only once
     movementEvents.forEach(event => {
         const movement = event.movementData;
         
-        // Get faction color
-        const factionColor = getFactionColor(movement.faction);
+        // Get faction info (color + symbol)
+        const faction = getFactionColor(movement.faction);
+        
+        console.log('📊 Processing movement:', event.title, '| Faction:', faction.name, '| Points:', movement.coordinates.length);
         
         // Create animated movement path
         const path = L.polyline(movement.coordinates, {
-            color: factionColor,
-            weight: 3,
-            opacity: 0.8,
-            dashArray: '10, 5',
-            className: 'movement-path'
+            color: faction.color,
+            weight: 4,
+            opacity: 0.9,
+            dashArray: getFactionDashPattern(faction.symbol)
         });
         
-        // Add directional arrows
+        // Add faction markers at each coordinate (without overlapping duplicates)
+        const processedCoordinates = new Set();
         movement.coordinates.forEach((coord, index) => {
             if (index < movement.coordinates.length - 1) {
+                const coordKey = `${coord[0]},${coord[1]}`;
+                
+                // Skip duplicate coordinates for this movement
+                if (processedCoordinates.has(coordKey)) {
+                    console.log('⏭ Skipping duplicate coordinate:', coordKey);
+                    return;
+                }
+                
+                processedCoordinates.add(coordKey);
+                
                 const nextCoord = movement.coordinates[index + 1];
                 const bearing = calculateBearing(coord, nextCoord);
                 
-                const arrowIcon = createMovementArrow(factionColor, bearing);
-                const arrowMarker = L.marker(coord, {
-                    icon: arrowIcon,
-                    opacity: 0.8
+                const markerIcon = createFactionMarker(faction, bearing);
+                const marker = L.marker(coord, {
+                    icon: markerIcon,
+                    opacity: 1,
+                    zIndexOffset: 1000 // Ensure markers appear above other layers
                 });
                 
-                arrowMarker.addTo(mapState.movementLayer);
+                // Add tooltip for better visibility
+                marker.bindTooltip(faction.name, {
+                    permanent: false,
+                    direction: 'top',
+                    offset: [0, -16]
+                });
+                
+                marker.addTo(mapState.movementLayer);
+                console.log('Marker added for', event.title, 'at', coord, '- Type:', faction.name);
             }
         });
         
-        // Add popup with movement info
+        // Enhanced popup with movement details
         path.bindPopup(`
-            <div style="max-width: 250px;">
-                <strong style="color: #e1e8ed;">Military Movement</strong><br>
+            <div style="max-width: 250px; background: #1a1a1a; color: #e1e8ed; padding: 10px; border-radius: 8px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <div style="background: ${faction.color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 8px;">
+                        ${faction.name}
+                    </div>
+                </div>
+                <strong>${event.title}</strong><br>
                 <span style="color: #9ca3af; font-size: 12px;">${event.date}</span><br>
-                <strong style="color: #e1e8ed;">${event.title}</strong><br>
-                <hr style="margin: 5px 0;">
+                <hr style="margin: 8px 0; border-color: #374151;">
                 <span style="color: #b0b8c0; font-size: 13px;">
-                    Type: ${movement.type.replace(/_/g, ' ').toUpperCase()}<br>
-                    Faction: ${movement.faction.replace(/_/g, ' ').toUpperCase()}<br>
-                    Duration: ${movement.startTime} to ${movement.endTime}
+                    <strong>Operation:</strong> ${movement.type.replace(/_/g, ' ').toUpperCase()}<br>
+                    <strong>Duration:</strong> ${movement.startTime} to ${movement.endTime}<br>
+                    <strong>Waypoints:</strong> ${movement.coordinates.length}
                 </span>
             </div>
         `);
         
         path.addTo(mapState.movementLayer);
     });
+    
+    console.log('✅ Movement layer now contains:', mapState.movementLayer.getLayers().length, 'unique markers');
 }
 
 // Calculate bearing between two coordinates for arrow direction
@@ -2020,7 +2158,73 @@ function calculateBearing(start, end) {
     return (bearing + 360) % 360;
 }
 
-// Create arrow icon for movement direction
+// Get faction-specific dash patterns
+function getFactionDashPattern(symbol) {
+    const patterns = {
+        'star': '12, 4',         // Solid with small gaps (IDF)
+        'triangle': '8, 6',      // Short dashes (militant)
+        'diamond': '10, 5',       // Medium dashes (coalition)
+        'circle': '15, 3',       // Long dashes (governance)
+        'hexagon': '6, 8'        // Short/long pattern (supporter)
+    };
+    return patterns[symbol] || '10, 5';
+}
+
+// Create faction-specific movement marker with proper SVG rendering
+function createFactionMarker(faction, bearing) {
+    const size = 16; // Increased from 14 for better visibility
+    
+    let svgPath = '';
+    
+    switch(faction.symbol) {
+        case 'star': // IDF/Hezbollah - Star
+            svgPath = `<polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" 
+                         fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+            break;
+            
+        case 'triangle': // Hamas/PIJ - Triangle
+            svgPath = `<polygon points="12,2 22,20 2,20" 
+                         fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+            break;
+            
+        case 'diamond': // Arab Forces - Diamond
+            svgPath = `<polygon points="12,2 22,12 12,22 2,12" 
+                         fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+            break;
+            
+        case 'circle': // Fatah - Circle
+            svgPath = `<circle cx="12" cy="12" r="9" 
+                        fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+            break;
+            
+        case 'hexagon': // Iran - Hexagon
+            svgPath = `<polygon points="12,2 20,7 20,17 12,22 4,17 4,7" 
+                         fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+            break;
+            
+        default:
+            svgPath = `<circle cx="12" cy="12" r="8" 
+                        fill="${faction.color}" stroke="white" stroke-width="1.5"/>`;
+    }
+    
+    const svgContent = `
+        <svg width="${size}" height="${size}" viewBox="0 0 24 24" 
+             xmlns="http://www.w3.org/2000/svg"
+             style="display: block; transform: rotate(${bearing}deg); transform-origin: center;">
+            ${svgPath}
+        </svg>
+    `;
+    
+    return L.divIcon({
+        html: svgContent,
+        className: 'faction-marker-icon',
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2],
+        popupAnchor: [0, -size/2]
+    });
+}
+
+// Create arrow icon for movement direction (legacy)
 function createMovementArrow(color, bearing) {
     const svgContent = `
         <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
@@ -2133,8 +2337,31 @@ function updateLegendCounts(events) {
     }
 }
 
+// Initialize checkbox states with mapState
+function initializeCheckboxStates() {
+    const showAttacks = document.getElementById('show-attacks');
+    const showPolitical = document.getElementById('show-political');
+    const showSocial = document.getElementById('show-social');
+    const showTerritory = document.getElementById('show-territory');
+    const showSettlements = document.getElementById('show-settlements');
+    const showCities = document.getElementById('show-cities');
+    const showMovements = document.getElementById('show-movements');
+    
+    // Sync checkboxes with mapState
+    if (showAttacks) showAttacks.checked = mapState.showAttacks;
+    if (showPolitical) showPolitical.checked = mapState.showPolitical;
+    if (showSocial) showSocial.checked = mapState.showSocial;
+    if (showTerritory) showTerritory.checked = mapState.showTerritory;
+    if (showSettlements) showSettlements.checked = mapState.showSettlements;
+    if (showCities) showCities.checked = mapState.showCities;
+    if (showMovements) showMovements.checked = mapState.showMovements;
+}
+
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializeTimeline);
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTimeline();
+    initializeCheckboxStates();
+});
 
 // Add smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
