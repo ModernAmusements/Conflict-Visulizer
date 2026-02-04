@@ -148,6 +148,12 @@ mapState = {
 6. **Recursive Call Prevention**: Implemented `isUpdating` flag to prevent infinite loops
 7. **October 7 Attack Implementation**: Added comprehensive Hamas movement data with 15 target locations
 8. **getEventYear Function Recovery**: Restored critical function that was accidentally removed during duplicate code cleanup, fixing ReferenceError timeline scrubbing issues
+9. **Military Factions Object**: Added comprehensive faction definitions with proper name matching for movement data
+10. **Dynamic Faction Legend**: Implemented faction icon rendering using militaryFactions object instead of hardcoded entries
+11. **Faction Selector Controls**: Added individual faction filter checkboxes for IDF, Hamas, PA, Hezbollah, Arab Forces, Iran
+12. **Active Faction Filters**: Added mapState.activeFactionFilters to track which factions are currently displayed
+13. **Faction-Based Movement Filtering**: Enhanced drawMovementPaths to respect active faction filters
+14. **Faction Name Mapping**: Updated militaryFactions object to handle multiple name variants (IDF/Israeli Defense Force, etc.)
 4. **CSS Enhancements**: Improved faction marker visibility with !important declarations
 5. **Legend Fix Attempts**: Multiple attempts to fix template literal parsing
 6. **Current Issue**: Legend faction section completely missing from rendered HTML despite being in source code

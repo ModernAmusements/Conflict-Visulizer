@@ -1,0 +1,795 @@
+IncidentID	Date	Location	Attack type	Weapon	Total killed	Israelis killed	Palestinians killed	Others killed	Total wounded	Israelis wounded	Palestinians wounded	Others wounded	Total casualties	Claimed by	Attributed to	Description	Context	Target type
+0	16/04/93	West Bank	Suicide attack	Bomb	2	0	2	0	9	8	1	0	11	Hamas/Qassam Brigades		"Van parked between two buses, one civilian, one military, at Moshad Mehola roadside cafeteria. Referred to as the ""first apparent suicide car-bomb attempt inside the territories.""(0) Used cooking gas canisters.
+
+# killed includes bomber himself"	"Peace talks and Intifiada, Palestinian requests to slow peace process: ""With the ninth round due to start in Washington on Tuesday, senior members of the Palestinian team called for a short postponement... to win more concessions from Israel.""(1) Militant Palestinians particularly opposed.(1)"	Mixed
+1	21/11/92	Israel	Non-suicide attack	Bomb	0	0	0	0	0	0	0	0	0	IQB w/ al-Aqsa Martyrs Brigade	Hamas/QB + al-Aqsa Martyrs	3 attackers drove a VW with cooking gas canisters to Tel Aviv. They failed to stop at a checkpoint and were followed/stopped by police/civil guard in Tel Aviv suburb Ramat Efal. Police detonated bomb safely, 2 perps arrested, 1 escaped.(2)	Peace talks, 1st Intifada	Civilian
+2	07/12/92	Gaza Strip	Non-suicide attack	Gun	3	3	0	0	0	0	0	0	3	Hamas/Qassam Brigades		3 soldiers in a Jeep shot by gunmen. Also retaliatory (and exactly proportional): 3 Hamas activists killed week before, see description and source.	"""the attack commemorated the intifada anniversary, the founding of Hamas on December 14, 1987, and the deaths of three Hamas activists killed by soldiers last week."""	Military
+3	13/12/92	Israel	Kidnapping/Hostage-taking	Other/NA	1	1	0	0	0	0	0	0	1	Hamas/Qassam Brigades		A border police officer (Sgt-Maj Nissim Toledano) in Lod was kidnapped. Hamas members gave his ID card to Red Crescent workers in al-Bira near Ramallah with a letter demanding Sheikh Yassin's release. Found dead Dec 15.	"Sheikh Yassin was serving life in prison on terrorism charges. This is still right around the anniversary of the founding of Hamas.
+
+Resulted in deportation to southern Lebanon of over 400 Hamas activists. (7) One author in J-Post argues this was an intentional ""overreaction"" to strengthen deterrence and prevent escalation. Not clear that this was the govt's view as well. (7)"	Govt
+4	18/09/92	Gaza Strip	Non-suicide attack	Knife	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""A hitchhiking soldier was attacked by Palestinians dressed as Orthodox Jews... The terrorists took Alon Karavani's M-16 rifle and uniform before stabbing him and leaving him for dead. He was found by a local shepherd and rushed to the hospital."""	First Intifada	Military
+5	03/01/93	Israel	Non-suicide attack	Other/NA	1	1	0	0	0	0	0	0	1		Hamas/Qassam Brigades	"""A police spokesman said Haim Nahmani, an agent for the domestic Shin Beth intelligence service, was stabbed and beaten with a hammer in a home in West Jerusalem while he was on assignment. ...police knew the identity of the killer and were hunting for the suspect. He refused to elaborate.""
+--To my knowledge, never claimed by Hamas."	"""Housing Minister Binyamin Ben Eliezer blamed the murder on HAMAS, the Islamic Resistance Movement... 'They no longer act only in the (occupied) territories but also in Israel, which should lead us to consider new measures to take.' ""
+
+Background: expulsion of 415 Hamas activists to S. Lebanon (415 # from this source)"	Govt
+6	31/01/93	Gaza Strip	Non-suicide attack	Gun	2	2	0	0	1	1	0	0	3		Hamas/Qassam Brigades	"""Two Hamas gunmen hid in bushes waiting to open fire on an army predawn patrol. Two soldiers were killed, a third was wounded."""	Just over a month after mass deportation to s. Lebanon of Hamas activists (400+), continuing peace process.	Military
+7	12/02/93	Gaza Strip	Non-suicide attack	Gun	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"""two Israeli soldiers were shot and wounded... in Gaza City."""	"""...was carried out in revenge for the army's destruction of several Palestinian homes with anti-tank rockets, HAMAS said in a communique issued in Amman."""	Military
+8	12/05/93	West Bank	Non-suicide attack	Knife	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"A Hamas ""commando"" attacked the soldiers with knives, stole their weapons, and returned safely. Hamas says 3 WERE STABBED (one seriously wounded), Israeli military contends only 2 were attacked. I have gone with the conservative estimate as it is 100% that at least 2 were stabbed. This will be my standard procedure with uncertainty."	"""HAMAS said the attack was to avenge the killing of six of its militants by Israeli soldiers in the Gaza Strip."""	Military
+9	01/07/93	West Bank	Kidnapping/Hostage-taking	Gun	4	2	2	0	3	1	2	0	7	Hamas/Qassam Brigades		3 Militants opened fire on a bus. 1 Israeli woman, the driver, and a Palestinian man later reported to be a Hamas activist wounded (woman died next day, see source 16). 2 of them then comandeered an Israeli woman's car w/ her in it -- all 3 then killed in gunfire. Last gunman was wounded and taken into custody. Not clear if injured Hamas passenger on bus was actually involved or only coincidence.(16) Also planted bombs on bus and nearby, these defused by police.(16) Later reported by Hamas as failed hostage-taking.(17)	"Wanted to ""hold the passengers hostage to demand the release of 100 Palestinian prisoners, including 50 HAMAS member and Sheikh Abdel Karim Obeid, a Hezbollah leader kidnapped by Israeli commandos in 1989."""	Civilian
+10	06/07/93	West Bank	Non-suicide attack	Gun	3	2	1	0	1	0	1	0	3	Hamas/Qassam Brigades	Hamas/Qassam Brigades	Near Beir Ballut (Deir Balout). 3 attackers from the Qassam Brigades opened fire on Israeli soldiers. 2 were killed. A 3rd soldier returned fire, killing one QB member. A 2nd attacker was caught, the 3rd escaped in a car.	"Continuing Middle East Peace talks (even mentioned in article, with Deputy Defense Minister Motta Gur stating ""We are going to witness a wave of attacks against civilians and soldiers in the territories as the peace process advances."")"	Military
+11	05/08/93	West Bank	Kidnapping/Hostage-taking	Gun	1	1	0	0	0	0	0	0	1	Hamas/Qassam Brigades		"Kidnapped corporal Yaron Chen ""with the intent of bargaining for the release of jailed Hamas lead Sheikh Ahmed Yassin. However... the manhunt that followed the kidnapping and the resistance put up by Chen spoiled their plan."""	Sheikh Yassin still in prison	Military
+14	06/08/93	West Bank	Non-suicide attack	Gun	3	2	1	0	1	0	1	0	4	Hamas/Qassam Brigades		"""Two Palestinian gunmen piled out of a car at an army outpost near the village of Deir Balout Friday morning and opened fire, killing the two soldiers.
+
+A third soldier returned fire, killing one gunman - a Hamas member on Israel's wanted list - and wounding another, who escaped."""	Ongoing peace process	Military
+15	11/08/93	Gaza Strip	Non-suicide attack	Other/NA	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	"Militant threw grenade at IDF patrol. One soldier ""very lightly injured."" Treated on spot, returned to patrol. The militant, said to be ""Husam Shalhub, a senior Hamas activist from Nablus,"" apparently fled to Egypt."		Military
+16	03/09/93	West Bank	Non-suicide attack	Other/NA	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Assailants... lobbed a grenade that did not explode at a house occupied by Israeli settlers in the new Jewish quarter of Hebron."""	Israeli settlement of Palestinian area. Draft autonomy accord between Israel and PLO, which Hamas opposes.	Civilian
+17	12/09/93	Gaza Strip	Non-suicide attack	Gun	3	3	0	0	0	0	0	0	3	Hamas + other		"""Two fundamentalist groups claimed responsibility for the ambush of the three Israeli soldiers just east of Gaza City.""
+
+Doesn't state who the other group was."	"occured as Israel's ""leaders prepared to fly to Washington to sign their historic peace accord with the Palestine Liberation Organization."""	Military
+18	12/09/93	Israel	Non-suicide attack	Knife	2	1	1	0	0	0	0	0	2	Hamas/Qassam Brigades		"""The Palestinian who stabbed the driver of a bus between the southern Israeli towns of Ashdod and Ashkelon was shot to death by an Israeli soldier on board. The attacker was carrying a Hamas leaflet, authorities said, and Palestinians from Gaza said he was a Hamas activist.""
+
+Note: ""knife"" selected above as weapon, but this is not entirely apparent from report."	Rabin flying to Washington to sign peace accord with Arafat.	Civilian
+19	10/10/93	Gaza Strip	Non-suicide attack	Bomb	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""The booby-trap bomb exploded as an army patrol drove by in a jeep in occupied Gaza City, military sources said.
+
+One soldier was slightly injured and received first aid."""	Heavily stepped-up attacks against Hamas by IDF in week following signing of peace deal.	Military
+20	24/10/93	Gaza Strip	Non-suicide attack	Other/NA	2	2	0	0	0	0	0	0	2	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"""HAMAS gunmen, apparently posing as Jewish settlers, killed two reserve soldiers after picking them up near a Gush Katif settlement as they were hitchhiking home from their base in the Gaza Strip yesterday.""
+
+Didn't categorite as ""kidnapping/hostage-taking"" bc the intent was not to kidnap and hold for ransom. The point was to kill them and take their weapons. They just took them somewhere else to do it."	Continued opposition to peace deal and to IDF attacks against Hamas, particularly in Gaza Strip.	Military
+22	07/11/93	West Bank	Non-suicide attack	Gun	1	1	0	0	1	1	0	0	2	Hamas + other		"""an armed group ambushed Rabbi Druckman... and fired 20 rifle shots at his car, killing his driver [Efrayim Ayubi] immediately and severely wounding Rabbi Druckman.""
+
+Near Beyt Kahil, south of Hebron"	"Rabbi Druckman ""calls for the annexation of the occupied territories to Israel."""	Civilian
+23	01/12/93	West Bank	Non-suicide attack	Gun	2	2	0	0	2	2	0	0	4	Hamas/Qassam Brigades		"""The 24-year-old woman from Jerusalem... was on her way home from Psagot settlement near Ramallah with the three other Israelis when Palestinians riddled their car with bullets, the army said.""
+
+One injured man dies the next day.(30)"		Civilian
+24	22/12/93	West Bank	Non-suicide attack	Gun	2	2	0	0	0	0	0	0	2	Hamas/Qassam Brigades		""" 'Two members of our secret ""Zero"" unit overtook an Israeli car carrying two people ... opened fire, and killed them,' HAMAS announced.""
+
+""Meir Mendelovich, 32... and Elyahu Levin, 25 died on the spot."""	Autonomy talks opening in Paris	Civilian
+25	30/12/93	Gaza Strip	Non-suicide attack	Gun	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		Two IDF soldiers ambushed by Hamas gunmen. One in hospital with injuries, other hurt only mildly by broken glass.		Military
+26	06/04/94	Israel	Suicide attack	Bomb	8	7	1	0	50				58	Hamas/Qassam Brigades		Car bomb detonated by suicide attacker at a bus stop in Afula, Israel. Wounded is estimate only, disaggregation not available, some surely Palestinian. Number dead includes suicide attacker, as per new standard.	Claimed as revenge for Hebron Massacre 40 days prior	Civilian
+27	13/04/94	Israel	Suicide attack	Bomb	6	5	1	0	20				26	Hamas/Qassam Brigades		"""A bomb exploded in the rear of an Israeli bus as it sat in the station in Hadera. Six people were killed and about two dozen others were injured."" Second source says 5 Israelis, I believe the 6th person was the attacker himself. I've revised to reflect this. That source also indicates that it happened ""yesterday"" (would be the 12th) on ""memorial day"" (the 13th), whereas the first source does not indicate any date but suggests that it happened that day (13th). The third source indicates that Israel's Mem. Day that year fell on April 13th, so that's the date I've entered. A fourth, unmentioned source (Daily Globe and Mail (Canada)) corroborates."	Israel's memorial day and the run-up to its independence day. Continued revenge for Hebron Massacre.	Civilian
+28	18/04/94	West Bank	Non-suicide attack	Other/NA	0	0	0	0	5	4	1	0	5	Hamas/Qassam Brigades		"""A member of the islamic resistance movement, hamas, attacked israeli passengers on a commuter bus today before being shot and wounded by an israeli soldier, according to police sources. two israelis were wounded by the attacker's ax blows and another two by the soldier who opened fire on the assailant.""
+
+Assailant also carrying 2 firebombs, which apparently were not used."	Implementation of peace plan and autonomy process.	Civilian
+29	17/05/94	West Bank	Non-suicide attack	Gun	2	2	0	0	1	1	0	0	3		Hamas/Qassam Brigades	Gunmen shot dead a man and a woman and critically wounded the woman's daughter.	"Retaliation for the previous Monday, during which ""jewish settlers and soldiers shot and wounded 18 palestinian stone-throwers in clashes."""	Civilian
+30	14/06/94	West Bank	Non-suicide attack	Gun	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		Gunmen attacked two vehicles (one General Security Service, one IDF), slightly wounding one soldier.	"""To avenge the Hebron massacre and the killing of two Hamas gunmen who killed GSS agent Noam Cohen."""	Military
+31	19/07/94	Gaza Strip	Non-suicide attack	Gun	1	1	0	0	0	0	0	0	1	Hamas/Qassam Brigades		Israeli officer shot dead in an ambush near Rafah in Gaza.	"""in response to the violence Sunday at the Erez checkpoint into Israel which left two Palestinians dead and 75 wounded."""	Military
+32	14/08/94	Gaza Strip	Non-suicide attack	Gun	1	1	0	0	6	6	0	0	7	Hamas/Qassam Brigades		"""attacks today on two Israeli vehicles in the Gaza. One Israeli was killed and six were injured."""	Continuing peace talks between Israel and the PLO. Peace deal orevious month between Israel and Jordan.	Civilian
+33	27/08/94	Israel	Non-suicide attack	Knife	2	2	0	0	0	0	0	0	2	Hamas/Qassam Brigades		"""militants stabbed to death two young Israelis at a building site near Tel Aviv"""	"""in another revenge attack for the Hebron mosque massacre""
+
+Peace process continues."	Civilian
+34	01/09/94	West Bank	Non-suicide attack	Bomb	2	0	2	0	0	0	0	0	2		Hamas/Qassam Brigades	"""Two Hamas men killed by their own car bomb""
+
+NB: ""Attack type"" unclear. Chose ""non-suicide"" by default.
+
+NB: Target type omitted as unknown"	Pre- Rosh-Hashana	
+35	10/10/94	Israel	Non-suicide attack	Gun	4	1	3	0	13				17	Hamas/Qassam Brigades		"""Two Arabs armed with assault rifles and hand grenades opened fire on a crowded street. Two people were killed, an Israeli and a Palestinian, and 13 others were wounded before the gunmen were shot dead.""
+
+NB: Hard to say whether this was a suicide attack or not. Thus hard to know whether to count the attackers among those killed. This has spurred me to go back and CHANGE HOW I COUNT: I now count all killed, including suicide attackers themselves, in order to rectify this discrepancy."	"""Hamas says the attack was retaliation for the death of 17 Arabs during clashes with Israeli police at the Temple Mount four years ago."""	Civilian
+37	12/10/94	Other	Kidnapping/Hostage-taking	Other/NA	5	2	3	0	9	9	0	0	14	Hamas/Qassam Brigades		"Abducted Nachson Waxman, demanding release of Yassin, and ""leaders of the Muslim fundamentalist groups Hezbollah and Islamic Jihad and 190 prisoners of seven radical Islamic and Palestinian organizations.""
+
+Note: LOCATION UNKNOWN!
+
+Note: Casualties occurred during rescue operation (see 2nd source)."	Autonomy in Gaza, ruled by PLO (not directly claimed as a reason for anything by Hamas, just background)	Military
+38	19/10/94	Israel	Suicide attack	Bomb	22				48				70	Hamas/Qassam Brigades		"""A bomb shattered a bus in the midst of the city's shopping district Wednesday in an apparent suicide attack by Islamic militants.""
+
+NB: Not clear if # killed includes suicide bomber; not 100% clear it was suicide attack
+
+Other numbers not disaggregated"	Apparently revenge for the 3 militants killed during the botched Waxman rescue operation.	Civilian
+39	27/11/94	West Bank	Non-suicide attack	Gun	1	1	0	0	1	1	0	0	2	Hamas/Qassam Brigades		"""Rabbi Ami Ulami, aged 33, died when gunmen raked his car with bullets on a road south of the troubled town of Hebron, in the West Bank. The car overturned and its roof was crushed. A policeman in the passenger seat was wounded, but managed to return fire, and the attackers sped off."""	Continuing autonomy. I'd say Hamas is trying to radicalize Israel and provoke a crackdown to kill the peace process. At which it succeeds...	Civilian
+44	25/12/94	Israel	Suicide attack	Bomb	0	0	0	0	12	12	0	0	12		Hamas/Qassam Brigades	"Carrying explosives in a handbag. PROBABLE target was a bus of soldiers. Police think the bomb went off prematurely or the attacker got nervous and detonated it early.
+
+NB: Target type uncertain."		Military
+45	22/01/95	Israel	Suicide attack	Bomb	21	19	2	0	60	60	0	0	81	Hamas/QB + PIJ		"""Dozens of Israeli soldiers were at this bus stop at about 9:30 a.m. when a suicide attacker detonated the first bomb. Then, moments later, when other soldiers grabbed a suspicious bystander, that man, too, blew himself up and killed those near him.""
+
+Wounded was an estimate, and I'm not sure that only Israelis were among the wounded. Fatalities include the 2 suicide bombers."	Peace process with PLO	Military
+46	19/03/95	West Bank	Non-suicide attack	Gun	2	2	0	0	5	5	0	0	7	Hamas/Qassam Brigades		"""machine-gun attack on a bus travelling from Jerusalem to the settlement of Kiryat Arba, which also wounded five settlers"""	Continuing peace plan implementation	Civilian
+47	10/04/95	Gaza Strip	Suicide attack	Bomb	9	7	1	1	0	0	0	0	9	Hamas/QB + PIJ		"""a booby-trapped van drove into a bus outside the Kfar Darom settlement in the south of the Strip, killing six soldiers and the Palestinian driver.""
+
+This was a PIJ attack! This linked to incident 48, in which a Hamas bomber died. Seems attacks planned together, both described by me here as claimed by both QB and PIJ.
+
+Last two dead from 2nd source, not sure if from this attack or #48. Additional Israeli soldier and one American tourist die later from injuries."	Recent explosion in a Hamas bomb factory. Israel claims Hamas blew itself up, Hamas blames Israel and PLO.	Military
+48	10/04/95	Gaza Strip	Suicide attack	Bomb	1	0	1	0	54	54	0	0	55	Hamas/QB + PIJ		"""the attack near the Netzarim settlement in the centre of the Strip in which nine Israeli border-guards and settlers were wounded. The attacker died in the blast.""
+
+54 total wounded."	See incident 47	Mixed
+49	25/06/95	Gaza Strip	Suicide attack	Bomb	1	0	1	0	3	3	0	0	4	Hamas/Qassam Brigades		"Hamas bomber blew himself up with a ""donkey cart"" of explosives. 2 parts of the same report say different things. One says NO INJURIES, the other says THREE ISRAELI SOLDIERS INJURED. Quite confusing. A second report from the same day/source says 3 injured. Leaving at that."	"""HAMAS said the operation on Sunday was designed 'to show our solidarity with Palestinian prisoners on hunger strike and to avenge Mahmud al-Khawaja,' an Islamic Jihad leader assassinated on Thursday in the Gaza Strip."""	Military
+50	24/07/95	Israel	Suicide attack	Bomb	7	6	1	0	32				39	Hamas/Qassam Brigades		"""A Palestinian suicide bomber killed himself and five Israelis aboard a rush-hour bus in a Tel Aviv suburb on Monday""
+
+""33 wounded, 3 critically""
+
+Source 57: Deathtoll 7, 6 Israelis. I assume 1 of 3 critically injured died."	"""The timing is significant. Israeli and Palestinian negotiators are very close to a deal that would expand Palestinian self-rule in some of the occupied territories."""	Civilian
+51	21/08/95	Israel	Suicide attack	Bomb	6	4	1	1	100				105	Hamas/Qassam Brigades		"""The militant group Hamas has claimed responsibility for the bombing of an Israeli bus, which was detonated at the exact time it passed another bus so that both were affected. An American tourist also died."" (Tourist was female)
+
+# killed includes suicide bomber.
+
+Updated #s from source 59.
+
+Reports from time vary as to # killed, from 4 to 6, some may except bomber."	Peace talks and rising cries from Israelis to reconsider them.	Civilian
+52	13/09/95	Gaza Strip	Suicide attack	Bomb	1	0	1	0	1	0	1	0	2		Hamas/Qassam Brigades	An alleged Qassam Brig. member died priming a bomb. A woman also injured. Target unknown, attack type also only an educated guess.		
+53	25/02/96	Israel	Suicide attack	Bomb	24	21	1	2	85				109	Hamas/Qassam Brigades		"Linked to INCIDENT 55 (next incident).
+Bomber on bus morning rush hour Jerusalem. ""At least 25 killed"" in this attack and incident 54 combined. 3 listed for next, assumed 22 for this. 2 Americans (an engaged couple) killed in this blast. Bomber killed. REST ASSUMED ISRAELI, but can't be sure. TOTAL WOUNDED REFERS TO BOTH ATTACKS TOGETHER, as this was surely the worse of the two. Total for this one probably lower than 75, for next probably more than 0 (left not filled out).
+UPDATED casualties #s from source 63."	Israel's assasination of Hamas bomb maker. Murder of Hamas member by other prisoners in Israeli prison.	Civilian
+55	25/02/96	Israel	Suicide attack	Bomb	3	2	1	0					3	Hamas/Qassam Brigades		"LINKED TO INCIDENT 53 (last incident).
+
+Bomber in military uniform walked into a group of Israeli soldiers in Ashkelon. 1 soldier and 1 civilian killed (plus bomber). Judging soldiers to be main target.
+
+WOUNDED UNKNOWN, TOTAL WAS GIVEN FOR THIS ATTACK TOGETHER W/ INCIDENT 53, SOME OF THEM PROBABLY FOR THIS."	Israel's assasination of Hamas bomb maker. Murder of Hamas member by other prisoners in Israeli prison.	Military
+56	03/03/96	Israel	Suicide attack	Bomb	19	18	1		10				29	Hamas/Qassam Brigades		"""A HAMAS suicide bomber blew apart a crowded bus in the heart of Jerusalem for the second consecutive Sunday killing at least 19 people and provoking Israel to declare 'total war' on the fundamentalist group.""
+
+Same bus line (18) as previous Sunday."	"Qassam Brigades demands to end ""'Zionist terrorism' against Hamas, [halt] all acts of aggression and violence against civilians in the occupied territories, and, [release] Hamas members detained in Israeli jails."" Gave Israeli one week to respond. This was Thursday, the Sunday after the statement this incident occured (i.e. they only gave them 3 days!). Thus unsurprising that Israel instead declared ""war"" on Hamas."	Civilian
+57	04/03/96	Israel	Suicide attack	Bomb	14	13	1						14	Hamas/Qassam Brigades		Bomber in a Tel Aviv shopping mall. Wounded not listed! # includes bomber.	"By the following day, Hamas's political leadership calls for an end to attacks on civilians. See source 66.
+
+Qassam Brigades later denies that it is halting attacks (source 67)."	Civilian
+58	30/07/97	Israel	Suicide attack	Bomb	15	12	3		168				183	Hamas/Qassam Brigades		2 men disguised as business men had suitcase bombs with nails for extra lethality. 2 bombers and 1 Arab man killed, 12 others assumed Israeli. Of 168 wounded, 82 were still in the hospital that night when J-Post article went to press.	"""Hamas demanded the release of its spiritual leader, Sheikh Ahmed Yassin, Hizbullah leader Sheikh Abdul Karim Obeid, and other security prisoners and administrative detainees."""	Civilian
+59	04/09/97	Israel	Suicide attack	Bomb	6	5	1		150				156	Hamas/Qassam Brigades		"""The triple suicide bombing in the heart of Jerusalem on Thursday, which left at least six people dead and 150 injured, was just the latest attack claimed by the Islamic Resistance Movement (HAMAS)."""	Peace process halted since late May election of Netanyahu	Civilian
+60	29/09/98	West Bank	Suicide attack	Bomb	1	0	1	0	2	0	2	0	3		Hamas/Qassam Brigades	"3 men allegedly members of Hamas seemingly set off a car bomb by accident, killing one of them and injuring two others.
+
+Target type unknown. Attack type assumed."		
+61	19/10/98	Israel	Non-suicide attack	Other/NA	0	0	0	0	64	64	0	0	64	Hamas/Qassam Brigades		"Militant threw 2 grenades into ""a morning rush-hour crowd at the station"" (Beersheba's main bus station)."	Hamas having difficulty carrying out attacks (see source 71).	Military
+62	20/10/98	Gaza Strip	Suicide attack	Bomb	2	1	1	0	7	3	4	0	9	Hamas/Qassam Brigades		"Rammed an explosive-laden car into an army jeep escorting a school bus. In addition to those killed (the attacker and one soldier), 3 Israelis and 4 Palestinians were injured.
+
+TARGET UNCLEAR. According to initial AFP report, the attacker rammed the military Jeep. Other reports (Guardian and CBS among them, CBS cited here) say the army Jeep rammed the attacker's vehicle to prevent it from hitting the school bus. AFP report does mention the army Jeep swerving to keep the attacker away from the school children. Have removed label."	Sheikh Yassin denies prior knowledge of attack (see source 74).	
+63	06/11/98	Israel	Suicide attack	Bomb	2	0	2	0	17				19	Hamas/Qassam Brigades		"""Israeli police said they received an anonymous telephone call claiming that the Islamic Resistance Movement (HAMAS) was responsible for the Jerusalem bomb attack earlier Friday.
+
+""We received an anonymous telephone call from someone speaking Arabic who said he was a HAMAS official and claimed the attack"" which killed the two attackers and wounded 17 other people, police chief Yair Yitzhaki said.""
+
+That's the whole report! Not much info!"	Note Yassin's admission that Hamas is having trouble carrying out attacks. (See context note incident 61; source 71).	Civilian
+64	07/08/99	West Bank	Non-suicide attack	Gun	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""...gunmen opened fire on two settlers as they drove through the Israeli-controlled city centre of Hebron.""
+""...injuries to the hand and shoulder."""	PA crackdown on Hamas, long time since any successful attacks	Civilian
+65	30/08/99	Israel	Non-suicide attack	Knife	2	2	0	0	0	0	0	0	2	Hamas/Qassam Brigades		Two hikers stabbed to death near West Bank border (I believe they were technically in Israel proper, however). Source 79 claims authorities did not wish to give more info on attack because of Secretary Albright's visit and the ongoing peace process negotiations.		Civilian
+66	05/09/99	Israel	Non-suicide attack	Bomb	3	0	3	0	4	1			7		Hamas/Qassam Brigades	"""Three Israeli Arabs who were killed... when their... bombs went off prematurely had indirect links with... Hamas, Israeli Prime Minister Ehud Barak said Thursday.""
+""The two car bombs in the cities of Haifa and Tiberias left the three bombers dead, and four people injured, including an Israeli passerby...
+...the bombs were intended to be carried to their destinations on foot, and exploded prematurely inside the cars transporting them.""
+According to later source: bombs meant for luggage compartments of buses from 2 cities to Jerusalem."		Civilian
+67	07/11/99	Israel	Non-suicide attack	Bomb	0	0	0	0	34				34		Hamas/Qassam Brigades	"PROVENANCE UNCLEAR! Hamas SUSPECTED. Yassin claimed the wings were separate and that he did not know if the attack was by Qassam Brigades. Hamas spokesman in Tehran also offered no comment. I didn't want to leave this out because it seemed quite important (see context).
+
+Three blasts at Israeli resort Netanya north of Tel Aviv injured 34, presumably all Israelis, but I don't know."	Eve of final status negotiations between Israelis and Palestinians, which Hamas and Islamic Jihad vehemently oppose.	Civilian
+68	22/11/00	Israel	Non-suicide attack	Bomb	2				29				31		Hamas/Qassam Brigades	"""At least two people were killed and another 29 injured when a powerful bomb exploded near a bus in Hadera.""
+Only found that QB claimed responsibility retroactively (see 2nd source)."	Intifada II	Civilian
+69	28/12/00	Israel	Non-suicide attack	Bomb	0	0	0	0	14	14	0	0	14	Hamas/Qassam Brigades		"Bomb on a bus, only partly exploded, hence no fatalities. 2nd bomb exploded after everyone had already been evacuated.
+
+""Though Hamas activists from the Gaza Strip claimed responsibility, Sedbon said there is still no confirming evidence, and the possibility is being investigated.""
+
+That 14 killed were Israelis is an assumption."	2nd Intifada, collapse of peace talks	Civilian
+70	01/01/01	Israel	Suicide attack	Bomb	1	0	1	0	19	19	0	0	20	Hamas/Qassam Brigades		That wounded were Israelis is assumed. Suicide attacker himself died several days later in Israeli custody. Not entirely clear whether attack was meant to be suicide, though QB later called it that.	Intifada II	Civilian
+71	04/03/01	Israel	Suicide attack	Bomb	4	3	1	0	20	20			24	Hamas/Qassam Brigades		"Wounded ""dozens,"" so I attached a RANDOM # to that! Total casualties may thus actually be higher.
+""Alian blew himself up in the middle of rush-hour crowds in the Israeli coastal resort of Netanya."""	Intifada II, Ariel Sharon becoming prime minister	Civilian
+72	18/03/01	Israel	Non-suicide attack	Mortar	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""...shelling Sunday night of the Nahal Oz settlement east of the Gaza Strip, which left one Israeli soldier slightly injured."""	"First time Hamas admits to having mortars.
+""The Israeli army said that incident marked the first time shells fired from the Gaza strip had landed inside Israel."""	Mixed
+73	21/03/01	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""...mortar shelling of Gaza's Netzarim and Morag settlements Wednesday night."""	Intifada II	Civilian
+74	28/03/01	Israel	Suicide attack	Bomb	3	2	1	0	4	4	0	0	7	Hamas/Qassam Brigades		"Killed 2 teenagers. ""...early morning attack in Neve Yamin on the border with the West Bank near the Palestinian-ruled town of Qalqiliya.""
+
+Hamas claims ""Three Zionists were killed and four others were injured, one seriously."" Israelis report just two killed + bomber. AFP report otherwise makes no mention of injured, though you'd think there would be some... don't know what to put down. Other sources also just state 3 dead in total, don't mention wounded.
+
+New AFP source (153) also says 4 wounded."	2nd Intifada	Civilian
+75	01/04/01	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""...mortars fell near houses in the Netzarim settlement...""
+
+Says ""overnight,"" so actual date may be the 3rd."		
+76	03/04/01	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""Mortar attack... against the Jewish settlement of Atzmona in the southern Gaza Strip seriously wounded a baby boy and injured his mother..."""	"""...triggered an Israeli air bombardment that injured 60 Palestinians, mostly civilians."""	Civilian
+77	03/04/01	Gaza Strip	Non-suicide attack	Bomb	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"Not certain if date 3rd or 4th of April. ""The army also said a bomb exploded on the road between Netzarim and the Karni border crossing with Israel."""		Military
+78	14/02/01	Israel	Non-suicide attack	Vehicle	9	9	0	0	19	19	0	0	28	Hamas/Qassam Brigades		"""At least nine Israelis were killed and 19 injured when the Israeli public bus ploughed into a crowd of Israeli civilians and soldiers at a bus stop near an area known as Azur junction south of Tel Aviv."""	"""The Azor junction bus attack was in retaliation for Israel's assassination Tuesday of Hizbullah agent Massoud Iyyad according to Ismail Abu Shanab a Hamas leader in Gaza."""	Military
+81	16/04/01	Israel	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Five mortar bombs struck the desert town of Sderot just to the east of the Gaza Strip on Monday evening, without causing any injuries or damage."""	"This ""triggered a massive Israeli assault on the Gaza Strip.""
+""Israel retaliated to the Sderot attack by attacking Palestinian security targets in the Gaza Strip with helicopters, tanks and bulldozers, slicing the area in three by blocking roads and occupying an area in the north of the strip where it said the mortars were fired from."""	Civilian
+82	22/04/01	Israel	Suicide attack	Bomb	2	1	1	0	39	39	0	0	42	Hamas/Qassam Brigades		"*Israelis wounded is assumption.
+
+""Two people, including the bomber, were killed and 39 injured in the bombing in the town of Kfar Saba, north of Tel Aviv""
+
+QB claims responsibility in 2nd source."		Civilian
+83	29/04/01	West Bank	Suicide attack	Bomb	1	0	1	0	0	0	0	0	1	Hamas/Qassam Brigades		""" 'Jamal Nasser, a student at Najah University, rammed a car loaded with 240 kilogrammes of explosive charges into a bus carrying settlers and soldiers, killing himself in the blast,' [the Qassam Brigades] said.""
+
+""The explosion had only caused minor damage to the armoured school bus, injuring no one."""		Mixed
+84	18/05/01	Israel	Suicide attack	Bomb	5	4	1	0	50	50			55	Hamas/Qassam Brigades		"*Total wounded is estimate, Israelis wounded is assumption. I'm also assuming one of the 5 dead is the bomber--article doesn't say.
+
+""...suicide attack on a shopping centre in the northern Israeli resort of Netanya that killed five people and wounded almost 50 others."""		Civilian
+85	25/05/01	Gaza Strip	Suicide attack	Bomb	1	0	1	0	0	0	0	0	1	Hamas/Qassam Brigades		"""The Israeli army said the attack using an explosives-laden truck, near a crossroads by the Jewish settlement of Netzarim south of Gaza City, caused no casualties among its soldiers.""
+
+""The soldiers opened fire at the truck, causing it to explode."" (2nd source)"	"""...triggering two Israeli raids into Palestinian land nearby, Hamas and Palestinian security sources said."""	Military
+86	01/06/01	Israel	Suicide attack	Bomb	21	20	1	0	120	120			141	Hamas/Qassam Brigades		"*Wounded column estimate and assumption, respectively
+
+"" 'The Ezzeddin al-Kassam Brigades... officially claim their responsibility for the suicide operation in Tel Aviv which killed 19 Israelis and injured nearly 120,' the statement [from the group to the AFP] said.""
+
+Second source #140!"		Civilian
+87	22/06/01	Gaza Strip	Suicide attack	Bomb	3	2	1	0	0	0	0	0	3	Hamas/Qassam Brigades		Bomb attack that killed 2 soldiers and the bomber. Doesn't mention any injuries, so I'm assuming there were none.	First attack since Hamas's agreement to a cease-fire about a week before (on June 13).	Military
+88	09/07/01	Gaza Strip	Suicide attack	Bomb	1	0	1	0	0	0	0	0	1	Hamas/Qassam Brigades		"""The driver of the car was killed in the powerful explosion near the Gush Katif settlement bloc in the southern Gaza Strip, but there were no other casualties.""
+
+Target was ""an Israeli military position and a bus carrying Jewish settlers."""		Mixed
+89	09/08/01	Israel	Suicide attack	Bomb	18	17	1	0	88				106	Hamas/Qassam Brigades		"""Hamas said Izzedine Shuhin al-Masri entered the pizza parlour in west Jerusalem and detonated a powerful explosive packed with nails among the lunchtime crowd, killing himself, up to 17 other people and wounding 88.""
+
+Some disagreement over responsibility, with both QB and PIJ claiming they, and not the other, had done it. PIJ's alleged bomber's father later said, however, that his son was still alive. Assigning this therefore to Hamas/QB."		Civilian
+90	04/09/01	Israel	Suicide attack	Bomb	1	0	1	0	13	13	0	0	14	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"""A suicide bomber blew himself up... injuring 13 people, one of them critically, near a school in west Jerusalem. Disguised as a religious Jew... the intervention of... border guards had probably made the bomber blow himself up sooner than he had planned.""
+
+"" 'I think his target was a very busy place such as a hospital or a school.' "" -Israeli Defence Minister Binyamin Ben Eliezer
+
+Source 1: Attributed to Hamas; Source 2: Hamas claims attack."	Continuing Intifada II	Civilian
+91	09/09/01	Israel	Suicide attack	Bomb	4	3	1	0	36	36	0	0	40	Hamas/Qassam Brigades		"*Israelis wonded is assumption, total wounded is reported in AFP article.
+
+""suicide bombing at a railway station in northern Israel that left four people dead and 36 wounded including the bomber.""
+
+2nd source confirms bomber among dead, not injured. Also reports that bomber was Israeli Arab, the first suicide bomber to come from Israel. Hamas claims official responsibility in 2nd source on following day (Monday)."	"""A leaflet... said the bombing was revenge for Israel's 'assassination of our leaders,' a reference to Israeli attacks on militants"" (2nd source)."	Civilian
+92	02/10/01	Gaza Strip	Non-suicide attack	Gun	4	2	2	0	15	15	0	0	19	Hamas/Qassam Brigades		"""Two... gunmen, Ibrahim Rayan and Abdullah Shaben, were killed by Israeli forces after infiltrating the Jewish settlement of Alai Sinai, gunning down two young Israelis and injuring 15 more.""
+
+Not sure on date, as the newswire, dated Oct 3, says ""the night before."" Attack may very well have been in the wee hours of the 3rd."	Claims as revenge for Palestinian blood spilled.	Civilian
+93	08/11/01	West Bank	Suicide attack	Bomb	1	0	1	0	2	2	0	0	3	Hamas/Qassam Brigades		"""...a suicide bombing which injured two Israeli policemen as they closed in on the bomber.""
+
+Target unknown"		
+94	24/11/01	Gaza Strip	Non-suicide attack	Mortar	1	1	0	0	2	2	0	0	3	Hamas/Qassam Brigades		"""Hamas carried out the mortar attack on the Jewish settlement of Kfar Darom in the Gaza Strip which killed one Israeli and wounded two others Saturday, the militant Islamic group said.""
+
+QB say it was an Israeli soldier, and the statement's amiguous about whether the other were, too. Leaving target as ""mixed"" because I don't know how accurate mortars fired at a settlement could be. Depends on the distance and their quality, I guess. No info here."		Mixed
+95	26/11/01	Gaza Strip	Suicide attack	Bomb	1	0	1	0	2	2	0	0	3	Hamas/Qassam Brigades		"The bomber ""was killed on the spot and slightly injured two Israeli soldiers in the legs.""
+At Erez crossing"		Military
+96	27/11/01	Gaza Strip	Non-suicide attack	Gun	2	1	1	0	3	3	0	0	5	Hamas/Qassam Brigades		""" 'The gunman crawled from nearby houses to the (road) junction. He fired and threw grenades at a convoy, which included a bus, several private cars and army jeeps at both ends,' army spokesman Asaf Librati told AFP.
+
+""A nearby army post opened fire as soldiers cut off his escape from behind and killed him, Librati said.
+
+""The dead woman and those injured 'were not in the bus, but in private cars near the bus,' he said, adding that all the casualties were settlers of Gush Katif."""		Mixed
+97	02/12/01	Gaza Strip	Non-suicide attack	Gun	3	1	2	0	5	5	0	0	8	Hamas/Qassam Brigades		""" 'The Ezzedine al-Qassam Brigades are responsible for the attacks against Alei Sinai in which one Zionist woman was killed and five injured this morning,' Hamas said in a statement on its website.
+
+""Israeli forces swiftly killed two Palestinians who had carried out the attack, in a burst of fighting near the Jewish settlement, public radio said."""		Civilian
+98	01/12/01	Israel	Suicide attack	Bomb	12	10	2	0	170				182	Hamas/Qassam Brigades		"**Actually 2 suicide bombings and one car bomb! (3 attacks!)**
+*Wounded is an in-source approximation*
+
+""Two Palestinian suicide bombings followed by a car bomb killed 10 people and injured more than 170 in a lively night spot district in central Jerusalem Saturday night.""
+
+Additional information in source 120. This source seems to state that 10 killed were Israelis, with 2 suicide bombers in addition to that."	"""Israel has been on high alert since its helicopter gunships killed a top Hamas military mastermind more than a week ago, sparking enraged cries of vengeance."""	Civilian
+99	02/12/01	Israel	Suicide attack	Bomb	16	15	1	0	40	40	0	0	56	Hamas/Qassam Brigades		"**Assume attacker included in total killed; doesn't say**
+**Assume Israelis wounded #**
+
+""...suicide bus bombing in the northern Israeli port city of Haifa which has killed 16 people and injured some 4O others.""
+
+Posted on QB website."	Loads of attacks Dec 1 and 2	Civilian
+100	12/12/01	West Bank	Non-suicide attack	Other/NA	11	10	1	0	30	30	0	0	41	Hamas/QB + al-Aqsa Martyrs	Hamas/Qassam Brigades	"""The assailant exploded a bomb as a bus of settlers approached the settlement of Emmanuel just south of Nablus and then attacked it with machine-gun fire before soldiers killed him."""	Attacker's brother was killed exactly one month before in an Israeli raid.	Civilian
+101	12/12/01	Gaza Strip	Suicide attack	Bomb	2	0	2	0	4	4	0	0	6		Hamas/Qassam Brigades	"""Two Palestinians who blew themselves up in a Jewish settlement bloc in the Gaza Strip on Wednesday, injuring four Israelis, were members of the hardline Islamic group Hamas, residents of their home village said."""		Civilian
+102	09/01/02	Israel	Non-suicide attack	Gun	6	4	2	0	0	0	0	0	6	Hamas/Qassam Brigades		"*Hard to say if suicide or not. May not have expected to survive.
+
+2 Hamas members shot 4 Israeli soldiers before being shot themselves.
+
+""...dawn gunbattle that erupted at an army post beside Kerem Shalom kibbutz in southern Israel, close to the Gaza town of Rafah."""	"Israeli response was to send ""Israeli Defence Force [to] the Gaza Strip where dozens of Palestinian houses, as well as the air strip, have been destroyed"" (statement by Kofi Annan at UN, sourcea 124 and 125)."	Military
+103	31/01/02	Gaza Strip	Non-suicide attack	Bomb	0	0	0	0	1	0	0	1	1	Hamas/Qassam Brigades		"""...planting a bomb near a Jewish settlement in the Gaza Strip which slightly injured a Thai worker.""
+
+2 QB members who planted it were discovered and shot by IDF."		Civilian
+104	06/02/02	West Bank	Non-suicide attack	Gun	4	3	1	0	3	3	0	0	7	Hamas/Qassam Brigades		"""...attack on a Jewish settlement in the West Bank which killed a woman settler and an Israeli soldier, and also left the gunman dead.""
+
+""The Wednesday night attack on the Hamra settlement in the Jordan Valley, which also left three people wounded, was carried out by a member of the armed wing of Hamas...""
+
+Wounded is 3 or 4, unclear, maybe only 2, as one wounded seems to have died later (compare 1st and 2nd sources)."		Mixed
+105	14/02/02	Gaza Strip	Non-suicide attack	Other/NA	3	3	0	0	1	1	0	0	4	Hamas + other		"Roadside bomb explosion and shots fired at an Israeli civilian convoy. IDF later arrived, tank fell victim to mine. Article somewhat unclear, but it seems that the 3 dead were from the initial convoy. One soldier ""moderately injured"" in mine tank blast, I guess (description says one soldier was pinned under the tank and it was on fire... hard to see how that could lead to only ""moderate"" injuries). Also says ""one wounded soldier"" was taken to the hospital, suggesting there were more. Poorly written!
+Hamas, Fatah, and the Saladin Brigades of the Popular Resistance Committees all claimed responsibility."	""" 'In response to the killing of five soldiers of the national security forces and in response to the raid on our cities and villages... Saladin Brigade detonated two roadside bombs against a Zionist convoy... then sprayed the convoy with machine-gun fire,' "" -statement from Saladin Brigade (part of PRC (see description))"	Mixed
+106	16/02/02	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""A Hamas-manufactured Qassam-2 rocket struck near the Kfar Azza kibbutz in southern Israel, causing no casualties but some property damage, Israeli military sources had reported."""	""" 'in response to... air raid [and] tank incursions on Friday night and Saturday morning...' a statement said....
+Paraphrase: Friday night, Israeli F-16s hit the Jabaliya security forces [HQ] in the northern Gaza Strip, killing one Palestinian officer and wounding another 30 people.
+Israeli tanks rolled into four different areas of Gaza Strip on Fri night and Sat morning.
+Saturday midday, tanks still occupying al-Maghazi and El-Bereij refugee camps in central Gaza Strip.
+""One Palestinian civilian died during the incursion into El-Breij on Saturday at dawn. Two others were killed in clashes with the Israeli army later in the day."""	Civilian
+107	05/03/02	Israel	Suicide attack	Bomb	1	1	0	0						Hamas/Qassam Brigades		"""The Palestinian hardline Islamic group Hamas claimed a suicide attack which killed an Israeli and wounded a number of others on a bus in Afula, northern Israel, early Tuesday.""
+
+Total wounded + casualties hence unknown, but not zero!"	Could be as retaliation for Feb 19 helicopter gunship attack that killes 2 Hamas militants and their headquarters near Gaza City (have not put source in here or in Zotero, just look in Nexis UK for that date).	Civilian
+108	05/03/02	Israel	Non-suicide attack	Rocket	0	0	0	0	3	3	0	0	3	Hamas/Qassam Brigades		"""Three home-made Katyusha-style Qassam-2 rockets manufactured by [Hamas] were fired on the southern Israeli town of Sderot"" Tuesday night."	"Claim generic retaliation.
+-Also: ""On Monday, a Hamas official had told AFP his movement would retaliate for Israeli ""crimes"" and had promised to avenge the army blunder in which the wife and three children of Hamas official Hussein Abu Qweik had been killed as well as two other Palestinians, one of them a child.""
+-Israel warned retaliation ""would be radical"" ""if one of those rockets ever hit a populated area in Israel"" (according to this AFP report).
+-Triggered ""massive retaliation"" by IDF (see source 142)."	Civilian
+109	07/03/02	Gaza Strip	Non-suicide attack	Gun	6	5	1	0	19	19	0	0	25	Hamas/Qassam Brigades		"""After nightfall... a Palestinian infiltrated Atzmona, a Jewish settlement in Gaza, and killed four Israelis, before soldiers shot him dead, the military said. Hamas took responsibility.""
+
+Used gun and grenades.
+
+20 initially wounded, one later died of wounds."	Ongoing skirmishes in Intifada II	Civilian
+110	09/03/02	Israel	Suicide attack	Bomb	12	11	1	0	53	53	0	0	65	Hamas/QB + al-Aqsa Martyrs		"""at least 30 injured"" in attack in central Jerusalem cafe 100m from prime minister Ariel Sharon's home.
+
+Claimed both by QB and Al Aqsa, but unclear if they actually worked together or simply both wished to claim credit.
+
+1st source claims 10 killed, 2nd claims 11 ""others"" killed (so 12 w/ bomber) and wounding ""some 50 others."" I've thusd assumed that the first didn'T include the bomber and that since the first report one of the injured had died, bringing the total killed from 10 to 12, total wounded from 54 to 53, and total casualties to 65."		Civilian
+111	10/03/02	Israel	Non-suicide attack	Gun	4	2	2	0	0	0	0	0	4	Hamas/QB + al-Aqsa Martyrs		"""Two Palestinian gunmen from Hamas kill two Israeli women soldiers at a restaurant near the southern army headquarters in Beersheva before being shot down themselves."""		Military
+112	19/02/02	West Bank	Non-suicide attack	Gun	6	6	0	0	1	1	0	0	7	Hamas + other		"-""Palestinian gunmen killed six Israelis when they ambushed an army checkpoint in the West Bank Tuesday night""
+-Gunmen escaped from hideout in building overlooking checkpoint and disappeared into Palestinian territory. One other person was wounded and taken to the hospital.
+
+Hamas and two other groups claimed responsibility (see 2nd source)."		Military
+113	11/03/02	Gaza Strip	Non-suicide attack	Gun	4	2	2	0	0	0	0	0	4	Hamas + other		"""The Ezzedine al-Qassam Brigades said in a statement that two of its activists, Bilal Shalta, 19, and Mohamed Ahmad Heles, 18, had thrown some 20 grenades and opened fire with automatic weapons at an Israeli patrol just south of the Jewish settlement of Netzarim.""
+Attack left two dead. Two attackers later killed by Israeli army.
+
+Not 100% clear from wording that the two dead were Israeli soldiers. Just possible that the two killed referred to the Hamas attackers... but I'm 99.5% sure that is not the case."		Military
+114	18/03/02	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	2 Qassam2 rockets launched from Gaza Strip towards Ashkelon. Landed harmlessly on farmland.		Civilian
+115	19/03/02	West Bank	Non-suicide attack	Gun	3	1	2	0	3	3	0	0	6	Hamas/Qassam Brigades		"""The radical Islamic Hamas group claimed responsibility for an attack on an Israeli army position where two gunmen killed an officer and wounded three other soldiers before being shot dead themselves, a Hamas statement said Tuesday.""
+
+Occured in northern Jordan valley."		Military
+116	27/03/02	Israel	Suicide attack	Bomb	25	20	1	0	65	70			90	Hamas/Qassam Brigades		"""A suicide bomber killed 12 Israelis in a crowded hotel in the northern town of Netanya late Wednesday...
+""Hospital sources... said around 70 people were being treated for injuries and shock.""
+-Hamas claims responsibility in 2nd source. Also claims ""at least 15 Israelis"" were killed. Possible that some of the many injured later died.
+-3rd source updates #s, with death toll rising to 20 total, indicating 73 injured and 16 killed initially. Presumably 3 of them died, lowering total injured to 70.
+-4th source (147) says 21 dead.
+-5th source (ID: 150) says toll rose to 25 after more injured died."		Civilian
+117	28/03/02	West Bank	Non-suicide attack	Gun	5	4	1	0	1	1	0	0	6	Hamas/Qassam Brigades		"Gunman broke into a house in the Elon Moreh settlement just north of Nablus.
+
+""The gunman died of his wounds late Thursday after barricading himself inside the settlement house where he killed the four people, an army spokesman said.
+
+""Troops found the gunman's body after blowing up a door to a room on the second floor where the militant had holed up during a four-hour stand-off and fire exchange with the army."""		Civilian
+118	31/03/02	Israel	Suicide attack	Bomb	17	16	1	0	30	30	0	0	47	Hamas/Qassam Brigades		In Haifa.		Civilian
+119	07/04/02	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The Ezzedine al-Qassam Brigades claimed in a statement posted on its website to have 'fired Al-Banna rockets on an Israeli military target in Erez.'
+
+An army sposkeman confirmed two rockets had hit the area, causing no casualties nor damage."""	Continued back-and-forth between Hamas and Israel. I believe Israel moved into Gaza with tanks earlier. Intifada II still raging.	Military
+120	10/04/02	Israel	Suicide attack	Bomb	9	8	1		20	20	0	0	29	Hamas/Qassam Brigades		"attack on bus near Haifa
+
+""...Ezzeddin al-Qassam Brigades, claimed responsibility in a call to Al-Jazeera televsion's office in the West Bank town of Ramallah."""	"""Israel officials had been congratulating themselves in recent days that their ongoing military offensive in Palestinian areas of the West Bank had brought a halt to a wave of suicide bombings.""
+
+""The Israeli official said the Haifa attack 'can only justify the continuation of the operation launched on March 29 against terrorist infrastructures.' """	Civilian
+121	10/02/02	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Palestinian militants fired a home-made version of a Katyusha rocket at southern Israel on Sunday, without causing any damage or injuries, an Israeli army spokesman said.
+
+A Qassam rocket -- manufactured by the Ezzedine al-Qassam Brigades, the armed wing of the radical Islamic group Hamas -- landed in a field near a farming community in the northwest Negev desert, the sources said."""		Civilian
+122	10/02/02	Israel	Non-suicide attack	Gun	4	2	2	0	5	5	0	0	9	Hamas/Qassam Brigades		"""The armed wing of the radical Islamic group Hamas claimed responsibility Wednesday for a weekend shooting attack in the southern Israeli town of Beersheva that left two Israeli women soldiers dead.""
+
+""Two gunmen had pulled up in a car outside the entrance to the southern command headquarters in Beersheva and sprayed bullets across a restaurant frequented by soldiers."""		Military
+123	28/04/02	West Bank	Non-suicide attack	Gun	4	4	0	0	6	6	0	0	10	Hamas + other		"Settlement of Adora. ""killed four people, including a five-year-old girl shot in her bed, who attacked the Jewish settlement of Adora near Hebron on Saturday.""
+
+3 Hamas militants, two later killed by IDF, on Saturday night and one overnight Sunday or Monday."	"QB said attack was "" 'revenge for the killings by the army of Akram al-Atrash,' the Hebron head of the Brigades who was killed in the village of Dura, and 30-year-old Marwan Zallum, head of the Al-Aqsa Martyrs Brigade, linked to Palestinian leader Yasser Arafat's Fatah party."""	Civilian
+124	07/05/02	Israel	Suicide attack	Bomb	16	15	1	0	60	60	0	0	76	Hamas + other		"""The bomber apparently made his way into a pool hall on the third floor of this building. The explosion was so strong, part of the ceiling collapsed, trapping some of the people below. Many of the victims were teen-agers, Israeli officials said."""	"""It was the first suicide bombing in three weeks, the first since 'Operation Defensive Shield,' Israel's massive military operation that was designed to wipe out Palestinian terror.""
+
+"" 'We are going to attack within this week and declare the holy war against all the Israelis for what happened last month in Jenin camp by the Israeli army,' [the man from QB who called to claim the attack] said"" (2nd source)."	Civilian
+125	19/05/02	Israel	Suicide attack	Bomb	2	1	1	0	40	40	0	0	42	Hamas + other		Market in downtown Netanya. Number killed is a minimum, there are conflicting reports.	Shekh Yassin had the day before offered to halt attacks on Israeli civilians if Israel did the same for Palestinians.	Civilian
+126	08/06/02	West Bank	Non-suicide attack	Gun	4	3	1	0	6	6	0	0	10	Hamas + other		Infiltrated the Karmei Tzur settlement. Used guns and grenades. 1 killed, at least 1 escaped.		Civilian
+127	15/06/02	Gaza Strip	Non-suicide attack	Gun	3	2	1	0	4	4	0	0	6	Hamas + other		"""At least three [Hamas] fighters..., armed with guns and hand grenades, ambushed an army patrol about half a kilometer... east of the Dugit Jewish settlement in the north of the Gaza Strip, the army said late Saturday.""
+
+One Hamas member killed, others fled."		Military
+128	18/06/02	Israel	Suicide attack	Bomb	20	19	1	0	55	55			75	Hamas + other		"""...gutted a crowded rush-hour bus in southern Jerusalem early Tuesday...""
+
+""Officials said several schoolchildren were among those killed on the bus traveling from the Jewish settlement of Gilo on Jerusalem's southern outskirts toward the city center."" (Thus not 100% clear if bus was technically in Israel, as defined internationally, or not.)
+
+2nd source, along with most other sources on this incident (including other AFP reports) report at least 19 Israelis killed. 55 wounded seems to be a mid-range estimate. Actual data taken from 2nd source (164)."	"""With US President George W. Bush preparing to announce his blueprint for ending the nearly 21-month-old conflict, Sharon derisively rejected the idea being floated to declare at least a provisional Palestinian state.""
+
+"" 'The Palestinian Authority condemns this attack,' information minister Yasser Abed Rabbo told AFP. 'The only beneficiary of this operation is Sharon and the occupation (of Palestinian territories). Israel will use this operation to escalate its aggression against the Palestinian Authority,' he said."""	Civilian
+129	17/07/02	West Bank	Non-suicide attack	Gun	7	7	0	0	19	19	0	0	26	Hamas + other		"""Palestinian militants ambushed a bus near [the West Bank] Jewish settlement [Emmanuel] with bombs and guns Tuesday.""
+
+""...claimed by three different militant groups: the Democratic Front for the Liberation of Palestine, the armed wing of Hamas and the Al Aqsa Martyrs Brigades"""		Civilian
+130	23/07/02	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""The salvo of Qassem rockets, launched from the northern Gaza Strip, exploded in the Sderot area Tuesday evening without causing any injuries, public radio quoted military sources as saying.
+
+""Palestinian militants also fired four mortar rounds at a Jewish settlement in the northern Gaza Strip, lightly wounding two settlers, army sources said.""
+
+Can't be sure either were Hamas, but as original source mentions, Qassams are Hamas's trademark weapon."	Israeli raids and plans to expell family members of Hamas attackers	Civilian
+131	31/07/02	Israel	Non-suicide attack	Bomb	7	2	0	5	70	70	0	0	77	Hamas/Qassam Brigades		"Hamas bomber left bomb in a cafeteria at the Hebrew University in Jerusalem.
+
+2nd source says 5 Americans were killed in the blast. Also mentions that bomb was remote controlled."	"Hamas ""said it was revenge for an Israeli air strike last week on Gaza City, which killed the group's military leader and 14 other people, nine of them children."""	Civilian
+132	04/08/02	Israel	Suicide attack	Bomb	10	7	1	2	50				60	Hamas/Qassam Brigades		"Blew up bus ""near a Jewish shrine close to the town of Safad, north of Lake Galilee.""
+
+3 Israeli soldiers among dead
+
+""...two women from the Philippines working in Israel were among the victims, as were two people from the Jewish state's minority Druze community."""	"""The Ezzedine al-Qassem Brigades said in a statement on Lebanese television the suicide attack was a 'further riposte to the killing of our leader Salah Shehade,' blown to pieces in Israel's internationally criticised air raid on Gaza City."""	Civilian
+133	20/08/02	Gaza Strip	Non-suicide attack	Gun	2	1	1	0	0	0	0	0	2	Hamas/Qassam Brigades		"""Sgt. Kevin Cohen, 19, of Petah Tikva, was killed by a sniper yesterday morning at the Yakinton IDF post near Gadid in the Gaza Strip. Hamas claimed responsibility."""	"""Since the announcement by Israeli and PA officials regarding the implementation of the 'Gaza-Bethlehem first' plan, Hamas, Islamic Jihad, Fatah's al-Aksa Martyrs Brigade, the Popular Front for the Liberation of Palestine, and the Democratic Front for the Liberation of Palestine have vowed to continue attacks"""	Military
+134	19/09/02	Israel	Suicide attack	Bomb	7	5	4	1	60				66	Hamas/Qassam Brigades		"Bomber on Tel Aviv bus.
+
+One Scottish teen later died of wounds (source 172)."	"""The army reoccupied most of the West Bank on June 19 following a similar sequence of back-to-back Palestinian suicide attacks, and only withdrew from Bethlehem a month ago."""	Civilian
+135	25/09/02	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	"""The Qassam rockets, produced by the Ezzedine al-Qassam Brigades, the military wing of the radical Islamic group Hamas, hit business premises in the industrial zone of the southern Israeli town of Siderot.""
+NOT the same as saying QB launched the rockets! Attribution thus far from 100%.
+One person injured was hit by an additional mortar."	"""In an apparent response to the raid, an Israeli armoured column staged an incursion into the Palestinian autonomous town of Beit Hanun in the northern Gaza Strip, letting off bursts of heavy machine-gun fire.
+Armoured bulldozers destroyed a two-storey building in the east of the town, the officials said.""
+Israel also killed at least one Hamas leader. Possibly also response to Qassam rockets."	
+136	05/10/02	Gaza Strip	Non-suicide attack	Bomb	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The radical Islamic group Hamas said its forces ambushed an Israeli army patrol in the northern Gaza Strip Saturday morning, setting off two bombs as the soldiers went by.""
+Hamas said there were casualties, IDF said only 1 blast and no casualties."		
+137	06/10/02	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""A home-made Palestinian rocket was fired at a Jewish settlement in the Gaza Strip late Sunday, without causing injuries or damage, military sources said. They did not name the settlement targeted by the Qassam rocket..."""		Civilian
+138	08/10/02	West Bank	Non-suicide attack	Gun	0	0	0	0	4	4	0	0	4	Hamas/Qassam Brigades		"""attack Tuesday on a car near the West Bank city of Hebron in which four Israelis were shot and wounded."""	""" '...in revenge for the Zionist massacre in Khan Yunis,' [QB] said in a statement faxed to AFP. The statement referred to a massive Israeli army raid in the southern Gaza Strip town on Monday that left 15 Palestinians dead."""	Civilian
+139	10/10/02	Israel	Suicide attack	Bomb	2	1	1	0	4	4	0	0	6	Hamas/Qassam Brigades		"""A greater tragedy was averted because Hamad slipped when trying to jump on the bus and hit the sidewalk where the driver and another passenger spotted his explosives belt. The two held down Hamad for several minutes to allow bystanders to flee, before releasing the bomber and escaping themselves."""		Civilian
+140	27/10/02	West Bank	Suicide attack	Bomb	4	3	1	0					4	Hamas/QB + al-Aqsa Martyrs		"Filling station attack in Jewish settlement, 3 soldiers killed. I assume soldiers were specific target, but since not explicitly military place, plus may have been just an opportunity of the moment, have labeled ""mixed.""
+
+Both QB and al-Aqsa claim only they carried out attack, QB slams a-A for its claim."	"""Hamas said the attack was payback for Israeli attacks on its leaders, and a ""gift for our prisoners in Ketziot prison,"" a large Israeli detention facility in the Negev desert."""	Mixed
+141	06/11/02	Gaza Strip	Non-suicide attack	Gun	3	2	1	0	1	1	0	0	4	Hamas + other		"""Gunman opened fire on a Jewish settlement."" Was shot dead."	"""The attack came a day after Israeli Prime Minister Ariel Sharon announced an early election, throwing the country into three months of political instability in advance of a January vote."""	Civilian
+142	21/11/02	Israel	Suicide attack	Bomb	12	11	1						12	Hamas/QB + PIJ		"Bomb on rush-hour bus in Kiryat Menachem neighborhood in SW Jerusalem. Competing claims of responsibility from Hamas and PIJ (see source 182).
+
+Oddly, none of the reports mention how many wounded!
+
+General note: as 2002 progresses, more news articles reporting of Israeli successes against Hamas rather than vice versa. Definite feeling of tide turning through control strategy."	""" 'The operation was... one of the several answers to settle accounts for the assassination of Salah Shehade and the martyrs of Darraj,' "" - QB
+""The army dropped a one-tonne bomb on the residential neighborhood of Darraj in Gaza City on July 22 killing Hamas military leader Shehade as well as 16 other people, most of them civilians.""
+
+Israeli tanks moved back into Bethlehem as a result (183)."	Civilian
+143	05/01/03	Israel	Suicide attack	Bomb	24	14	6		100				124	All 3 together		"Two suicide bombers, downtown Tel Aviv, rush hour. PIJ, QB, and ""Fatah offshoot,"" each separately claimed responsibility. No idea who actually carried it our or if done in cooperation.
+
+Wounded an estimate, as usual.
+
+3 sources required."	"""[Israeli Prime Minister Ariel Sharon] told a public meeting in Jerusalem, 'Every attempt to reach a ceasefire is bound to fail because of the support of the (Palestinian Authority) for terrorism. You cannot talk about peace as long as terrorism rages.'
+
+Soon afterwards Israeli helicopters fired some 10 rockets on Gaza City, causing a power cut"" (186)."	Civilian
+144	17/01/03	West Bank	Non-suicide attack	Gun	3	1	2	0	3	3	0	0	5	Hamas/Qassam Brigades		"Attack on Kiryat Arba settlement. Broke into one home, killing one and injuring 3 others before being shot by another inhabitant of house. 2nd attacker escaped towards Hebron and ""tracked down and killed Saturday morning"" (Jan 18).
+
+2 sources."	""" 'Two of our heroic combatants attacked an Israeli settlement near Hebron in reprisal for the murder of (Palestinian) civilians and the destruction of our houses,' said a statement from the Ezzedine al-Qassam Brigades."""	Civilian
+145	23/01/03	West Bank	Non-suicide attack	Gun	3	3	0	0	0	0	0	0	3	Hamas/Qassam Brigades		"""Palestinian gunmen ambushed the three [Israelis] at the Kvasim junction just south of the West Bank town [of Hebron], critically wounding the victims, who died almost immediately, Israeli medical sources said.""
+
+Whether those killed were soldiers, civilians, or gov't is not clear."	"occured ""just hours after Palestinian militant groups said they would shun truce overtures at inter-factional talks to be held in Cairo."""	
+146	24/01/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"Fired rocket into Israel from Gaza Strip.
+After raid: A ""Qassem rocket was fired from the northern town of Beit Hanoun, just north of Gaza City, after Israeli forces stormed into the area in retaliation to the firing of seven rockets across the border Friday by the armed wing of the radical Islamic group Hamas, which caused no injuries.
+
+The rocket fired on Sunday morning hit an area of empty land in southern Israel, police said."""	Israel launched big raid on Gaza City in response. More rockets followed.	Civilian
+147	15/02/03	Gaza Strip	Non-suicide attack	Bomb	4	4	0	0	0	0	0	0	4	Hamas/Qassam Brigades		Roadside bomb near Beit Lahia sets tank ablaze, killing 4-man crew.	"-Territories sealed off for Eid al-Adha and Iraq War (193).
+-""Shortly after the incident Israeli army bulldozers moved into the area, demolishing three Palestinian homes after evicting their occupants, witnesses said. The army said the buildings were used by the attackers for cover while they planted and set off the bomb.""
+-""The military announced... it was extending a closure on the West Bank and Gaza Strip until further notice, citing intelligence warnings [of attacks]."""	Military
+148	19/02/03	Israel	Non-suicide attack	Rocket	0	0	0	0	3	3	0	0	3		Hamas/Qassam Brigades	"""Hours after the raid, Hamas fired four rockets on the southern Israeli town of Sderot, just across the Gaza border, injuring three people, the army said."""	Occurred hours after raid on Gaza, which in turn was a response to tank blast (incident ID 147).	Civilian
+149	19/02/03	Gaza Strip	Suicide attack	Bomb	1	0	1	0	0	0	0	0	1	Hamas/Qassam Brigades		Bomber blew himself up next to a tank during an Israeli raid. No soldiers were injured.	Retaliation for tank blast and, possibly, for rocket attack on Sderot (148).	Military
+150	20/02/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Rockets launched at Sderot again. No damage or injuries this time. Mortars also fired at Morag Jewish settlement. No injuries there, either.	Continuing tit-for-tat	Civilian
+151	23/02/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Rockets at Sderot, no damage/injuries, just fear.	"""...despite a massive Israeli operation in Gaza to stamp out the attacks, Israeli security officials said."""	Civilian
+152	05/03/03	Israel	Suicide attack	Bomb	16	14	1	1	20				35		Hamas/Qassam Brigades	"Bomber on packed bus in Haifa's central Carmel district. Most victims local high school students, on a US citizen. 2 soldiers also among dead. Wording unclear on whether 15 dead includes bomber so I've assumed it does. Report says ""wounds dozens,"" so the # 20 is arbitrary, as usual.
+""Police reported that they found the identity card of Mahmoud Salim Kawasme, 20, of Hebron, who is believed to be the suicide bomber. They said he was a member of Hamas.""
+-Later claimed by Hamas (see 2nd source).
+-Dead later rose to 16, unsure of nationality, assumed Israeli (see source 201)."	"""Islamic Jihad said in a statement that the bombing was in response to recent IDF operarations in which many Palestinians have been killed in the West Bank and Gaza Strip."""	Civilian
+153	07/03/03	West Bank	Non-suicide attack	Gun	4	2	2	0	0	0	0	0	4	Hamas/Qassam Brigades		"""Two Palestinian gunmen dressed as religious Jews barged into a sabbath dinner on Friday, killing a husband and wife, before being shot dead themselves."""	"""The attack came hours after Israeli troops reoccupied a northern chunk of the Gaza Strip.""
+
+Israel kills top Hamas man the next day, perhaps partially in response to this incident and incident 152. See source 201."	Civilian
+154	09/03/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Israeli military sources said the four Qassam rockets... caused no damage when they crashed into fields near the southern Israeli town of Sderot."""	"-""The Israeli army re-occupied a buffer zone in the northern end of the Gaza Strip on Thursday [the 6th] to hinder the firing of the Qassams.""
+-""In retaliation for the bus bombing, Israeli forces destroyed the home of the suicide bomber and two other Hamas militants killed while carrying out attacks in the region on Friday night.""
+-""...the army also destroyed the house of Mohammed Abu Rob, a local leader of the Islamic Jihad militant group, the army said in a statement."""	Civilian
+155	10/03/03	West Bank	Non-suicide attack	Gun	1	1	0	0	5	5	0	0	6	Hamas + other		"""Palestinian gunmen shot and wounded an Israeli in the centre of the West Bank town of Hebron late Monday... near the Tomb of the Patriarchs.""
+
+Soldier must have later died. See 2nd source for that and information on wounding, as well as claim of responsibility by Hamas and the PFLP (rival claim)."	Israel later geared up for operation in Hebron as a result of this and other recent attacks there. See source 204.	Military
+156	09/04/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		A rocket landed in Sderot around 8:30AM. QB claimed it fired four rockets on Sderot.	"""...after an overnight Israeli airstrike in Gaza City killed seven people, including three members of the radical Islamic movement."""	Civilian
+157	30/04/03	Israel	Suicide attack	Bomb	3	2	1						3	Hamas/QB + al-Aqsa Martyrs		"Overnight blast in a Tel Aviv bar. Actual date may therefore be 29 April.
+
+See also much later linked source # 254."	"""The Tel Aviv attack was confirmation that the resistance will continue and the suicide bombings will continue. This is not a challenge to to the Abu Mazen [Mahmoud Abbas] government, it is a challenge to the occupation."" Abbas had just become PM and wished to collect all weapons not held by security forces."	
+158	09/05/03	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	"""Palestinian militants fired five rockets from the Gaza Strip towards the southern Israeli town of Sderot, lightly injuring one woman."""	"""The rocket fire came hours after the killing Thursday of Ayad el-Beik, a member of the armed wing of the radical Islamic movement Hamas, in an Israeli army helicopter strike in Gaza City.""
+
+Article says Israel considering ""stronger response"" due to rocket fire.
+
+Generally, Israel very active battling Hamas at this time."	Civilian
+159	13/05/03	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	11	11	0	0	11		Hamas/Qassam Brigades	"""Five Jewish settlers and six Israeli soldiers were wounded by Palestinian mortar fire on the southern Gaza Strip settlement bloc of Gush Katif early Tuesday, military sources said.""
+
+I've actually only ASSUMED they were fired by Hamas at this stage. Report says ""manufactured by Hamas."""	Demolition of militants' houses by IDF	Mixed
+160	18/05/03	West Bank	Suicide attack	Bomb	8	7	1		20				27		Hamas/Qassam Brigades	"Family said Palestinian ""with close ties to Hamas"" was most likely the bomber. 4 men and 3 women killed. Of 20 injured, 4 seriously.
+Bomb on bus 6 in Jewish part of East Jerusalem.
+
+See also source 211 (specifies that 7 were killed in ADDITION to bomber).
+
+Claim shows up in source 213/214 (duplicate card attached to two incidents)."		Civilian
+161	18/05/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"Again, I'm making ""educated assumption"" that Hamas launched rocket. Report does not specify, though it does mention that QB ""have fired dozens of these rockets on Sderot in recent months.""
+
+Launched at Sderot from Gaza Strip, landed harmlessly in a field."		Civilian
+162	17/05/03	West Bank	Suicide attack	Bomb	3	2	1						3	Hamas/Qassam Brigades		Bomber killed couple from Kiryat Arba in Hebron.		Civilian
+163	19/05/03	Gaza Strip	Suicide attack	Bomb	1	0	1	0	3	3	0	0	4	Hamas/Qassam Brigades		"""A Palestinian suicide bomber riding a bicycle blew himself up near an Israeli jeep in the Gaza Strip on Monday, lightly injuring three soldiers."""	"""Fourth suicide bombing by Hamas since Saturday evening."""	Military
+164	18/05/03	West Bank	Suicide attack	Bomb	1	0	1	0	0	0	0	0	1	Hamas/Qassam Brigades		"""Half an hour [after the bus bomb, see incident 160], a second bomber blew himself up several kilometres away at a roadblock set up by the police.
+
+Only the bomber died in the second blast and there were no other casualties."""		Govt
+165	23/05/03	Gaza Strip	Non-suicide attack	Bomb	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		Pipe bomb exploded near a bus carrying 15 settlers from Netzarim in central Gaza Strip to Israel.		Civilian
+166	28/05/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Two Kassam rockets hit Sderot on Wednesday afternoon; no one was wounded and no damage reported. Five Kassam rockets have been fired at the town since Tuesday.""
+
+Note that other 3 rockets not mentioned separately. Apparently not even considered newsworthy anymore already by this point. This affects overall comprehensiveness of this database."		Civilian
+167	08/06/03	Gaza Strip	Non-suicide attack	Gun	7	4	3		4	4	0		11	All 3 together		Hamas, PIJ, and al-Aqsa claimed JOINT responsibility. Seems there was one assailant from each. Killed 4 soldiers in Erez. 3 assailants killed, too. 4 additional soldiers wounded.	Peace talks and cease-fire talks with Abbas.	Military
+168	08/06/03	West Bank	Non-suicide attack	Gun	3	1	2						3		Hamas/QB + PIJ	"""Early Sunday evening, a Nahal Brigade soldier was killed when two terrorists opened fire at a patrol in the casbah of Hebron, not far from the Machpela Cave. [...] The rest of the patrol returned fire at the gunmen, affiliated with Hamas and Islamic Jihad, who were hiding on a roof and killed them."""	"""Road Map"" peace plan, Abbas taking over PA."	Military
+169	11/06/03	Israel	Suicide attack	Bomb	17	16	1		93				109	Hamas/Qassam Brigades		"Bomber in ""the heart of West Jerusalem.""
+
+2nd source indicates 16 people killed in addition to bomber."	"-Israeli rocket attack on al-Rantisi yesterday, which Bush, Annan, and others frowned upon. In this report, Bush also issues strong statement against terrorism in general and Hamas in particular. IAF commander later admits they knew al-Rantisi's wife would be killed in strike. See source 230.
+-This attack was apparently followed by a counterattack by Israelis in Gaza City, where 7 were killed, including 2 Hamas officials (2nd source). 3rd source: QB leader Yasser Taha one of two officials killed."	Civilian
+170	13/06/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Fired at Sderot. Two additional rockets had been fired at town in the past 24 hours.	"""A Hamas member was killed and 26 other people were injured, many of them children, when Israeli helicopter gunships fired missiles at a car in Gaza City late Friday, Palestinian sources told AFP"" (2nd source).
+
+3rd source (JPost) confirms that this was an Israeli counterattack following rocket launches."	Civilian
+171	20/06/03	West Bank	Non-suicide attack	Gun	1	1	0	0	3	1	0	2	4	Hamas/Qassam Brigades		Gunmen open fire on car near Jewish settlement Ofra near Ramallah. 1 Israeli killed, 3 people injured, including 2 Americans (have only assumed 3rd was Israeli).	""" 'Ezzedine Al-Qassam claims responsibility as a tribute to our hero prisoners in Nazi-Zionist jails,' the statement said. 'We will not stop the struggle as long as there is one prisoner in the jail of our enemies.' ""
+
+Israel kills ""top Hamas official"" Abdullah Qawasmeh the following day in Hebron (source 229)."	Civilian
+172	12/08/03	West Bank	Suicide attack	Bomb	2	1	1		2	2			4	Hamas/Qassam Brigades		"""Palestinian suicide bomber detonated a device he was carrying at a hitchhiking post outside [the West Bank Jewish settlment of] Ariel, killing an 18-year-old Israeli settler and injuring two others."""	Hamas claimed responsibility and said it was reprisal for an Israeli raid the preceding Friday in Nablus that killed 4 Palestinians.	Civilian
+173	19/08/03	Israel	Suicide attack	Bomb	19	18	1		120				139	Hamas/QB + PIJ		"Passenger bus in central Jerusalem Tuesday evening.
+
+Not clear if joint attack or competing claims.
+
+Numbers killed and wounded all approximate.
+
+2nd AFP source (same author) from next day suggests 18 victims dead + bomber and estimates 120 wounded."	"Hamas said revenge for killing of 2 Hamas leaders in Nablus in early August as well as a PIJ leader in Hebron (thus sounds like joint attack).
+
+In response: Israel approves series of military strikes. See source 234.
+
+Missile attack against Gaza City Hamas leader (source 235)."	Civilian
+174	21/08/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		Four rockets fired at Israeli towns.	"""Hamas has vowed to avenge the killing of senior leader Ismail Abu Shanab earlier Thursday. An Israeli helicopter fired five missiles at his car as it slowed down at a speed bump on a busy street in Gaza City. Tens of thousands of supporters took to Gaza's streets after the Israeli missile strike, vowing to avenge Abu Shanab's death."""	Civilian
+175	31/08/03	Gaza Strip	Non-suicide attack	Gun	0	0	0	0	1	1	0	0	0	Hamas/Qassam Brigades		"Shooting of Israeli truck driver in southern Gaza Strip near Rafah Yam Jewish settlement.
+
+Not entirely clear if army or civilian truck. Have assumed civilian as no indication given of army."	"QB said it was ""in the frame of our revenge operations."""	Civilian
+176	09/09/03	Israel	Suicide attack	Bomb	8	7	1						8	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"Near bus stop near army base near Tel Aviv
+
+Makes no mention of # of injured.
+
+Dead were soldiers (see source 239 for incident 177, which happened shortly thereafter).
+
+Later claimed by Hamas, see source 240."	Israeli attempt to take assassinate Yassin	Military
+177	09/09/03	Israel	Suicide attack	Bomb	8	7	1		40				48	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"Late-night attack outside a popular West Jerusalem Cafe.
+
+Hamas later claims attack (241)."	Israeli attempt to assassinate Yassin	Civilian
+178	20/10/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Two Qassam rockets, of the type produced by the Palestinian radical group Hamas, crashed into southern Israel late Monday from the Gaza Strip, without causing casualties, military sources said"" (see also incidents 179-80 from same source)."	"""The attacks followed Israeli air raids in Gaza earlier Monday that killed three Palestinians, including two Hamas activists."""	Civilian
+179	20/10/03	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""...two mortar rounds were also fired at a Jewish settlement in the Gaza Strip... again without causing injury"" (See incidents 178 and 180 from same source)."	"""The attacks followed Israeli air raids in Gaza earlier Monday that killed three Palestinians, including two Hamas activists."""	Civilian
+180	20/10/03	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""a third [mortar round] targeted an Israeli army post in the [Gaza Strip], again without causing injury"" (see incidents 178-9 from same source)."	"""The attacks followed Israeli air raids in Gaza earlier Monday that killed three Palestinians, including two Hamas activists."""	Military
+181	24/10/03	Gaza Strip	Non-suicide attack	Gun	4	3	1	0					4	Hamas/QB + PIJ		"""...overnight attack on a Jewish settlement in Gaza that left three Israelis and one of the gunmen dead."""	Continued IDF/IAF attacks on Gaza targets	Civilian
+182	26/12/03	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""A Qassam rocket, manufactured by the radical Islamic group Hamas, was fired from the Gaza Strip Friday and landed unexploded in an agricultural field in southern Israel, Israeli military sources said."""	"""The strike took place a day after Israeli helicopter gunships killed two military chiefs of the extremist Islamic Jihad and three civilians in Gaza City."""	Civilian
+183	04/01/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Five mortar shells were fired towards the Gush Katif settlement bloc in the Gaza Strip on Sunday, damaging the roof of one house in an attack claimed by the armed wing of the radical Hamas movement.
+
+""An army spokesman said two of the mortars landed inside the Jewish settlement bloc in the southern Gaza Strip , and the other three just outside."""	"""[the Al Qassam Brigades] also claimed responsibility for firing five mortars at Netzarim settlement just south of Gaza City, but there was no confirmation of any such shooting by the Israeli army.
+
+""Israeli military sources said an explosive charge was also discovered close to the border with Lebanon."""	Civilian
+184	14/01/04	Gaza Strip	Suicide attack	Bomb	5	4	1	0	7	3	4		12	Hamas/QB + al-Aqsa Martyrs		"""Four Israelis were killed Wednesday when a young Palestinian mother blew herself up at the main border crossing [Erez] between the Gaza Strip and Israel.""
+
+Claimed as joint operation."	"Construction of security fence along West Bank, continued heavy attacks against Hamas targets + targeted killings.
+
+Israel seals off Strip (source 249) and announces return to targeted killings (source 250) in response."	Mixed
+185	29/01/04	Israel	Suicide attack	Bomb	11	10	1		48				59	Hamas/QB + al-Aqsa Martyrs		"Bomb on #19 bus during rush-hour in Jerusalem not far from Ariel Sharon's home.
+
+Rival claims of responsibility, w/ al-Aqsa first (on 29th) and Hamas next day (see 2nd source)."	"""[Sharon's] chief spokesman said the attack highlighted the need for Israel's controversial West Bank separation barrier whose legality is to be judged by the International Court of Justice next month."""	Civilian
+186	05/03/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""A Qassam rocket... exploded Friday in a parking lot in the southern Israeli town of Sderot... police sources said. Some nearby shops suffered minor damage... they said."""	"""Israel hermetically sealed off the West Bank and Gaza Thursday night for the duration of its Purim carnival holiday. Israeli army radio said the closure would be lifted Tuesday.
+
+""Israeli security services were put on maximum alert Thursday for revenge strikes by Hamas as thousands of Palestinian supporters of the group held angry funerals for three of their comrades killed in an air strike the day before."""	Civilian
+187	14/03/04	Israel	Suicide attack	Bomb	12	10	2	0	20				32	Hamas/QB + al-Aqsa Martyrs		"Double suicide blast in port in Ashdod
+
+At least 2 later died at the hospital, raising death toll from first source (see 257)."	"""Revenge for killings in Jenin""
+
+""The attack comes amid final preparations for the first ever summit between Israeli premier Ariel Sharon and his Palestinian counterpart Ahmed Qorei which was expected to take place on Tuesday. It was not immediately clear if the meeting would still go ahead.""
+-Meeting was then postponed (source 256)."	Civilian
+188	22/03/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Palestinian militants fired several home-made rockets toward an Israeli checkpoint in the Gaza Strip late Monday, an apparent response to Israel's killing of Hamas leader Sheik Ahmed Yassin.""
+
+Actually no apparent attribution to or claim by Hamas, but I think it likely enough to include it."	"Sheikh Yassin assassinated earlier same day.
+
+Tanks then moved into northern Gaza Strip in attempt to stop rockets (259)."	Govt
+190	03/04/04	West Bank	Non-suicide attack	Gun	2	1	1		0				2			Shooting attack near Jewish settlement in northern West Bank.	Sheikh Yassin assassinated end of past month.	Civilian
+191	17/04/04	Israel	Suicide attack	Bomb	1	0	1	0	4	4	0	0	5	Hamas/QB + al-Aqsa Martyrs		"Suicide bomb at an industrial zone near Erez crossing. 4 Israeli ""security workers"" wounded (not clear if military, sounds like maybe security guards for industrial zone?)."	Israel assassinates Hamas leader Rantissi just hours later (262).	Civilian
+192	19/04/04	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	"""Four [rockets] landed in and around Jewish settlements in the north of the Strip,"" with one apparently injuring a settler.
+
+An additional rocket landed in Israel. See incident 193."	2 days after Israeli assassination of Hamas leader Rantissi	Civilian
+193	19/04/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"One rocket (in a barage of 5) landed in Israel just north of Gaza Strip with no injuries or damage reported.
+
+See incident 192 for the other 4 rockets, which landed in Gaza."	2 days after Rantissi killed.	Civilian
+194	20/04/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	2 rockets landed near Sderot with no injuries/damage. Part of larger barrage that also landed in Gaza Strip. See incident 195.	3 days after Rantissi killing	Civilian
+195	20/04/04	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""One house in the Gush Katif settlement bloc in the south of the [Gaza Strip] was damaged by the Qassam rockets, while two settlers in the northern settlement of Nissanit were treated for shock after after a rocket landed there.""
+
+2 rockets also landed near Sderot. See incident 194."	3 days after killing of Rantissi	Civilian
+196	28/04/04	Gaza Strip	Suicide attack	Bomb	1	0	1	0	4	4	0	0	5	Hamas/Qassam Brigades		"""A Hamas militant was killed and four Israeli soldiers wounded in a suicide car bombing on a Gaza Strip settlement."""	Bit over a week after killing of Rantissi. Israeli plans (from before that event and killing of Yassin) to pull out of Gaza.	Military
+197	25/05/04	Gaza Strip	Non-suicide attack	Other/NA	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""Two Israeli soldiers were slightly wounded Tuesday when an anti-tank missile exploded near their position on the edge of the Kfar Darom settlement in the central Gaza Strip, Israeli army sources said."""		Military
+198	21/06/04	Gaza Strip	Suicide attack	Mortar	2	0	1	1	0	0	0	0	2	Hamas/Qassam Brigades		"Thai worker at Kfar Darom settlement in Gaza died of mortar shrapnel wound.
+
+An assailant was supposed to infiltrate the settlement ""under cover of 'Qassam rockets fired against the settlement,' "" but he failed to get inside, did not detonate, and managed to escape.
+
+1 Palestinian on a tractor killed by Israeli soldiers, I assume by accident caught in crossfire."	Plans to pull out of Gaza.	Mixed
+199	27/06/04	Gaza Strip	Non-suicide attack	Bomb	1	1	0	0	5	5	0	0	6	Hamas/Qassam Brigades		"""Palestinian militants set off a massive explosion in a tunnel they had dug underneath an army post in the southern Gaza Strip, military sources said.""
+
+One soldier later died (source 271, also source for incident 200)."	Said was revenge for killing of Yassin and Rantissi	Military
+200	28/06/04	Israel	Non-suicide attack	Rocket	2	2	0	0	12	12	0	0	14	Hamas/Qassam Brigades	Hamas/Qassam Brigades	Qassam rockets fired at Sderot hit kindergarten, killing 2 including a 3-year-old.	Israel launches air raid on Gaza City in response (273). Also occupies northern Gaza and pledges to remain there until Israel withdraws from the Gaza strip at the end of 2005.	Civilian
+201	29/06/04	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	Two salvos of Qassams fired. Most caused no damage, while one injured one person in Sderot's industrial zone.	"""Israeli troops moved into the northern Gaza town of Beit Hanun early Tuesday, in an operation that the military said was designed to stop the firing of Qassam rockets, which are named after Hamas's military wing."""	Civilian
+202	02/07/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Three Qassams fired into Israel. Two Israelis treated for psychological shock.	Israeli army had moved into northern Gaza a few days earlier in response to a rocket launch on June 28 that killed 2 in Sderor (see incident 200).	Civilian
+203	31/08/04	Israel	Suicide attack	Bomb	18	16	2		80				98	Hamas/Qassam Brigades		2 bombers, 2 buses in Beersheva.	"Comes after a long period of quiet as heightened security and intense Israeli attacks on Hamas had made attacking Israel increasiongly difficult.
+
+In response, Israel seals off Hebron (278), blows up home of one suicide bomber and ""partly destroys"" that of the other (279), and threatens a strike against Syria (280). (Hamas external political leadership resident in Damascus.)"	Civilian
+204	07/09/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Rocket landed harmlessly in Sderot.	"""Hamas supporters [had] immediately called for revenge attacks after the raid by Israeli combat aircraft on a football pitch where the Hamas members were undergoing military training."""	Civilian
+205	08/09/04	Israel	Non-suicide attack	Bomb	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Palestinian militants managed to fire seven rockets Wednesday. They struck Israel's southern Negev desert without causing casualties, although a factory was reported damaged."""	Troops entered northern Gaza Strip overnight (either Tuesday or Wednesday or both) in response to rockets Tuesday (see incident 204). Escalation continues on Israeli side (source 283).	Civilian
+206	20/09/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		Rocket landed in Sderot w/ no casualties	"The ""Hamas movement... said it was a first response to the killing of one of its fighters in an Israeli air strike in Gaza City late Sunday.""
+
+""Israeli troops withdrew from the northern Gaza Strip earlier this month after an operation designed to put an end to the near daily firing of Qassams, which take their name from Hamas' armed wing."""	Civilian
+207	27/09/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"3 rockets. ""Two of the missiles hit the town of Sderot and damaged a warehouse while the third struck a communal farm, or kibbutz, without hurting anyone, the [police] sources said."""	"""Israel's army has stepped up its raids into the Gaza Strip in recent months to try to prevent the firing of rockets at Israel."""	Civilian
+208	29/09/04	Israel	Non-suicide attack	Rocket	2	2	0	0	23	23			25	Hamas/Qassam Brigades		2 children died in hospital of wounds sustained when rocket landed in Sderot. 4 rockets landed there in total.	"Rocket attack ""capped a day of violence in which seven Palestinians were shot dead by Israeli troops in the occupied territories."""	Civilian
+209	27/10/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	1 rocket hits uninhabited sector of s. Israel	Recent pull-out of n. Gaza after heavy Israeli offensive	Civilian
+210	28/10/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	4	4	0	0	4	Hamas/Qassam Brigades		"""Four Israeli soldiers were wounded Thursday in a mortar attack on an army base near a Jewish settlement in the southern Gaza Strip claimed by the radical Palestinian movement Hamas."""	"""Morag, which lies to the north of the southern Palestinian town of Rafah, is one of 21 Gaza settlements which are due to be dismantled next year as part of Prime Minister Ariel Sharon's controversial disengagement plan."""	Military
+211	31/10/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""Dan Amiel, 19, of Kfar Darom was fighting for his life Sunday night after being wounded by shrapnel when a mortar shell exploded in the settlement on Sunday morning.""
+""The shell was one of 17 mortar shells fired at settlements in central and southern Gaza during the morning."""	"""The sharp increase in the mortar attacks comes a week after the army launched Operation King's Court in the Khan Yunis refugee camp in an attempt to distance the mortar fire from settlements."""	Civilian
+212	09/11/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	4	4	0	0	4	Hamas/Qassam Brigades		4 mortars fired. 4 Israeli soldiers to hospital after 2 apparent mortar shells landed in Nissanit settlement.		Mixed
+213	29/11/04	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	2 Qassams landed harmlessly in Negev desert.	Recent death of Arafat. See incident 214, too.	Civilian
+214	29/11/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Mortar landed in Netzarim settlement in s. Gaza causing minor damage, no injuries reported.	Recent death of Arafat. See incident 213 for rocket attack same day.	Civilian
+215	10/12/04	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"5 Mortars fired by Hamas at Neve Dekalim settlement, injuring ""at least 2."""	Palestinian scrambling to find Arafat successor and avoid civil war.	Civilian
+216	12/12/04	Gaza Strip	Non-suicide attack	Bomb	4	4	0	0	12	12	0	0	16	Hamas/QB + al-Aqsa Martyrs		"""Four Israeli soldiers were killed Sunday when Palestinian militants blew up a tunnel under an army post in Gaza"""	"""Jailed intifada leader Marwan Barghuti pulled out of the Palestinian elections.""
+
+The explosion... triggered a fierce bout of fighting which left at least one Palestinian civilian dead."""	Military
+217	14/12/04	Gaza Strip	Non-suicide attack	Mortar	1	0	0	1	2	0	0	2	3	Hamas/Qassam Brigades		One Thai woman killed and two other Thai workers injured in mortar attack on Ganei Tal settlement in s. Gaza Strip.		Civilian
+218	14/12/04	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"An Israeli soldier was wounded. He ""was on duty inside Israel, close to the security fence on the border with Gaza.""
+
+Not known if military specifically targeted, but if rocket aimed at area right near fence, this is most probable."		Military
+219	02/01/05	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""spate of rocket attacks which injured one civilian in the southern Israeli town of Sderot.""
+
+""the Ezzedine al-Qassam Brigades said in a statement it fired three rockets at Sderot at around 6:30 am (0430 GMT).""
+
+Army said at least 2 fired at Sderot. 4 launched over weekend."	"Pullout from Gaza planned for end 2005.
+
+Response: Israeli incursion into northern Gaza Strip.
+
+See related attack incident 220."	Civilian
+220	02/01/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		Mortar explosion critically wounds man in Erez industrial zone in northern Gaza Strip.	See related attack incident 219 as well as its context notes.	Civilian
+221	05/01/05	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	12	12	0	0	12	Hamas/Qassam Brigades	Hamas/Qassam Brigades	12 soldiers wounded in rocket attack on IDF base near northern border (not clear which side, think within Gaza.	See incidents 222-3	Civilian
+222	05/01/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""At least 10 mortar shells were fired at settlements in Gush Katif and in the northern Gaza Strip on Wednesday.""
+
+None wounded."	See incidents 221 and 223.	Civilian
+223	05/01/05	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""...two Kassam rockets were fired at Sderot and Kibbutz Givim in the western Negev. No one was wounded in any of the attacks, but damage was caused to some 20 homes on the kibbutz."""	See incidents 221-2	Civilian
+224	13/01/05	Israel	Suicide attack	Bomb	9	6	3		4	4			12	Hamas + other		"6 (source 303) Israelis killed in bombing/shooting attack with 3 assailants who blew themselves up at the Karni cargo crossing (""Gaza's main lifeline"") between Israel and southern Gaza.
+Bombers were from Al Aqsa, Qassam Brigades, and Popular Resistance Committees.
+
+Not sure on location (could have technically been within Gaza Strip, as it was a border crossing)."	"1st suicide attack since election of Mahmoud Abbas.
+
+Israel seals off strip in response, holds off on retaliation to give Abbas ""a chance to reign in violent groups"" (303)."	Civilian
+225	18/01/05	Gaza Strip	Suicide attack	Bomb	1	0	1		6	6			7	Hamas/Qassam Brigades		"Not specified if wounded soldiers or civilians, but apparently the bomber blew himself up in a room where he'd been taken by soldiers to be searched, so I'm assuming the target was military.
+
+Reports also did not specify if killed or wounded, with one report saying ""lightly wounded"" while saying they were evacuated by helicopter."	Still giving Abbas time to reign in violence.	Military
+226	31/01/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The armed wing of Hamas said it had responded by firing a total of seven mortars against the settlement of Neve Dekalim and also targeted the nearby Atzmona settlement. An Israeli military spokeswoman reported that six mortar shells had been fired in southern Gaza but without causing injuries."""	"Ceasefire continuing on condition that Israel ends operations in Gaza Strip. Hamas claims shelling only response to the shooting of a 10-yr-old girl in Rafah.
+
+Israel responds to this incident by putting West Bank security transfer on hold (306)."	Civilian
+227	01/02/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Five mortar shells were fired at settlements in Gush Katif and northern Gaza on Tuesday, bringing the total number of mortars fired in the past 24 hours to thirteen.""
+
+No injuries, though two were treated for ""shock."""	See incident 226	Civilian
+228	10/02/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""An Israeli army spokeswoman said 22 mortars landed in the main Gush Katif settlement bloc in southern Gaza over a four-hour period as well as one makeshift Qassam rocket, named after Hamas's armed wing.
+-""After a lull of several hours, three more mortars landed in the nearby Morag settlement, again without causing injuries.
+-""An anti-tank shell was also fired at an Israeli army position near the settlement of Neve Dekalim, in the same area, without causing any injuries."""	"Abbas demanded ceasefire. Attacks occured ""despite the presence of thousands of Palestinian security forces in Gaza with specific instructions to prevent such attacks."""	Mixed
+229	09/04/05	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The Israeli military said that 14 mortars landed around the Gaza Strip's main settlement bloc of Gush Katif, slightly damaging a building, in an attack later claimed by Hamas in a telephone call to AFP."""	"Semi-ceasefire since January. No incidents at all in March, quiet in April, too.
+
+Attack occured ""after Israeli soldiers shot dead three Palestinian youths"" in Jerusalem."	Civilian
+230	11/04/05	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/QB + PIJ	"""...militant groups such as Hamas and Islamic Jihad responded with a volley of more than 70 rockets and mortars at Jewish settlements."""	"""...news emerged that three teenagers had been shot dead by Israeli soldiers close to the Gaza-Egypt border in disputed circumstances..."""	Civilian
+231	19/05/05	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""a rocket landed in the yard of a house in Sderot, an Israeli town just outside Gaza, but did not explode. Also, a mortar shell exploded in an Israeli army base just outside Gaza, causing some damage but no injuries, and two rockets hit the Karni crossing point into Israel, the military said."""	Israel responds with attack against mortar cells (312).	Mixed
+232	07/06/05	Gaza Strip	Non-suicide attack	Bomb	3	0	2	1	5				3	Hamas/Qassam Brigades		"""Two Palestinian workers and a Chinese national were killed in an attack on this Gaza Strip Jewish settlement Tuesday claimed by the Islamic militant group Hamas, Israeli army and medical sources said.""
+
+Ganei Tal settlement."	"Settlement due to be evacuated later in the year.
+
+Israel launches attacks against Hamas and an incursion into Gaza in response (315)."	Civilian
+233	14/07/05	Israel	Non-suicide attack	Rocket	1	1	0	0	0	0	0	0	1	Hamas/QB + al-Aqsa Martyrs		"""A rocket fired from Gaza by Palestinians killed a woman in an Israeli village just outside the territory."""	"Triggered ""four Israeli air raids and a confrontation between Palestinian police and armed militants and endangering a five-month truce.""
+
+See related incident 234."	Civilian
+234	14/07/05	Gaza Strip	Non-suicide attack	Rocket					5	5			5		Hamas/Qassam Brigades	"""Rockets also (see incident 233) exploded in an army base and a Gaza settlement, slightly wounding several Israelis.""
+
+Number of wounded not reported. 5 just my way to estimate ""several"" and to indicate that it was not ""zero."""	"""In the past, Israel has retaliated for such rocket barrages by sending tanks into northern Gaza, but it has refrained from that since a truce was declared on Feb. 8.""
+
+It did lead to air raids, which were ""the most widespread in Gaza since the truce was declared.""
+
+"	Mixed
+235	16/07/05	Israel	Non-suicide attack	Rocket	0				0				0	Hamas/Qassam Brigades		Hamas fired rockets and mortars at Israeli targets from the Gaza Strip. No further info provided. Assuming therefore no casualties. Target unkown.	"Truce allegedly still ongoing. Israeli attacks on Gaza. Abbas condemns rocket attacks on Israel.
+
+Pullout from Gaza to occur next month."	
+236	25/08/05	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	Rocket landed in Sderot--no injuries. Assuming Hamas, as it was a Qassam, but this is not clear. Qassams, later on at least, are also shot by other groups.	Israeli pullout from Gaza.	Civilian
+237	24/09/05	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	Palestinian militants fired three more rockets from Gaza into an Israeli border town on Saturday, bringing the two-day total to 34, the Israeli military said.	"""came despite a deadly Israeli air strike in Gaza and a threat of more massive retaliation.""
+
+""Israel vowed Sunday [25 September] to wage a sustained campaign against the militant Palestinian group Hamas after launching bombing raids on its Gaza Strip stronghold and arresting its leaders in the West Bank"" (321).
+Then: Hamas announces end to rocket attacks (322)."	Civilian
+238	26/09/05	West Bank	Kidnapping/Hostage-taking	Other/NA	1	1	0	0	0	0	0	0	1	Hamas/Qassam Brigades		"West Bank settler from Pisgat Zeev taken hostage then killed.
+
+"" 'We had intended to exchange the Zionist hostage for Palestinian prisoners, but the occupation force's campaign of arrests in the West Bank led us to kill him,' said the armed wing of Hamas."""	"Continued heavy military action against Hamas by Israel, re-election of Sharon gov't, support for Bush for offensive against Hamas.
+
+Israel arrests around 400 Hamas militants in three-days around this time (324)."	Civilian
+240	10/06/06	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The Ezzedine al-Qassam Brigades said it had fired seven rockets, including one at the southern Israeli town of Ashkelon.""
+
+""An Israeli military spokesman confirmed six rockets were fired Saturday, of which one reached Israeli territory without causing damage or injury."""	"""in response to the killing Friday of 10 Palestinians in Israeli artillery fire and other raids.""
+
+""Hamas said Saturday it had fired rockets at Israel for the first time since a one-and-a-half year truce came into effect.""
+
+Truce thus ended by aforementioned beach attack."	Civilian
+241	11/06/06	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	All 3 together		"""Islamic Jihad, Hamas and a radical Fatah offshoot, the Al-Aqsa Martyrs' Brigades, all claimed responsibility for a series of early morning rocket attacks on southern Israel.
+One landed on a house in Sderot, the home town of Peretz, leaving the owner seriously injured."""	Recently broken cease-fire after an alleged Israeli attack on Hamas militant killed several Palestinians on a Gaza beach.	Civilian
+242	12/06/06	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""No one was wounded by any of the nine missiles which were detected as having been fired from northern Gaza which mostly fell harmlessly in the southern Negev desert."""	"""Hamas, which has largely held off such attacks since the start of last year, announced a resumption of the rocket firing in response to the killing of eight Palestinians on a beach in Gaza, apparently the result of Israeli shelling."""	Civilian
+243	25/06/06	Israel	Non-suicide attack	Rocket	4	2	2	0	4	4	0	0	8	Hamas + other		"Hamas, the Popular Resistance Committees, and the ""previously unknown"" Army of Islam group claimed joint responsibility.
+
+""Militants tunneled into Israel and launched... grenades and rockets at an army border post near southern Gaza."""	"""The militant groups said the dawn assault was revenge for the 22 civilians killed in an alleged Israeli shelling and botched air strikes since the start of June.""
+
+Soldier also abducted, see incident 244.
+
+Israel vows revenge."	Military
+244	25/06/06	Israel	Kidnapping/Hostage-taking	Other/NA					1	1			1	Hamas + other		"Gilad Shalit abducted. Hamas, the Popular Resistance Committees, and the ""previously unknown"" Army of Islam group claimed joint responsibility.
+
+Additional context (no room left!): Israel vows to respond harshly, ends up attacking a power station and two bridges, knocking out power to most of Gaza Strip (332). Assault continues..."	"-See incident 243, of which this is part.
+-Somewhat oddly, Hamas deputy PM al-Shaer demanded the soldier's release.
+-"" 'The occupation will not get any information about the missing soldier, except after committing to first immediately release all women prisoners from Israeli prisoners,' the three groups said in a statement.
+'Secondly, (we demand) the immediate release of all children under 18 years,' they added."""	Military
+245	04/07/06	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades	Hamas/Qassam Brigades	Rocket hits ASHKELON for the first time; hits a school (must have been empty).	"Hamas + 2 others continue to hold Shalit among heavy Israeli attacks on Gaza as a result of hostage-taking.
+
+Israel approves invasion of Gaza and creation of buffer zone next day (334)."	Civilian
+246	30/07/06	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""Rockets fired from the Gaza Strip hit a factory in the southern town of Sderot on Sunday, injuring one person.""
+
+""The militant group Hamas took responsibility for firing rockets toward Israel at about the same time Sderot was hit."""	"""Israel on June 28 launched a military offensive in the Gaza Strip in part to stop the firing of the rockets."""	Civilian
+247	15/11/06	Israel	Non-suicide attack	Rocket	1	1			2	2			3	Hamas/QB + PIJ		"Rocket struck a woman in Sderot, ""150 yards from the home of Israeli Defense Minister Amir Peretz.""
+
+""The rocket also badly wounded a member of the minister's security detail. Another rocket fired later at Sderot seriously wounded a teenager, the rescue service said."""	"Peretz promises harsh response.
+
+""Israel's latest military operation against rocket squads, an offensive in Beit Hanoun, ended last week.... For more than a week, troops backed by attack helicopters and tanks went after rocket squads in the town. They killed about 50 militants and at least seven civilians.... One Israeli soldier died in the offensive."""	Civilian
+248	19/11/06	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		Rockets fired at Sderot, 1 person taken to hospital w/ shrapnel injuries.		Civilian
+249	23/11/06	Gaza Strip	Suicide attack	Bomb	1	0	1	0	3	3			4	Hamas/Qassam Brigades		"""""Troops saw a woman approaching them in a suspicious manner and identified her carrying an explosive device,"" an army spokeswoman said.
+
+""They then threw a stun grenade in her direction but she managed to blow herself up,"" she added, adding that three soldiers were lightly hurt.""
+
+57-yr-old woman was grandmother of 41!"	"""The operation came two weeks after the radical faction threatened to resume suicide bombings in response to a botched Israeli shelling in the Gaza town of Beit Hanun that killed 19 Palestinians, mostly women and children."""	Military
+250	26/11/06	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/QB + PIJ		"Two rockets hit Sderot in the morning. Hamas and PIJ issued competing claims of responsibility.
+
+Hamas govt condemned the launch, saying it violated the ceasefire."	"Ceasire agreed among Palestinian factions, with Israel saying it would pull out of Gaza if the rockets stopped.
+"" 'We will have to discuss any violation of this (ceasefire) agreement,' [Ghazi] Hamad said. 'Everyone is included in this agreement which is signed by everyone, including by Islamic Jihad....'
+""Islamic Jihad, however, renounced the ceasefire after Israel launched fresh operations in the West Bank overnight"" (340)."	Civilian
+251	19/03/07	Israel	Non-suicide attack	Gun	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""An Israeli electricity worker was shot and wounded by Palestinian gunfire at the Karni crossing between Israel and the Gaza Strip on Monday in an attack claimed by the armed wing of Hamas.
+
+The civilian employee of an electricity company was shot as he repaired a high voltage line near the crossing, the army said."""	Lots of Hamas-Fatah fighting. Gilad Shalit poker continues.	Civilian
+252	24/04/07	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Hamas militants claimed they launched 41 rockets and 54 mortar shells on Tuesday. The Israeli military said it could confirm only six rockets and eight mortars. Two of the rockets fell in Israel, the army said, causing no casualties or damage."""	"""retaliating for deadly Israeli raids in the Palestinian territories""
+
+Truce since November: ""Israel stopped most of its military activity but kept Gaza in a stranglehold by closing vital crossings, citing security threats. And while Hamas rocket squads stayed on the sidelines, other groups, like Islamic Jihad, kept up fire of homemade rockets almost daily at Israeli towns and villages just outside Gaza."""	Civilian
+253	15/05/07	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"Five rockets launched, hitting a house and a school. Assume school was in Sderot, house definitely was. Mother in house seriously wounded, son moderately. 15 others treated for ""shock"" (I count only physical wounding here)."	"""...retaliation for Israel's killing a militant during an attack near a border crossing earlier Tuesday and also to commemorate the May 15 founding of Israel in 1948, known to Palestinians as al-Naqba, of 'the catastrophe.' ""
+
+""Israel hit back with airstrikes at open spaces in northern Gaza, the military said. Palestinian officials said no one was hurt."""	Civilian
+254	16/05/07	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		2 women in Sderot injured, one seriously, one moderately.	"""The attack came hours after an Israeli air raid killed two people and wounded 30 in the Hamas training camp in Gaza's southern town of Rafah in response to the continuing rocket attacks."""	Civilian
+255	21/05/07	Israel	Non-suicide attack	Rocket	1	1	0	0	2	2	0	0	3	Hamas/QB + PIJ		"Rocket hits Sderot car, kills woman who was approaching car (dies of injuries on way to hospital) and wounds two others.
+
+1st Israeli killed in rocket attack since November."	Heavy Israeli attacks on Hamas Gaza targets in response to previous rocket fire.	Civilian
+256	25/05/07	Israel	Non-suicide attack	Rocket	0	0	0	0	3	3	0	0	3	Hamas/Qassam Brigades		Rocket hits courtyard of home in Sderot, wounding 3.	Israeli planes pound Gaza.	Civilian
+258	03/06/07	Israel	Non-suicide attack	Rocket	0	0	0	0	4	4			4	Hamas/Qassam Brigades		4 soldiers at an Israeli army base at the Erez crossing were wounded, one seriously.	The attack came shortly Prime Minister Ehud Olmert said he would not negotiate a cease-fire with Palestinian militants firing rockets.	Military
+259	06/07/07	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		2 rockets fired, no injuries or damage.	Hamas now controls Gaza.	Civilian
+260	26/10/07	West Bank	Non-suicide attack	Gun	0	0	0	0	1	1	0	0	1	Hamas + other		"""Palestinian gunmen fired at a bus stop near the settlement of Ariel. A previously unknown offshoot of Fatah, the movement headed by Palestinian President Mahmoud Abbas, had taken responsibility for the shooting. But Hamas said Friday in a statement on its Web site that it was responsible.""
+
+Israeli soldier seriously wounded.
+
+AFP asserts Hamas claim more credible."		Military
+261	30/12/07	West Bank	Non-suicide attack	Gun	3	2	1						3	Hamas/QB + PIJ		Gun attack on 3 settlers hiking near Hebron. 2 killed, who shot back before dying, killing one of the Palestinians.	"""It was the deadliest attack in the occupied West Bank since at least the start of the year."" --a long time"	Civilian
+262	04/02/08	Israel	Suicide attack	Bomb	3	1	2		40				43	Hamas/Qassam Brigades		"""A suicide bomber died in Monday's attack in a shopping centre in the southern city of Dimona as well as the woman civilian. A second bomber was shot by police, medics said.""
+
+NB: J. Post says 40 wounded (source 355), but often includes those suffering from pyschological ""shock"" as wounded, which I have not done in other incidents as my most important source throughout the conflict, the AFP, counts only the physically injured."	"First Hamas claim of suicide bombing since Novemer 2006 (see incident 249).
+""The Israeli military pounded Hamas in its Gaza Strip bastion on Tuesday killing nine militants.""
+""Hamas responded to the repeated ground and air raids against its fighters in Gaza with a salvo of a dozen rockets against the southern Israeli town of Sderot"" (see incident 263)."	Civilian
+263	05/02/08	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2		Hamas/Qassam Brigades	"""Hamas [launched] a dozen rockets against the southern Israeli town of Sderot, one of which slammed into a house wounding two civilians, security sources said."""	Response to repeated ground and air raids against it by IDF in Gaza (see incident 262).	Civilian
+264	06/02/08	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2		Hamas/Qassam Brigades	"""A rocket fired from Gaza Wednesday wounded two young sisters as they played outside their home.""
+
+Not clear if Hamas claimed responsibility, article says Hamas ALSO claimed responsibility for Monday's suicide attack (incident 262), implying it had also done so for rockets. In any case, rockets def. attributed to Hamas."	"""Israel's air force attacked Gaza militants and a top Israeli Cabinet Minister declared an all-front war on Hamas rapid-fire incidents that threatened to bury U.S.-led Mideast peace efforts."""	Civilian
+265	09/02/08	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2		Hamas/Qassam Brigades	"""Almost 29 rockets were fired toward southern Israel on Friday, the army said.... Two buildings were hit, including a house, Israeli media reported. Two people were injured, medics said."""	"""The Islamic Hamas said Friday the cutback in the power supply would not force it to stop the attacks."""	Civilian
+266	27/02/08	Israel	Non-suicide attack	Rocket	1	1	0	0	1	1	0	0	2	Hamas/Qassam Brigades		"""A Palestinian rocket slammed into a college campus in southern Israel on Wednesday, killing one man and lightly wounding a second person, Israeli medical officials said."""	"""The rocket barrage came hours after an Israeli airstrike killed five Hamas militants in the Gaza Strip.""
+
+In general, heavy Israeli crackdown on Hamas. Threat exchanges back and forth (Israel will target Hamas political leaders, Hamas will kill Shalit if it does, etc.) (see incident 267)."	Civilian
+267	28/02/08	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	0		Hamas/Qassam Brigades	"""Several Grad rockets slammed into Ashkelon... on Thursday, including one... that landed near a school, wounding a 17-year-old girl.""
+
+Talk in article refers to Hamas smuggling these rockets and possessing only a few. It thus seems that they attribute any Grad rocket to Hamas. No claim of responsibility (CoR) in report.
+
+A Grad rocket hit the day before, too. Again, no CoR."	"""On Thursday, Israel carried out more than 10 airstrikes in northern and central Gaza, beginning just after midnight and stretching well into the afternoon, Palestinians said. The army said it was targeting rocket squads, and blamed militants for operating in populated areas. Civilian casualties were unintended, the army said."""	Civilian
+268	01/03/08	Israel	Non-suicide attack	Rocket	0	0	0	0	6	6	0	0	6		Hamas/Qassam Brigades	"Six people were wounded in Ashkelon on Saturday, after one rocket landed next to City Hall and another in the marina area.
+
+Talk in report is of Hamas's improved rocket capabilities. Seems assumption is these rockets were launched by Hamas."	"""The army over the weekend installed its ""Code Red"" siren system in Ashkelon to alert of any future incoming rockets and on Sunday, Israeli emergency services began providing first-aid courses to instruct residents how to act in the event of an attack."""	Civilian
+269	02/03/08	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	Another (see incident 268) rocket struck Ashkelon on Sunday. One person was slightly wounded, medics said.	See incident 268.	Civilian
+271	04/04/08	Israel	Non-suicide attack	Gun	0	0	0	0	1	1	0	0	1	Hamas + other		"Hamas and a ""hitherto unknown group"" claimed responsibility for a shooting attack on Israeli minister Avi Dichter's aide Mati Gil ""when they opened fire from the Gaza Strip on an Israeli kibbutz that the minister was visiting."""	Tentative calm, but overall tensions high. Just 8 months before 2008-9 Gaza War (Operation Cast Lead).	Govt
+272	19/04/08	Israel	Suicide attack	Bomb	4	0	4	0	13	13	0	0	17	Hamas/Qassam Brigades		"Hamas rigged two jeeps disguised as those of Israeli army with explosives and drove them at the Kerem Shalom crossing. One exploded near an army watchtower, the other near a patrol. Of wounded, 8 hospitalized.
+
+Heavy mortar fire directed at area as cover, too. Morning fog also helped Hamas."	Just before start of Passover	Military
+273	09/05/08	Israel	Non-suicide attack	Mortar	1	1	0	0	3	3	0	0	4	Hamas/Qassam Brigades		"Mortar fire on Kfar Aza, a communal farm in s. Israel.
+
+""Abu Obeida, a spokesman for Hamas' military wing, said militants had targeted an Israeli military position, but the mortar went astray."" Have thus indicated target as military, even though it did not work out that way."	"""Asked if the deadly attack Friday wouldn't make it more difficult for Egypt to conclude a truce, Abu Obeida replied, 'We will continue to fire until the last moment' before a cease-fire is completed. Israel has not publicly acknowledged truce efforts, though it has said that if militants halt their fire, the military will stop its Gaza raids."""	Military
+274	05/06/08	Israel	Non-suicide attack	Rocket	1	1	0	0	4	4	0	0	5	Hamas/Qassam Brigades		Gaza rocket hits a kibbutz in s. Israel. 3 seriously wounded.	Ongoing Gaza blockade.	Civilian
+275	12/06/08	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1		Hamas/Qassam Brigades	"""More than 50 mortar shells, Kassam and Katyusha rockets were fired into Israel from Gaza.""
+One woman at a Kibbutz was injured."	"Immeditely followed powerful explosion at the home of a Hamas operative in Gaza, which Hamas blamed on Israel (the IDF denied responsibility).
+""Prime Minister Ehud Olmert's spokesman, Mark Regev... said that the fact Hamas fired dozens of mortars the day after Israel declared it wanted to give the Egyptian cease-fire track an additional chance 'shows who we are up against. This shows who Hamas is. They are committed to violence, not dialogue.' "" -Shows official attribution to Hamas."	Civilian
+276	05/11/08	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""More than 50 rockets and mortar rounds were fired from the Gaza Strip on Tuesday night and Wednesday morning, the Israeli army said. One of the rockets hit a residential area of the Israeli city of Ashkelon, a spokesman said. There were no immediate reports of casualties from the attacks on southern Israel."""	"""Dozens of rockets and mortar rounds were fired at Israel on Wednesday after Israeli forces killed six militants in the Gaza Strip, in the most serious incidents since a truce went into effect in June."""	Civilian
+277	14/11/08	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		Hamas launched rocket barrages at Ashkelon and Sderot, lightly wounding one in the latter.	"""Hamas claimed responsibility for the rocket fire, and said it fired deep into Israel to demonstrate the price the Jewish state would pay if the truce collapsed."""	Civilian
+278	28/11/08	Israel	Non-suicide attack	Mortar	0	0	0	0	8	8	0	0	8	Hamas/Qassam Brigades		"""mortar shells were fired from Hamas-ruled Gaza late Friday at an army base along Israel's border with territory. The Israeli military said eight soldiers were hurt, including two who were in serious condition.""
+
+Rival claim of responsibility between Hamas and Pop. Resistance Committees. ""Some militants belong to both groups.... It was not immediately possible to confirm either claim."""	"""The attack came after more than three weeks of renewed cross-border fighting. Israel and Hamas had agreed to a cease-fire in June, but the truce started to unravel in early November, following an Israeli cross-border raid. Israel has kept Gaza's borders closed since Nov. 5 to try to pressure militants to halt the attacks."""	Military
+279	24/12/08	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Hamas gunmen launched more than 70 projectiles""
+
+Two were Grads, which hit a house and an amusement park in Ashkelon. Strikes on Ashkelon usually provoke a heavy Israeli response."	"""Israel... retaliated with a deadly air raid.""
+
+Hamas: retaliation for deadly air raid on previous day."	Civilian
+280	27/12/08	Israel	Non-suicide attack	Rocket	1	1	0	0	4	4	0	0	5		Hamas/Qassam Brigades	"Israeli man killed when rocket hits his home in Netivot.
+Some confusion here: earlier report said a woman was injured. Later report says a man was killed and that medics had previously said it was a woman. Not 100% certain these are one and the same incident, but pretty sure.
+-""Hamas radio said militants had launched dozens of projectiles. In a statement, Hamas's military wing said it had fired off four. The Israeli army said three rockets and two mortars had fallen within Israel.""
+-Also can't be 100% sure that it was those rockets who killed the man, but they seem to be the only ones, hence attributing to Hamas/QB."	Cast Lead begins today in Gaza.	Civilian
+281	28/12/08	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""In Gaza, Hamas said it had fired two longer-range Grad rockets towards the southern Israeli city of Ashdod, 30 kilometres (18 miles) north of the coastal strip. There was no immediate confirmation from the Israeli side of whether the rockets hit.""
+
+Many other rockets, too, not clear how many of them fired by Hamas. No casualties reported from them, either."	Cast Lead going on since yesterday.	Civilian
+282	29/12/08	Israel	Non-suicide attack	Rocket	1	1	0	0	8	8			9		Hamas/Qassam Brigades	"""An Israeli Arab was killed and eight other people were wounded when one of the projectiles slammed into a construction site in the southern city of Ashkelon some 13 kilometres north of the Gaza border.""
+
+""Hamas militants... [fired] some 20 rockets into Israel"" on Dec 29."	Day 3 of Operation Cast Lead	Civilian
+283	29/12/08	Israel	Non-suicide attack	Rocket	2	2	0	0	9	9	0	0	11		Hamas/Qassam Brigades	"Two incidents: ""Rockets killed an Ashdod woman at a bus stop and a person near Nahal Oz.""
+""Five other people were also wounded, two seriously when the Kassam rocket struck near Nahal Oz. Four people were wounded - one seriously and three lightly - by the rocket that hit the Ashdod bus stop."""	Cast Lead in its third day.	Civilian
+284	30/12/08	Israel	Non-suicide attack	Rocket	4	4	0	0	8	8	0	0	12		Hamas/Qassam Brigades	The way the report is written, it is difficult to distinguish whether the number of dead and wounded refer to new attacks on the 30th or include those already mentioned on the 29th. In any case, a solder was also killed by a mortar (is among the 4 listed above), the first to be killed during Cast Lead.	Operation Cast Lead in its 4th day.	Mixed
+285	31/12/08	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades	Hamas/Qassam Brigades	"""Hamas militants fired two rockets deep into Israel on Wednesday, both hitting near the desert city of Beersheva some 40 kilometres (24 miles) from the border of the Gaza Strip, the army said. The Grad-type rockets caused no injuries or damage, the Israeli media said."""	Cast Lead continues	Civilian
+286	31/12/08	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	A Katyusha rocket exploded in the penalty area of third division Hapoel Ashkelon's stadium on Monday, just minutes before the players were about to begin their training session.	Cast Lead ongoing	Civilian
+287	01/01/09	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The Ezzedine Al-Qassam Brigades said in a statement they had fired a Grad-type rocket at the Hatzerim air force base west of the city Beersheva, some 40 kilometres (24 miles) from the Gaza border."""	"""Militants in Gaza have fired more than 250 rockets at Israel since the start of the Jewish state's massive bombardment of Hamas targets in Gaza on Saturday.""
+Note that the ones listed in this database are a fraction of this total, either because Hamas has not launched most of them or simply because many could not be attributed to Hamas and were not immediately claimed by Hamas or were simply ignored by news media."	Military
+288	09/01/09	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Hamas continued to bombard residents of southern Israel. Rockets hit Friday morning in and around Beersheba and Ashkelon, which like other cities in Israel's south have largely been paralyzed since the fighting began on Dec. 27."""	Cast Lead ground offnseive continues	Civilian
+289	14/01/09	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Hamas targeted a civilian area in southern Israel with a phosphorous mortar on Wednesday.... The mortar landed in open territory near a kibbutz in the Eshkol Regional Council.""
+
+""By Wednesday evening, Hamas had fired 17 rockets at Israel, with two landing in the southern Coastal Plain region. Ashdod, Ashkelon, Beersheba and Sderot also came under rocket fire throughout the day. No injuries were reported during the rocket attacks."""	Cast Lead ongoing	Civilian
+290	18/01/09	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2		Hamas/Qassam Brigades	Hamas fired 19 rockets at southern Israel on Sunday. One struck the yard of a home in Ashdod and caused two shrapnel injuries.	Day of unilateral cease-fires on both sides. Unlcear if attack before or after cease-fire, but I would guess before. Rockets were definitely launched afterwards, as well, but there is no suggestion that Hamas launched them.	Civilian
+291	21/01/09	Israel	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0		Hamas/Qassam Brigades	"""Hamas gunmen fired mortar shells into Israel and opened fire on IDF troops who remained inside the Palestinian territory."""	Israel on penultimate day of troop withdrawal.	Mixed
+292	28/01/09	Gaza Strip	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""Hamas said it had fired three mortar rounds against an Israeli army unit operating inside the Gaza Strip on Wednesday.""
+
+3 rounds fired (token response, thus can be classified under strategic definition of terrorism)."	Truce in effect for 10 days.	Military
+293	06/05/09	Gaza Strip	Non-suicide attack	Mortar	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""The Ezzedine Al-Qassam Brigades, said in a statement that it fired four mortar rounds at Israeli soldiers who had entered the territory east of the Al-Bureij refugee camp. An Israeli army spokewoman however, said that five mortar shells had been fired from Gaza into Israel without causing injuries or damage."""	Gaza War ended on Jan 21	Military
+294	31/08/10	West Bank	Non-suicide attack	Gun	4	4	0	0	0	0	0	0	4	Hamas/Qassam Brigades		"""Four Israelis were shot dead near the West Bank Jewish settlement of Kiryat Arba after nightfall."""	"""Hamas... is vehemently opposed to the talks which Netanyahu and Palestinian president Mahmud Abbas are to relaunch in Washington on Wednesday"" (i.e. the following day)."	Civilian
+295	01/09/10	West Bank	Non-suicide attack	Gun	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""Late Wednesday two Israelis were wounded in a shooting as they drove in a car near the Jewish settlement of Rimonim, an Israeli army spokesman said."""	"""Hamas... is vehemently opposed to the talks which Israeli Prime Minister Benjamin Netanyahu and Palestinian president Mahmud Abbas are relaunching in Washington."""	Civilian
+296	24/02/11	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas + other	"Grad hits Beersheva. IDF reports it retaliated at ""a terrorist squad in the northern Gaza Strip, in the same location where rockets were fired towards the Israeli city of Beersheva."" Palestinian sources said all sites hit by the IDF were Hamas training centers. Leads to conclusion that Israel, at least, believed the attacks were launched by militants at Hamas training camps, making it likely Hamas was to blame.
+""The left-wing Popular Front for the Liberation of Palestinian and the Ezzedine al-Qassem Brigades also issued statements saying they had fired mortar shells into Israel on Wednesday night."" No further info on that, which is why I didn't make a separate incident for it."	Israel retaliates, see description.	Civilian
+297	19/03/11	Israel	Non-suicide attack	Mortar	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""Israel said 49 mortar bombs fell on or around Israeli communities near the border with the Gaza Strip.""
+""An Israeli military spokesman said two civilians were lightly wounded when three projectiles fell on Pithat Shalom in the Negev desert."""	"""three days after an Israeli air strike killed two of [the Qassam Brigades'] members in the Gaza Strip."""	Civilian
+298	07/04/11	Israel	Non-suicide attack	Rocket	0	0	0	0	1	1			1	Hamas/Qassam Brigades		"""Hamas militants fired an anti-tank missile at an Israeli school bus on Thursday, critically injuring a teenager, prompting the army to pound the the Gaza Strip, killing four and wounding more than 30. After the missile slammed into the bus, the Palestinians lobbed at least 45 mortar rounds and several rockets into southern Israel, hitting a house, and the army responded by staging multiple raids across the enclave."""	"""Late Thursday, in a bid to prevent further Israeli strikes, Hamas said it had got most armed Palestinian factions in Gaza to sign on to a ceasefire.
+As the rockets flew over the border, Israel's Iron Dome short-range missile defence system intercepted a projectile heading for the southern port city of Ashkelon, in what was the first time such a system has ever been successfully used anywhere in a combat situation."""	Civilian
+299	09/04/11	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0		Hamas/QB + PIJ	"""Following the strikes, the self-declared truce called by Hamas appeared meaningless, with both Hamas and Islamic Jihad claiming mortar and rocket attacks on Israel on Friday.""
+No Israeli casualties mentioned... somewhat poorly written."	"Attack on a school bus, then truce declaration, the day before (see incident 298).
+
+Israel kills senior Hamas militant Tayser Abu Snima later that day in retaliation (source 397)."	Civilian
+300	20/08/11	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2	Hamas/Qassam Brigades		"""The armed wing of Hamas said on Saturday it had fired four Grad rockets at the Israeli town of Ofakim, where officials earlier reported two children had been lightly wounded."""	"""third day of tit-for-tat attacks"""	Civilian
+301	19/06/12	Israel	Non-suicide attack	Rocket	0	0	0	0	2	2	0	0	2	Hamas + other		"""Militants from the armed wing of the ruling Hamas movement said they had fired at least 10 rockets into Israel and would continue unless the air strikes ended.""
+
+NOTE: 45 rockets launched, 10 claimed by Hamas. No way of knowing if it was actually the Hamas rockets that caused the injuries in a direct hit to a border police outpost in Yad Mordechai."	"-""The sharp increase in rocket fire came... shortly after an afternoon [Israeli] air strike targeted two men on a motorcycle in the central Gaza town of Deir al-Balah, injuring one of them critically.""
+-Sunday night/Monday morning, ""gunmen from Sinai carried out an ambush along Israel's southern border with Egypt, killing an Israeli civilian."" IDF says its strikes ""in no way related"" to this border attack.
+-Hamas agrees Egypt-brokered truce again next day (source 396)."	Mixed
+302	08/10/12	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/QB + PIJ		"""23 rockets and mortars hit southern Israel on Monday, causing light damages to electric cables and a number of structures, including a home and a sheep pen, but resulting in no injuries. Most of the projectiles were fired at communities in the vicinity of the town Ofakim, primarily the Eshkol region."""	"-""In response to the injury of civilians in the most recent strike on Rafah""
+-""...first time since June that Hamas has taken responsibility for rockets fired into Israel.""
+-IDF launched attack near Khan Yunis, targeting ""terrorist squads responsible for the rocket fire."" Witnesses also say 2 mosques hit, IDF confirmed, saying it ""had fired at a Hamas position in a...  mosque."""	Civilian
+303	24/10/12	Israel	Non-suicide attack	Rocket	0	0	0	0	6	0	0	6	6	Hamas + other		"""Israel's military said armed groups had fired 72 rockets and mortar shells over the border since midnight, injuring six, two of them seriously. Police said two Thais were ""seriously to critically wounded"" and a third had light injuries.
+
+Militants from Hamas and the PRC claimed responsibility for the rocket fire."""	"""Several hours after the militants fired the first rockets late Tuesday [not clear if Hamas also responsible for these], Israeli aircraft killed two militants from Hamas' armed wing, the Ezzedine al-Qassam Brigades, in northern Gaza, sparking even more rocket fire.
+An early-morning raid near southern city of Rafah killed a third militant from the Popular Resistance Committees (PRC), and later a Hamas militant hurt in the evening strikes died of his injuries, medics said."""	Civilian
+304	29/10/12	Israel	Non-suicide attack	Rocket	0	0	0	0	0	0	0	0	0	Hamas/Qassam Brigades		"""'At least 18 rockets were fired at Israeli territory, without causing injuries or damage,' police spokesman Micky Rosenfeld told AFP...""
+
+""[T]he Ezzedine al-Qassam Brigades... named at least five areas in southern Israel where it had targeted 'military sites' -- Sufa, Kissufim, Beeri, Yad Mordechai and Nahal Oz."""	"""'This shelling was in response to the continuous Zionist bombing and terrorising of peaceful citizens, which most recently killed Suleiman Kamel al-Qara, as well as in response to the repeated incursions and attacks carried out by the occupation,' the group said referring to one of its own militants."""	
+305	08/11/12	Israel	Non-suicide attack	Bomb	0	0	0	0	1	1	0	0	1	Hamas/Qassam Brigades		"""an Israeli soldier was wounded near the border east of Khan Yunis when a tunnel packed with explosives was detonated in an attack"""	"""Several hours earlier, a 13-year-old Palestinian was shot dead by gunfire from an Israeli helicopter in the same area, medics and witnesses said."""	Military

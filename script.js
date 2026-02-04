@@ -1,3 +1,263 @@
+// Sample CSV data (first 20 entries for demonstration)
+const sampleCSVData = [
+    {
+        IncidentID: "0",
+        Date: "16/04/93",
+        Location: "West Bank",
+        AttackType: "Suicide attack",
+        Weapon: "Bomb",
+        TotalKilled: "2",
+        IsraelisKilled: "0",
+        PalestiniansKilled: "2",
+        TotalWounded: "9",
+        IsraelisWounded: "8",
+        TotalCasualties: "11",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "Van parked between two buses, one civilian, one military, at Moshad Mehola roadside cafeteria. Referred to as the first apparent suicide car-bomb attempt inside the territories. Used cooking gas canisters. # killed includes bomber himself",
+        Context: "Peace talks and Intifada, Palestinian requests to slow peace process",
+        TargetType: "Mixed"
+    },
+    {
+        IncidentID: "1",
+        Date: "21/11/92",
+        Location: "Israel",
+        AttackType: "Non-suicide attack",
+        Weapon: "Bomb",
+        TotalKilled: "0",
+        TotalWounded: "0",
+        TotalCasualties: "0",
+        ClaimedBy: "IQB w/ al-Aqsa Martyrs Brigade",
+        Description: "3 attackers drove a VW with cooking gas canisters to Tel Aviv. They failed to stop at a checkpoint and were followed/stopped by police/civil guard in Tel Aviv suburb Ramat Efal. Police detonated bomb safely, 2 perps arrested, 1 escaped.",
+        Context: "Peace talks, 1st Intifada",
+        TargetType: "Civilian"
+    },
+    {
+        IncidentID: "2",
+        Date: "07/12/92",
+        Location: "Gaza Strip",
+        AttackType: "Non-suicide attack",
+        Weapon: "Gun",
+        TotalKilled: "3",
+        IsraelisKilled: "3",
+        TotalWounded: "0",
+        TotalCasualties: "3",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "3 soldiers in a Jeep shot by gunmen. Also retaliatory: 3 Hamas activists killed week before.",
+        Context: "The attack commemorated the intifada anniversary, the founding of Hamas on December 14, 1987, and the deaths of three Hamas activists killed by soldiers last week.",
+        TargetType: "Military"
+    },
+    {
+        IncidentID: "3",
+        Date: "13/12/92",
+        Location: "Israel",
+        AttackType: "Kidnapping/Hostage-taking",
+        Weapon: "Other/NA",
+        TotalKilled: "1",
+        IsraelisKilled: "1",
+        TotalWounded: "0",
+        TotalCasualties: "1",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "A border police officer (Sgt-Maj Nissim Toledano) in Lod was kidnapped. Hamas members gave his ID card to Red Crescent workers in al-Bira near Ramallah with a letter demanding Sheikh Yassin's release. Found dead Dec 15.",
+        Context: "Sheikh Yassin was serving life in prison on terrorism charges. Resulted in deportation to southern Lebanon of over 400 Hamas activists.",
+        TargetType: "Govt"
+    },
+    {
+        IncidentID: "4",
+        Date: "18/09/92",
+        Location: "Gaza Strip",
+        AttackType: "Non-suicide attack",
+        Weapon: "Knife",
+        TotalKilled: "0",
+        TotalWounded: "1",
+        IsraelisWounded: "1",
+        TotalCasualties: "1",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "A hitchhiking soldier was attacked by Palestinians dressed as Orthodox Jews. The terrorists took Alon Karavani's M-16 rifle and uniform before stabbing him and leaving him for dead.",
+        Context: "First Intifada",
+        TargetType: "Military"
+    },
+    {
+        IncidentID: "5",
+        Date: "03/01/93",
+        Location: "Israel",
+        AttackType: "Non-suicide attack",
+        Weapon: "Other/NA",
+        TotalKilled: "1",
+        IsraelisKilled: "1",
+        TotalWounded: "0",
+        TotalCasualties: "1",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "A police spokesman said Haim Nahmani, an agent for the domestic Shin Beth intelligence service, was stabbed and beaten with a hammer in a home in West Jerusalem while he was on assignment.",
+        Context: "Background: expulsion of 415 Hamas activists to S. Lebanon",
+        TargetType: "Govt"
+    },
+    {
+        IncidentID: "6",
+        Date: "31/01/93",
+        Location: "Gaza Strip",
+        AttackType: "Non-suicide attack",
+        Weapon: "Gun",
+        TotalKilled: "2",
+        IsraelisKilled: "2",
+        TotalWounded: "1",
+        IsraelisWounded: "1",
+        TotalCasualties: "3",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "Two Hamas gunmen hid in bushes waiting to open fire on an army predawn patrol. Two soldiers were killed, a third was wounded.",
+        Context: "Just over a month after mass deportation to s. Lebanon of Hamas activists (400+), continuing peace process.",
+        TargetType: "Military"
+    },
+    {
+        IncidentID: "7",
+        Date: "12/02/93",
+        Location: "Gaza Strip",
+        AttackType: "Non-suicide attack",
+        Weapon: "Gun",
+        TotalKilled: "0",
+        TotalWounded: "2",
+        IsraelisWounded: "2",
+        TotalCasualties: "2",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "Two Israeli soldiers were shot and wounded in Gaza City.",
+        Context: "Was carried out in revenge for the army's destruction of several Palestinian homes with anti-tank rockets, HAMAS said in a communique issued in Amman.",
+        TargetType: "Military"
+    },
+    {
+        IncidentID: "8",
+        Date: "12/05/93",
+        Location: "West Bank",
+        AttackType: "Non-suicide attack",
+        Weapon: "Knife",
+        TotalKilled: "0",
+        TotalWounded: "2",
+        IsraelisWounded: "2",
+        TotalCasualties: "2",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "A Hamas commando attacked the soldiers with knives, stole their weapons, and returned safely.",
+        Context: "HAMAS said the attack was to avenge the killing of six of its militants by Israeli soldiers in the Gaza Strip.",
+        TargetType: "Military"
+    },
+    {
+        IncidentID: "9",
+        Date: "01/07/93",
+        Location: "West Bank",
+        AttackType: "Kidnapping/Hostage-taking",
+        Weapon: "Gun",
+        TotalKilled: "4",
+        IsraelisKilled: "2",
+        PalestiniansKilled: "2",
+        TotalWounded: "3",
+        IsraelisWounded: "1",
+        PalestiniansWounded: "2",
+        TotalCasualties: "7",
+        ClaimedBy: "Hamas/Qassam Brigades",
+        Description: "3 Militants opened fire on a bus. 1 Israeli woman, the driver, and a Palestinian man later reported to be a Hamas activist wounded (woman died next day). 2 of them then comandeered an Israeli woman's car w/ her in it -- all 3 then killed in gunfire.",
+        Context: "Wanted to hold the passengers hostage to demand the release of 100 Palestinian prisoners, including 50 HAMAS member and Sheikh Abdel Karim Obeid, a Hezbollah leader kidnapped by Israeli commandos in 1989.",
+        TargetType: "Civilian"
+    }
+];
+
+// Function to convert CSV data to timeline events
+function parseHamasAttacksFromCSV() {
+    // Helper function to extract year from date format
+    function extractYear(dateStr) {
+        if (dateStr.includes('/')) {
+            const parts = dateStr.split('/');
+            const year = parseInt(parts[2]);
+            return year >= 90 ? 1900 + year : 2000 + year;
+        }
+        return parseInt(dateStr);
+    }
+
+    // Helper function to get coordinates for locations
+    function getCoordinates(location) {
+        const locationMap = {
+            'West Bank': [31.7585, 35.2433],
+            'Israel': [31.7683, 35.2137],
+            'Gaza Strip': [31.3899, 34.3428],
+            'Tel Aviv': [32.0853, 34.7818],
+            'Jerusalem': [31.7785, 35.2353],
+            'Haifa': [32.7940, 34.9896],
+            'Beersheba': [31.2518, 34.7915],
+            'Ashkelon': [31.6693, 34.5715],
+            'Sderot': [31.5225, 34.6070],
+            'Afula': [32.6086, 35.2882],
+            'Netanya': [32.3245, 34.8570],
+            'Hadera': [32.4342, 34.9190],
+            'Kfar Saba': [32.1760, 34.9076],
+            'Lod': [31.9525, 34.8989],
+            'Ramat Efal': [32.0853, 34.8418],
+            'Moshad Mehola': [32.0833, 35.5833]
+        };
+        
+        for (const [key, coords] of Object.entries(locationMap)) {
+            if (location.toLowerCase().includes(key.toLowerCase())) {
+                return coords;
+            }
+        }
+        return [31.7683, 35.2137]; // Default to central Israel
+    }
+
+    // Helper function to determine intensity based on casualties
+    function getIntensity(totalKilled, totalWounded) {
+        const total = parseInt(totalKilled || 0) + parseInt(totalWounded || 0);
+        if (total >= 20) return 'high';
+        if (total >= 5) return 'medium';
+        return 'low';
+    }
+
+    const events = [];
+
+    console.log('🔍 Processing CSV data:', sampleCSVData.length, 'entries');
+
+    sampleCSVData.forEach((row, index) => {
+        const year = extractYear(row.Date);
+        const coordinates = getCoordinates(row.Location);
+        const intensity = getIntensity(row.TotalKilled, row.TotalWounded);
+        
+        const event = {
+            date: year.toString(),
+            title: `Hamas Attack: ${row.AttackType} in ${row.Location}`,
+            description: row.Description || `${row.AttackType} using ${row.Weapon}. Total casualties: ${row.TotalCasualties}`,
+            category: 'military',
+            era: year <= 2005 ? '1987-2005' : '2006-2023',
+            impact: row.Context || `Attack resulted in ${row.TotalKilled} killed and ${row.TotalWounded} wounded`,
+            geography: {
+                type: 'attack',
+                coordinates: coordinates,
+                affectedArea: [
+                    [coordinates[0] - 0.2, coordinates[1] - 0.2],
+                    [coordinates[0] + 0.2, coordinates[1] + 0.2]
+                ],
+                intensity: intensity,
+                icon: 'attack'
+            },
+            territoryControl: { israeli: 85, palestinian: 15, hamas: 2 },
+            source: 'Hamas Attacks Database',
+            casualties: {
+                totalKilled: parseInt(row.TotalKilled) || 0,
+                israelisKilled: parseInt(row.IsraelisKilled) || 0,
+                palestiniansKilled: parseInt(row.PalestiniansKilled) || 0,
+                totalWounded: parseInt(row.TotalWounded) || 0,
+                israelisWounded: parseInt(row.IsraelisWounded) || 0,
+                palestiniansWounded: parseInt(row.PalestiniansWounded) || 0,
+                totalCasualties: parseInt(row.TotalCasualties) || 0
+            },
+            attackDetails: {
+                type: row.AttackType,
+                weapon: row.Weapon,
+                claimedBy: row.ClaimedBy,
+                targetType: row.TargetType
+            }
+        };
+
+        events.push(event);
+    });
+
+    console.log('✅ Generated', events.length, 'Hamas attack events');
+    return events;
+}
+
 const timelineEvents = [
     // Early Period (1900-1947)
     {
@@ -1136,10 +1396,26 @@ const timelineEvents = [
     }
 ];
 
+// Combine timeline events with CSV attack data
+function getAllEvents() {
+    const csvEvents = parseHamasAttacksFromCSV();
+    const allEvents = [...timelineEvents, ...csvEvents];
+    console.log('📊 Total events combined:', allEvents.length);
+    console.log('📊 Hamas attacks:', csvEvents.length);
+    console.log('📊 Timeline events:', timelineEvents.length);
+    return allEvents;
+}
+
 // Strategic Map Variables
 let mapContainer;
 let mapState = {
-    // ... existing properties ...
+    currentYear: 1994, // Start at 1994 to show Hamas attacks
+    showAttacks: true,
+    showPolitical: true,
+    showSocial: true,
+    showTerritory: true,
+    showSettlements: true,
+    showCities: true,
     showMovements: true, // Enable faction markers by default
     playSpeed: 1000,
     map: null,
@@ -1157,8 +1433,11 @@ function initializeTimeline() {
     // Clear existing content
     timelineContainer.innerHTML = '';
     
+    // Get all events including CSV attacks
+    const allEvents = getAllEvents();
+    
     // Create timeline events
-    timelineEvents.forEach((event, index) => {
+    allEvents.forEach((event, index) => {
         const eventElement = createTimelineEvent(event, index);
         timelineContainer.appendChild(eventElement);
     });
@@ -1290,7 +1569,8 @@ function initializeMap() {
     addMapLegend();
     
     setupMapControls();
-    updateMapForYear(1900);
+    console.log('🚀 Initializing map with year 1994');
+    updateMapForYear(1994); // Start at 1994 to show Hamas attacks
 }
 
 // Add military grid overlay
@@ -1381,6 +1661,7 @@ function addMapLegend() {
             <div style="display: flex; align-items: center; margin-bottom: 6px;"><div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 5px;"></div><span>Occupied Areas</span></div>
             <div style="margin-bottom: 6px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">EVENT MARKERS</div>
             <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/></svg><span>Military/Attack</span></div>
+            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,20 2,20" fill="#dc2626" stroke="white" stroke-width="1"/></svg><span>Hamas Attacks</span></div>
             <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/></svg><span>Political Events</span></div>
             <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/></svg><span>Social Events</span></div>
             <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/></svg><span>Settlements</span></div>
@@ -1408,7 +1689,7 @@ function addMapLegend() {
                 </div>
             </div>
             <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
-                Total Events: ${timelineEvents.length}
+                Total Events: ${getAllEvents().length}
             </div>
             <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; text-align: center; font-size: 9px;">
                 TEST: Military Factions Section
@@ -1601,12 +1882,15 @@ function updateMapForYear(year) {
         mapState.movementLayer = L.layerGroup();
         
         // Get events for this year and earlier
-        const relevantEvents = timelineEvents.filter(event => {
+        const allEvents = getAllEvents();
+        const relevantEvents = allEvents.filter(event => {
             const eventYear = getEventYear(event.date);
             return eventYear <= year;
         });
         
+        console.log('📊 Processing year:', year);
         console.log('📊 Total relevant events:', relevantEvents.length);
+        console.log('📊 Hamas attacks in relevant events:', relevantEvents.filter(e => e.title && e.title.includes('Hamas Attack:')).length);
         console.log('📊 Events with movements:', 
             relevantEvents.filter(e => e.movementData).map(e => ({
                 title: e.title,
@@ -1931,7 +2215,12 @@ function drawAllEventMarkers(events) {
             // Determine marker type, color, and visibility based on event type and category
             if (event.category === 'military' || event.geography.type === 'attack') {
                 markerType = 'attack';
-                markerColor = '#e74c3c';
+                // Special handling for Hamas attacks
+                if (event.title && event.title.includes('Hamas Attack:')) {
+                    markerColor = '#dc2626'; // Darker red for Hamas attacks
+                } else {
+                    markerColor = '#e74c3c'; // Regular red for other attacks
+                }
                 shouldShow = mapState.showAttacks;
             } else if (event.geography.type === 'settlement') {
                 markerType = 'settlement';
@@ -1973,14 +2262,38 @@ function drawAllEventMarkers(events) {
                         <em>⚠️ ${group.length} events at this location</em>
                     </div>` : '';
                 
+                // Enhanced popup content for Hamas attacks
+                const isHamasAttack = event.title && event.title.includes('Hamas Attack:');
+                const additionalInfo = isHamasAttack && event.casualties ? 
+                    `<div style="margin-top: 5px; padding: 5px; background: rgba(220, 38, 38, 0.1); border-radius: 3px; font-size: 11px;">
+                        <strong>Casualties:</strong><br>
+                        • Total Killed: ${event.casualties.totalKilled}<br>
+                        ${event.casualties.israelisKilled ? `• Israelis Killed: ${event.casualties.israelisKilled}<br>` : ''}
+                        ${event.casualties.palestiniansKilled ? `• Palestinians Killed: ${event.casualties.palestiniansKilled}<br>` : ''}
+                        • Total Wounded: ${event.casualties.totalWounded}<br>
+                        • Total Casualties: ${event.casualties.totalCasualties}
+                    </div>` : '';
+
+                const attackDetails = isHamasAttack && event.attackDetails ? 
+                    `<div style="margin-top: 5px; padding: 5px; background: rgba(52, 152, 219, 0.1); border-radius: 3px; font-size: 11px;">
+                        <strong>Attack Details:</strong><br>
+                        • Type: ${event.attackDetails.type}<br>
+                        • Weapon: ${event.attackDetails.weapon}<br>
+                        • Claimed by: ${event.attackDetails.claimedBy}<br>
+                        • Target: ${event.attackDetails.targetType}
+                    </div>` : '';
+                
                 const popupContent = `
                     <div style="max-width: 250px;">
-                        <strong style="color: #000;">${event.title}</strong><br>
+                        <strong style="color: ${isHamasAttack ? '#dc2626' : '#000'};">${event.title}</strong><br>
                         <span style="color: #7f8c8d; font-size: 12px;">${event.date}</span><br>
+                        ${event.source ? `<span style="color: #666; font-size: 10px;">Source: ${event.source}</span><br>` : ''}
                         <hr style="margin: 5px 0;">
                         <span style="font-size: 13px;">${event.description}</span><br>
                         <hr style="margin: 5px 0;">
                         <em style="font-size: 12px; color: #34495e;"><strong>Impact:</strong> ${event.impact}</em>
+                        ${attackDetails}
+                        ${additionalInfo}
                         ${overlapInfo}
                     </div>
                 `;
@@ -2347,14 +2660,46 @@ function initializeCheckboxStates() {
     const showCities = document.getElementById('show-cities');
     const showMovements = document.getElementById('show-movements');
     
-    // Sync checkboxes with mapState
-    if (showAttacks) showAttacks.checked = mapState.showAttacks;
-    if (showPolitical) showPolitical.checked = mapState.showPolitical;
-    if (showSocial) showSocial.checked = mapState.showSocial;
-    if (showTerritory) showTerritory.checked = mapState.showTerritory;
-    if (showSettlements) showSettlements.checked = mapState.showSettlements;
-    if (showCities) showCities.checked = mapState.showCities;
-    if (showMovements) showMovements.checked = mapState.showMovements;
+    // Read checkbox states from HTML and sync with mapState
+    if (showAttacks) {
+        mapState.showAttacks = showAttacks.checked;
+        console.log('🔧 showAttacks.checked:', showAttacks.checked);
+    }
+    if (showPolitical) {
+        mapState.showPolitical = showPolitical.checked;
+        console.log('🔧 showPolitical.checked:', showPolitical.checked);
+    }
+    if (showSocial) {
+        mapState.showSocial = showSocial.checked;
+        console.log('🔧 showSocial.checked:', showSocial.checked);
+    }
+    if (showTerritory) {
+        mapState.showTerritory = showTerritory.checked;
+        console.log('🔧 showTerritory.checked:', showTerritory.checked);
+    }
+    if (showSettlements) {
+        mapState.showSettlements = showSettlements.checked;
+        console.log('🔧 showSettlements.checked:', showSettlements.checked);
+    }
+    if (showCities) {
+        mapState.showCities = showCities.checked;
+        console.log('🔧 showCities.checked:', showCities.checked);
+    }
+    if (showMovements) {
+        mapState.showMovements = showMovements.checked;
+        console.log('🔧 showMovements.checked:', showMovements.checked);
+    }
+    
+    console.log('🔧 Final mapState:', {
+        currentYear: mapState.currentYear,
+        showAttacks: mapState.showAttacks,
+        showPolitical: mapState.showPolitical,
+        showSocial: mapState.showSocial,
+        showTerritory: mapState.showTerritory,
+        showSettlements: mapState.showSettlements,
+        showCities: mapState.showCities,
+        showMovements: mapState.showMovements
+    });
 }
 
 // Initialize when DOM is loaded
