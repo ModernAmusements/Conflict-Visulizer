@@ -1642,7 +1642,8 @@ function createTimelineEvent(event, index) {
                 event.militaryClassification.affiliation || 'neutral',
                 { size: event.militaryClassification.size || 'squad' }
             );
-            const svgSymbol = natoLibrary.createSymbolSVG(symbol, 32, 32);
+            const symbolData = natoSymbolLibrary.generateSymbol(symbol.affiliation, symbol.unitType, 'unit');
+            const svgSymbol = symbolData.svg;
             militarySymbolHtml = `<div class="military-symbol-container">${svgSymbol}</div>`;
         } catch (error) {
             console.warn('Failed to create military symbol:', error);
@@ -1998,7 +1999,7 @@ function generateMilitarySymbolsLegend() {
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
     `;
     
-    // Add affiliation symbols - using same pattern as working functions
+    // Add affiliation symbols - using direct SVG creation like working functions
     affiliations.forEach(affiliation => {
         let frameIcon = '';
         if (affiliation.key === 'friendly') {

@@ -243,7 +243,7 @@ Events contain:
 
 ## 🚨 **CRITICAL MISTAKES MADE & LESSONS LEARNED**
 
-### **❌ SVG Attribute Validation Errors**
+### **❌ Symbol Library Function Call Error**
 **Mistake**: Created NATO symbols with string values and percentage coordinates
 ```javascript
 // ❌ WRONG - Invalid SVG attributes
@@ -265,7 +265,16 @@ touch test-symbol-generation.html
 **Root Cause**: Used debugging shortcuts instead of thinking through problems systematically
 **Lesson Added**: "Never create test files - analyze existing code directly"
 
-### **❌ Function Reference Without Implementation**
+### **❌ Symbol Library Function Call Error** ✅ FIXED
+
+**Mistake**: Called `natoLibrary.createSymbolSVG(symbol, 32, 32)` when function was `natoLibrary.generateSymbol()`
+- **Root Cause**: Incorrect function name used - should call the correct method in the library
+- **Location**: Line 1641 in `createTimelineEvent()` function
+- **Error Message**: `TypeError: natoLibrary.createSymbol is not a function`
+- **Solution Applied**: Changed to `natoSymbolLibrary.generateSymbol(symbol.affiliation, symbol.unitType, 'unit')` then used `symbolData.svg`
+- **Lesson**: Always verify function signatures in library before calling specific methods
+
+**Impact**: Prevented military symbols from displaying in timeline and map due to incorrect method call
 **Mistake**: Created case handler that called non-existent function
 ```javascript
 // ❌ WRONG - Function didn't exist
