@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -75,10 +76,20 @@
                         <label><input type="checkbox" id="show-settlements" checked> Settlements</label>
                         <label><input type="checkbox" id="show-cities" checked> Cities</label>
                         <label><input type="checkbox" id="show-movements" checked> Military Movements</label>
+                        <label><input type="checkbox" id="show-flags" checked> National Flags</label>
                     </div>
                 </div>
             </div>
-            <div id="map"></div>
+            <div id="map">
+                <!-- Left Side Legend Container -->
+                <div class="left-legend-container">
+                    <div class="legend-controls-row" id="left-legend-container">
+                        <div class="legend-content" id="left-legend-content">
+                            <!-- NATO symbols will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="timeline-slider-container">
                 <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1" class="timeline-slider">
                 <div class="slider-labels">
@@ -221,6 +232,10 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
+    <!-- Military Symbol Systems - Load in correct order -->
+    <script src="symbols.js"></script>
+    <script src="flags.js"></script>
+    <script src="clustering-system.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

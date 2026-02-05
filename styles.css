@@ -4,11 +4,678 @@
     box-sizing: border-box;
 }
 
-/* Custom marker styles */
-.custom-marker {
+/* Enhanced Military Map Legend */
+.military-map-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(20, 25, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 0;
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Left Legend Container */
+.left-legend-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(20, 25, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 0;
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px 12px 0 0;
+}
+
+.legend-header h4 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.legend-toggle {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.legend-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.legend-content {
+    padding: 16px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.legend-content.collapsed {
+    display: none;
+}
+
+.legend-section {
+    margin-bottom: 20px;
+}
+
+.legend-section:last-child {
+    margin-bottom: 0;
+}
+
+.legend-section h5 {
+    margin: 0 0 12px 0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.affiliation-legend,
+.unit-type-legend,
+.intensity-legend {
+    display: grid;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.symbol-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.legend-item span {
+    color: #e1e8ed;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+/* Frame preview styles */
+.friendly-frame svg,
+.hostile-frame svg,
+.neutral-frame svg,
+.unknown-frame svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Flags Legend */
+.flags-legend {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.flag-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.flag-legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.legend-flag-icon {
+    width: 32px;
+    height: 20px;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.legend-flag-label {
+    color: #e1e8ed;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Intensity Markers */
+.intensity-marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    flex-shrink: 0;
+    position: relative;
+}
+
+.low-intensity {
+    background: rgba(46, 204, 113, 0.8);
+    width: 16px;
+    height: 16px;
+}
+
+.medium-intensity {
+    background: rgba(241, 196, 15, 0.8);
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+}
+
+.high-intensity {
+    background: rgba(231, 76, 60, 0.8);
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(231, 76, 60, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+}
+
+/* Legend Controls */
+.legend-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-control-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.legend-control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.legend-control-btn.active {
+    background: rgba(52, 152, 219, 0.6);
+    border-color: rgba(52, 152, 219, 0.8);
+}
+
+/* Enhanced Military Markers */
+.enhanced-military-marker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.enhanced-military-marker:hover {
+    transform: scale(1.1);
+}
+
+.nato-marker-icon {
     background: transparent !important;
     border: none !important;
-    border-radius: 0 !important;
+}
+
+.nato-symbol-wrapper {
+    position: relative;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: filter 0.2s ease;
+}
+
+.enhanced-military-marker:hover .nato-symbol-wrapper {
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
+}
+
+.flag-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.flag-badge .flag-icon {
+    display: block;
+    width: 20px;
+    height: 13px;
+}
+
+/* Enhanced Popup Styles */
+.enhanced-popup {
+    max-width: 350px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.popup-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.popup-symbol {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.popup-info {
+    flex: 1;
+}
+
+.popup-info strong {
+    color: #2c3e50;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.popup-date {
+    color: #7f8c8d;
+    font-size: 12px;
+}
+
+.popup-flag {
+    flex-shrink: 0;
+}
+
+.popup-casualties,
+.popup-impact {
+    margin-top: 10px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.popup-casualties strong {
+    color: #2c3e50;
+}
+
+.popup-impact em {
+    color: #34495e;
+}
+
+.popup-military-details,
+.popup-attack-details {
+    margin-top: 10px;
+    padding: 8px;
+    background: #e8f4fd;
+    border-radius: 4px;
+    font-size: 11px;
+    border-left: 3px solid #2196f3;
+}
+
+.popup-attack-details {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+}
+
+/* Cluster Count Styles */
+.cluster-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pulse-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background: #e74c3c;
+    border-radius: 50%;
+    animation: pulse-indicator 2s infinite;
+}
+
+@keyframes pulse-indicator {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Cluster Events List */
+.cluster-events-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.cluster-more {
+    text-align: center;
+    padding: 5px;
+    font-style: italic;
+    color: #7f8c8d;
+    font-size: 11px;
+}
+
+.cluster-stat {
+    display: inline-block;
+    margin: 5px 10px 5px 0;
+    padding: 3px 8px;
+    background: #ecf0f1;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.cluster-summary {
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Event Flag in Popups */
+.event-flag {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .popup-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .enhanced-popup {
+        max-width: 280px;
+    }
+    
+    .cluster-events-list {
+        max-height: 150px;
+    }
+}
+
+/* Combined Legend Controls */
+.legend-controls-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.legend-switch {
+    display: flex;
+    gap: 4px;
+}
+
+.legend-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.legend-switch-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.legend-switch-btn.active {
+    background: rgba(52, 152, 219, 0.6);
+    border-color: rgba(52, 152, 219, 0.8);
+}
+
+.legend-switch-btn i {
+    font-size: 12px;
+}
+
+#combined-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.legacy-dropdown {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 11px;
+    margin-bottom: 12px;
+}
+
+/* Flag Icons */
+.flag-icon {
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.flag-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Flagged Military Markers */
+.flagged-military-marker {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.nato-symbol-container {
+    position: relative;
+}
+
+.flag-overlay {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Cluster Markers */
+.cluster-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cluster-marker:hover {
+    transform: scale(1.1);
+}
+
+.cluster-marker.low-intensity-cluster {
+    background: rgba(46, 204, 113, 0.8);
+    width: 30px;
+    height: 30px;
+}
+
+.cluster-marker.medium-intensity-cluster {
+    background: rgba(241, 196, 15, 0.8);
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+}
+
+.cluster-marker.high-intensity-cluster {
+    background: rgba(231, 76, 60, 0.8);
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+    animation: cluster-pulse-red 2s infinite;
+}
+
+@keyframes cluster-pulse-red {
+    0% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+}
+
+/* Cluster Popup Styles */
+.cluster-popup {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cluster-popup h6 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 4px;
+}
+
+.cluster-event-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.cluster-event-item:last-child {
+    border-bottom: none;
+}
+
+.cluster-event-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+.cluster-event-details {
+    font-size: 11px;
+    color: #7f8c8d;
+}
+
+.cluster-event-casualties {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+/* Legend Scrollbar Styling */
+.legend-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.legend-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Legend */
+@media (max-width: 768px) {
+    .military-map-legend {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 20px 0;
+        max-width: 100%;
+    }
+    
+    .flags-legend {
+        grid-template-columns: 1fr;
+    }
+    
+    .legend-controls {
+        flex-direction: column;
+    }
 }
 
 .custom-marker svg {
@@ -942,4 +1609,49 @@ footer {
     font-size: 1.08333em;
     min-height: 1px;
     font-weight: 600;
+}
+
+/* Legacy Legend Styling */
+.legacy-map-legend {
+    background: rgba(20, 25, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.legacy-map-legend label {
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.legacy-map-legend select {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.legacy-map-legend .note {
+    padding: 15px;
+    background: rgba(52, 152, 219, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+#legend-content-area {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-top: 10px;
 }

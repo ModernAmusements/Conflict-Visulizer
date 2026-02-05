@@ -1,172 +1,75 @@
-// Sample CSV data (first 20 entries for demonstration)
-const sampleCSVData = [
-    {
-        IncidentID: "0",
-        Date: "16/04/93",
-        Location: "West Bank",
-        AttackType: "Suicide attack",
-        Weapon: "Bomb",
-        TotalKilled: "2",
-        IsraelisKilled: "0",
-        PalestiniansKilled: "2",
-        TotalWounded: "9",
-        IsraelisWounded: "8",
-        TotalCasualties: "11",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "Van parked between two buses, one civilian, one military, at Moshad Mehola roadside cafeteria. Referred to as the first apparent suicide car-bomb attempt inside the territories. Used cooking gas canisters. # killed includes bomber himself",
-        Context: "Peace talks and Intifada, Palestinian requests to slow peace process",
-        TargetType: "Mixed"
-    },
-    {
-        IncidentID: "1",
-        Date: "21/11/92",
-        Location: "Israel",
-        AttackType: "Non-suicide attack",
-        Weapon: "Bomb",
-        TotalKilled: "0",
-        TotalWounded: "0",
-        TotalCasualties: "0",
-        ClaimedBy: "IQB w/ al-Aqsa Martyrs Brigade",
-        Description: "3 attackers drove a VW with cooking gas canisters to Tel Aviv. They failed to stop at a checkpoint and were followed/stopped by police/civil guard in Tel Aviv suburb Ramat Efal. Police detonated bomb safely, 2 perps arrested, 1 escaped.",
-        Context: "Peace talks, 1st Intifada",
-        TargetType: "Civilian"
-    },
-    {
-        IncidentID: "2",
-        Date: "07/12/92",
-        Location: "Gaza Strip",
-        AttackType: "Non-suicide attack",
-        Weapon: "Gun",
-        TotalKilled: "3",
-        IsraelisKilled: "3",
-        TotalWounded: "0",
-        TotalCasualties: "3",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "3 soldiers in a Jeep shot by gunmen. Also retaliatory: 3 Hamas activists killed week before.",
-        Context: "The attack commemorated the intifada anniversary, the founding of Hamas on December 14, 1987, and the deaths of three Hamas activists killed by soldiers last week.",
-        TargetType: "Military"
-    },
-    {
-        IncidentID: "3",
-        Date: "13/12/92",
-        Location: "Israel",
-        AttackType: "Kidnapping/Hostage-taking",
-        Weapon: "Other/NA",
-        TotalKilled: "1",
-        IsraelisKilled: "1",
-        TotalWounded: "0",
-        TotalCasualties: "1",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "A border police officer (Sgt-Maj Nissim Toledano) in Lod was kidnapped. Hamas members gave his ID card to Red Crescent workers in al-Bira near Ramallah with a letter demanding Sheikh Yassin's release. Found dead Dec 15.",
-        Context: "Sheikh Yassin was serving life in prison on terrorism charges. Resulted in deportation to southern Lebanon of over 400 Hamas activists.",
-        TargetType: "Govt"
-    },
-    {
-        IncidentID: "4",
-        Date: "18/09/92",
-        Location: "Gaza Strip",
-        AttackType: "Non-suicide attack",
-        Weapon: "Knife",
-        TotalKilled: "0",
-        TotalWounded: "1",
-        IsraelisWounded: "1",
-        TotalCasualties: "1",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "A hitchhiking soldier was attacked by Palestinians dressed as Orthodox Jews. The terrorists took Alon Karavani's M-16 rifle and uniform before stabbing him and leaving him for dead.",
-        Context: "First Intifada",
-        TargetType: "Military"
-    },
-    {
-        IncidentID: "5",
-        Date: "03/01/93",
-        Location: "Israel",
-        AttackType: "Non-suicide attack",
-        Weapon: "Other/NA",
-        TotalKilled: "1",
-        IsraelisKilled: "1",
-        TotalWounded: "0",
-        TotalCasualties: "1",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "A police spokesman said Haim Nahmani, an agent for the domestic Shin Beth intelligence service, was stabbed and beaten with a hammer in a home in West Jerusalem while he was on assignment.",
-        Context: "Background: expulsion of 415 Hamas activists to S. Lebanon",
-        TargetType: "Govt"
-    },
-    {
-        IncidentID: "6",
-        Date: "31/01/93",
-        Location: "Gaza Strip",
-        AttackType: "Non-suicide attack",
-        Weapon: "Gun",
-        TotalKilled: "2",
-        IsraelisKilled: "2",
-        TotalWounded: "1",
-        IsraelisWounded: "1",
-        TotalCasualties: "3",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "Two Hamas gunmen hid in bushes waiting to open fire on an army predawn patrol. Two soldiers were killed, a third was wounded.",
-        Context: "Just over a month after mass deportation to s. Lebanon of Hamas activists (400+), continuing peace process.",
-        TargetType: "Military"
-    },
-    {
-        IncidentID: "7",
-        Date: "12/02/93",
-        Location: "Gaza Strip",
-        AttackType: "Non-suicide attack",
-        Weapon: "Gun",
-        TotalKilled: "0",
-        TotalWounded: "2",
-        IsraelisWounded: "2",
-        TotalCasualties: "2",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "Two Israeli soldiers were shot and wounded in Gaza City.",
-        Context: "Was carried out in revenge for the army's destruction of several Palestinian homes with anti-tank rockets, HAMAS said in a communique issued in Amman.",
-        TargetType: "Military"
-    },
-    {
-        IncidentID: "8",
-        Date: "12/05/93",
-        Location: "West Bank",
-        AttackType: "Non-suicide attack",
-        Weapon: "Knife",
-        TotalKilled: "0",
-        TotalWounded: "2",
-        IsraelisWounded: "2",
-        TotalCasualties: "2",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "A Hamas commando attacked the soldiers with knives, stole their weapons, and returned safely.",
-        Context: "HAMAS said the attack was to avenge the killing of six of its militants by Israeli soldiers in the Gaza Strip.",
-        TargetType: "Military"
-    },
-    {
-        IncidentID: "9",
-        Date: "01/07/93",
-        Location: "West Bank",
-        AttackType: "Kidnapping/Hostage-taking",
-        Weapon: "Gun",
-        TotalKilled: "4",
-        IsraelisKilled: "2",
-        PalestiniansKilled: "2",
-        TotalWounded: "3",
-        IsraelisWounded: "1",
-        PalestiniansWounded: "2",
-        TotalCasualties: "7",
-        ClaimedBy: "Hamas/Qassam Brigades",
-        Description: "3 Militants opened fire on a bus. 1 Israeli woman, the driver, and a Palestinian man later reported to be a Hamas activist wounded (woman died next day). 2 of them then comandeered an Israeli woman's car w/ her in it -- all 3 then killed in gunfire.",
-        Context: "Wanted to hold the passengers hostage to demand the release of 100 Palestinian prisoners, including 50 HAMAS member and Sheikh Abdel Karim Obeid, a Hezbollah leader kidnapped by Israeli commandos in 1989.",
-        TargetType: "Civilian"
-    }
-];
+// CSV data will be loaded dynamically
+let csvDataLoaded = false;
+let hamasAttackEvents = [];
 
-// Function to convert CSV data to timeline events
-function parseHamasAttacksFromCSV() {
+// Function to parse CSV text into array of objects
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split('\t');
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        if (lines[i].trim() === '') continue;
+        
+        const values = lines[i].split('\t');
+        const row = {};
+        
+        headers.forEach((header, index) => {
+            // Clean up quotes and whitespace
+            let value = values[index] || '';
+            if (value.startsWith('"') && value.endsWith('"')) {
+                value = value.slice(1, -1);
+            }
+            // Replace any remaining quotes
+            value = value.replace(/""/g, '"').replace(/"/g, '');
+            
+            // Clean up header names for JavaScript
+            let cleanHeader = header.trim().replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+            row[cleanHeader] = value.trim();
+        });
+        
+        data.push(row);
+    }
+    
+    return data;
+}
+
+// Function to load and parse CSV data
+async function loadHamasAttacksCSV() {
+    if (csvDataLoaded) return hamasAttackEvents;
+    
+    try {
+        console.log('🔄 Loading Hamas attacks CSV...');
+        const response = await fetch('Hamasterrorattacks.csv');
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
+        
+        console.log('📊 CSV loaded:', parsedData.length, 'entries');
+        
+        hamasAttackEvents = parsedData.map(row => convertCSVToEvent(row));
+        csvDataLoaded = true;
+        
+        console.log('✅ Converted to events:', hamasAttackEvents.length, 'attack events');
+        return hamasAttackEvents;
+        
+    } catch (error) {
+        console.error('❌ Error loading CSV:', error);
+        return [];
+    }
+}
+
+// Function to convert CSV row to event object
+function convertCSVToEvent(row) {
     // Helper function to extract year from date format
     function extractYear(dateStr) {
+        if (!dateStr) return 1993; // Default year
         if (dateStr.includes('/')) {
             const parts = dateStr.split('/');
             const year = parseInt(parts[2]);
+            if (isNaN(year)) return 1993;
             return year >= 90 ? 1900 + year : 2000 + year;
         }
-        return parseInt(dateStr);
+        return parseInt(dateStr) || 1993;
     }
 
     // Helper function to get coordinates for locations
@@ -186,8 +89,8 @@ function parseHamasAttacksFromCSV() {
             'Hadera': [32.4342, 34.9190],
             'Kfar Saba': [32.1760, 34.9076],
             'Lod': [31.9525, 34.8989],
-            'Ramat Efal': [32.0853, 34.8418],
-            'Moshad Mehola': [32.0833, 35.5833]
+            'RamatEfal': [32.0853, 34.8418],
+            'MoshadMehola': [32.0833, 35.5833]
         };
         
         for (const [key, coords] of Object.entries(locationMap)) {
@@ -200,64 +103,313 @@ function parseHamasAttacksFromCSV() {
 
     // Helper function to determine intensity based on casualties
     function getIntensity(totalKilled, totalWounded) {
-        const total = parseInt(totalKilled || 0) + parseInt(totalWounded || 0);
+        const killed = parseInt(totalKilled) || 0;
+        const wounded = parseInt(totalWounded) || 0;
+        const total = killed + wounded;
         if (total >= 20) return 'high';
         if (total >= 5) return 'medium';
         return 'low';
     }
 
-    const events = [];
-
-    console.log('🔍 Processing CSV data:', sampleCSVData.length, 'entries');
-
-    sampleCSVData.forEach((row, index) => {
-        const year = extractYear(row.Date);
-        const coordinates = getCoordinates(row.Location);
-        const intensity = getIntensity(row.TotalKilled, row.TotalWounded);
-        
-        const event = {
-            date: year.toString(),
-            title: `Hamas Attack: ${row.AttackType} in ${row.Location}`,
-            description: row.Description || `${row.AttackType} using ${row.Weapon}. Total casualties: ${row.TotalCasualties}`,
-            category: 'military',
-            era: year <= 2005 ? '1987-2005' : '2006-2023',
-            impact: row.Context || `Attack resulted in ${row.TotalKilled} killed and ${row.TotalWounded} wounded`,
-            geography: {
-                type: 'attack',
-                coordinates: coordinates,
-                affectedArea: [
-                    [coordinates[0] - 0.2, coordinates[1] - 0.2],
-                    [coordinates[0] + 0.2, coordinates[1] + 0.2]
-                ],
-                intensity: intensity,
-                icon: 'attack'
-            },
-            territoryControl: { israeli: 85, palestinian: 15, hamas: 2 },
-            source: 'Hamas Attacks Database',
-            casualties: {
-                totalKilled: parseInt(row.TotalKilled) || 0,
-                israelisKilled: parseInt(row.IsraelisKilled) || 0,
-                palestiniansKilled: parseInt(row.PalestiniansKilled) || 0,
-                totalWounded: parseInt(row.TotalWounded) || 0,
-                israelisWounded: parseInt(row.IsraelisWounded) || 0,
-                palestiniansWounded: parseInt(row.PalestiniansWounded) || 0,
-                totalCasualties: parseInt(row.TotalCasualties) || 0
-            },
-            attackDetails: {
-                type: row.AttackType,
-                weapon: row.Weapon,
-                claimedBy: row.ClaimedBy,
-                targetType: row.TargetType
-            }
-        };
-
-        events.push(event);
-    });
-
-    console.log('✅ Generated', events.length, 'Hamas attack events');
-    return events;
+    const year = extractYear(row.Date);
+    const coordinates = getCoordinates(row.Location);
+    const intensity = getIntensity(row.Totalkilled, row.Totalwounded);
+    
+    return {
+        date: year.toString(),
+        title: `Hamas Attack: ${row.Attacktype || 'Unknown Attack'} in ${row.Location}`,
+        description: (row.Description || `${row.Attacktype || 'Attack'} using ${row.Weapon || 'Unknown Weapon'}. Total casualties: ${row.Totalcasualties || '0'}`).substring(0, 300),
+        category: 'military',
+        era: year <= 2005 ? '1987-2005' : '2006-2023',
+        impact: (row.Context || `Attack resulted in ${row.Totalkilled || '0'} killed and ${row.Totalwounded || '0'} wounded`).substring(0, 200),
+        geography: {
+            type: 'attack',
+            coordinates: coordinates,
+            affectedArea: [
+                [coordinates[0] - 0.2, coordinates[1] - 0.2],
+                [coordinates[0] + 0.2, coordinates[1] + 0.2]
+            ],
+            intensity: intensity,
+            icon: 'attack'
+        },
+        territoryControl: { israeli: 85, palestinian: 15, hamas: 2 },
+        source: 'Hamas Attacks Database',
+        casualties: {
+            totalKilled: parseInt(row.Totalkilled) || 0,
+            israelisKilled: parseInt(row.Israeliskilled) || 0,
+            palestiniansKilled: parseInt(row.Palestinianskilled) || 0,
+            totalWounded: parseInt(row.Totalwounded) || 0,
+            israelisWounded: parseInt(row.Israeliswounded) || 0,
+            palestiniansWounded: parseInt(row.Palestinianswounded) || 0,
+            totalCasualties: parseInt(row.Totalcasualties) || 0
+        },
+        attackDetails: {
+            type: row.Attacktype || 'Unknown',
+            weapon: row.Weapon || 'Unknown',
+            claimedBy: row.Claimedby || 'Unknown',
+            targetType: row.Targettype || 'Unknown'
+        }
+    };
 }
 
+// Function to get all events including CSV attacks
+async function getAllEvents() {
+    const csvEvents = await loadHamasAttacksCSV(); // Use async loader
+    const allEvents = [...timelineEvents, ...csvEvents];
+    
+    // Enhance all events with military classifications
+    allEvents.forEach(event => enhanceEventWithMilitaryData(event));
+    
+    console.log('📊 Total events combined:', allEvents.length);
+    console.log('📊 Hamas attacks:', csvEvents.length);
+    console.log('📊 Timeline events:', timelineEvents.length);
+    console.log('🎯 Enhanced all events with military classifications');
+    
+    return allEvents;
+}
+
+// Synchronous version for functions that need immediate access
+function getAllEventsSync() {
+    if (csvDataLoaded) {
+        return [...timelineEvents, ...hamasAttackEvents];
+    }
+    // If CSV not loaded yet, return just timeline events
+    return timelineEvents;
+}
+
+// Detect which nations are involved in an event
+function detectInvolvedNations(event) {
+    const nations = [];
+    const eventText = (event.title + ' ' + event.description + ' ' + (event.attackDetails?.claimedBy || '')).toLowerCase();
+    
+    // Check for Israeli involvement
+    if (eventText.includes('israel') || 
+        eventText.includes('idf') || 
+        eventText.includes('israeli') ||
+        (event.territoryControl && event.territoryControl.israeli > 50) ||
+        (event.casualties && event.casualties.israelisKilled > 0) ||
+        (event.casualties && event.casualties.israelisWounded > 0)) {
+        nations.push('israel');
+    }
+    
+    // Check for Palestinian involvement
+    if (eventText.includes('palestin') || 
+        eventText.includes('gaza') ||
+        eventText.includes('west bank') ||
+        (event.territoryControl && event.territoryControl.palestinian > 10) ||
+        (event.casualties && event.casualties.palestiniansKilled > 0) ||
+        (event.casualties && event.casualties.palestiniansWounded > 0) ||
+        (event.attackDetails && event.attackDetails.claimedBy && event.attackDetails.claimedBy.toLowerCase().includes('hamas'))) {
+        nations.push('palestine');
+    }
+    
+    // Check for Hamas specifically
+    if (eventText.includes('hamas') || 
+        (event.attackDetails && event.attackDetails.claimedBy && event.attackDetails.claimedBy.toLowerCase().includes('hamas'))) {
+        if (!nations.includes('palestine')) {
+            nations.push('palestine');
+        }
+    }
+    
+    // Check for Egyptian involvement
+    if (eventText.includes('egypt') || eventText.includes('egyptian')) {
+        nations.push('egypt');
+    }
+    
+    // Check for Syrian involvement
+    if (eventText.includes('syria') || eventText.includes('syrian')) {
+        nations.push('syria');
+    }
+    
+    // Check for Jordanian involvement
+    if (eventText.includes('jordan') || eventText.includes('jordanian')) {
+        nations.push('jordan');
+    }
+    
+    // Check for Lebanese involvement
+    if (eventText.includes('leban') || eventText.includes('hezbollah')) {
+        nations.push('lebanon');
+    }
+    
+    // Check for US involvement
+    if (eventText.includes('united states') || eventText.includes('usa') || eventText.includes('america')) {
+        nations.push('usa');
+    }
+    
+    // Check for UK involvement
+    if (eventText.includes('britain') || eventText.includes('uk') || eventText.includes('united kingdom')) {
+        nations.push('uk');
+    }
+    
+    // Check for UN involvement
+    if (eventText.includes('united nations') || eventText.includes('un ')) {
+        nations.push('un');
+    }
+    
+    return [...new Set(nations)]; // Remove duplicates
+}
+
+function createFlagOverlayForEvent(event, markerSize = 40) {
+    const involvedNations = detectInvolvedNations(event);
+    if (involvedNations.length === 0) return '';
+    
+    if (typeof window.FlagSystem === 'undefined') {
+        console.warn('FlagSystem not available');
+        return '';
+    }
+    
+    const flagSystem = new window.FlagSystem();
+    const flagElements = involvedNations.slice(0, 3).map(nation => 
+        flagSystem.getFlagElement(nation, 12)
+    ).join('');
+    
+    return `<div class="event-flag-overlay" style="...">${flagElements}</div>`;
+}
+
+
+// Enhanced event data processor with military classifications
+function enhanceEventWithMilitaryData(event) {
+    if (!event) return event;
+    
+    // Add military classification metadata
+    event.militaryClassification = {
+        affiliation: 'unknown',
+        unitType: 'unknown',
+        nation: 'unknown',
+        equipment: 'unknown',
+        size: 'unit',
+        status: 'active'
+    };
+    
+    // Analyze event to determine military details
+    const title = (event.title || '').toLowerCase();
+    const description = (event.description || '').toLowerCase();
+    const category = (event.category || '').toLowerCase();
+    
+    // Determine affiliation based on event content
+    if (title.includes('hamas') || title.includes('palestinian') || 
+        description.includes('hamas') || description.includes('palestinian')) {
+        event.militaryClassification.affiliation = 'hostile'; // From Israeli perspective
+        event.militaryClassification.nation = 'palestine';
+    } else if (title.includes('idf') || title.includes('israeli') || 
+               description.includes('idf') || description.includes('israeli')) {
+        event.militaryClassification.affiliation = 'friendly'; // Israeli perspective
+        event.militaryClassification.nation = 'israel';
+    } else if (title.includes('egypt') || title.includes('syrian') || 
+               title.includes('jordan') || title.includes('lebanon')) {
+        event.militaryClassification.affiliation = 'neutral';
+        event.militaryClassification.nation = 
+            title.includes('egypt') ? 'egypt' :
+            title.includes('syria') ? 'syria' :
+            title.includes('jordan') ? 'jordan' : 'lebanon';
+    }
+    
+    // Determine unit type based on event characteristics
+    if (event.geography && event.geography.type) {
+        const geoType = event.geography.type.toLowerCase();
+        
+        switch(geoType) {
+            case 'attack':
+                if (title.includes('bombing') || title.includes('suicide') || 
+                    title.includes('explosive')) {
+                    event.militaryClassification.unitType = 'infantry';
+                    event.militaryClassification.equipment = 'explosives';
+                } else if (title.includes('armor') || title.includes('tank') || 
+                           title.includes('vehicle')) {
+                    event.militaryClassification.unitType = 'armor';
+                    event.militaryClassification.equipment = 'vehicles';
+                } else if (title.includes('artillery') || title.includes('mortar') || 
+                           title.includes('rocket')) {
+                    event.militaryClassification.unitType = 'artillery';
+                    event.militaryClassification.equipment = 'artillery';
+                } else if (title.includes('ambush') || title.includes('raid')) {
+                    event.militaryClassification.unitType = 'recon';
+                    event.militaryClassification.equipment = 'small_arms';
+                } else {
+                    event.militaryClassification.unitType = 'infantry';
+                    event.militaryClassification.equipment = 'small_arms';
+                }
+                break;
+                
+            case 'settlement':
+                event.militaryClassification.unitType = 'settlement';
+                event.militaryClassification.equipment = 'civilian';
+                break;
+                
+            case 'political':
+                event.militaryClassification.unitType = 'headquarters';
+                event.militaryClassification.equipment = 'command';
+                break;
+                
+            case 'territory_change':
+                event.militaryClassification.unitType = 'checkpoint';
+                event.militaryClassification.equipment = 'security';
+                break;
+                
+            case 'social':
+                event.militaryClassification.unitType = 'observation_post';
+                event.militaryClassification.equipment = 'surveillance';
+                break;
+                
+            default:
+                event.militaryClassification.unitType = 'infantry';
+                event.militaryClassification.equipment = 'small_arms';
+        }
+    }
+    
+    // Special handling for known operations
+    if (title.includes('six-day war') || title.includes('yom kippur')) {
+        event.militaryClassification.unitType = 'armor';
+        event.militaryClassification.equipment = 'combined_arms';
+        event.militaryClassification.size = 'division';
+    } else if (title.includes('intifada') || title.includes('uprising')) {
+        event.militaryClassification.unitType = 'infantry';
+        event.militaryClassification.equipment = 'small_arms';
+        event.militaryClassification.size = 'battalion';
+    } else if (title.includes('operation')) {
+        event.militaryClassification.unitType = 'infantry';
+        event.militaryClassification.equipment = 'combined_arms';
+        event.militaryClassification.size = 'brigade';
+    }
+    
+    // Determine unit size based on casualties if available
+    if (event.casualties && event.casualties.totalCasualties) {
+        const casualties = event.casualties.totalCasualties;
+        if (casualties >= 100) {
+            event.militaryClassification.size = 'division';
+        } else if (casualties >= 50) {
+            event.militaryClassification.size = 'brigade';
+        } else if (casualties >= 20) {
+            event.militaryClassification.size = 'battalion';
+        } else if (casualties >= 10) {
+            event.militaryClassification.size = 'company';
+        } else if (casualties >= 5) {
+            event.militaryClassification.size = 'platoon';
+        } else {
+            event.militaryClassification.size = 'squad';
+        }
+    }
+    
+    // Add intensity calculation
+    if (event.casualties) {
+        const total = event.casualties.totalCasualties || 0;
+        if (total >= 20) {
+            event.militaryClassification.intensity = 'high';
+        } else if (total >= 5) {
+            event.militaryClassification.intensity = 'medium';
+        } else {
+            event.militaryClassification.intensity = 'low';
+        }
+    } else {
+        event.militaryClassification.intensity = 'low';
+    }
+    
+    return event;
+}
+
+// parseHamasAttacksFromCSV function removed - using async CSV loading instead
+
+// Enhanced timeline events with military classifications
 const timelineEvents = [
     // Early Period (1900-1947)
     {
@@ -1396,15 +1548,7 @@ const timelineEvents = [
     }
 ];
 
-// Combine timeline events with CSV attack data
-function getAllEvents() {
-    const csvEvents = parseHamasAttacksFromCSV();
-    const allEvents = [...timelineEvents, ...csvEvents];
-    console.log('📊 Total events combined:', allEvents.length);
-    console.log('📊 Hamas attacks:', csvEvents.length);
-    console.log('📊 Timeline events:', timelineEvents.length);
-    return allEvents;
-}
+
 
 // Strategic Map Variables
 let mapContainer;
@@ -1427,14 +1571,14 @@ let mapState = {
 };
 
 // Initialize the timeline
-function initializeTimeline() {
+async function initializeTimeline() {
     const timelineContainer = document.getElementById('timeline');
     
     // Clear existing content
     timelineContainer.innerHTML = '';
     
-    // Get all events including CSV attacks
-    const allEvents = getAllEvents();
+    // Get all events including CSV attacks (now async)
+    const allEvents = await getAllEvents();
     
     // Create timeline events
     allEvents.forEach((event, index) => {
@@ -1543,7 +1687,7 @@ function observeTimelineEvents() {
 }
 
 // Initialize Strategic Map
-function initializeMap() {
+async function initializeMap() {
     mapContainer = document.getElementById('map');
     
     // Check if Leaflet is available
@@ -1565,12 +1709,19 @@ function initializeMap() {
     // Add military grid overlay
     addMilitaryGrid();
     
-    // Add legend
+    // Add enhanced NATO legend (primary)
+    if (typeof setupEnhancedLegend === 'function') {
+        setupEnhancedLegend();
+    } else {
+        console.warn('setupEnhancedLegend function not available yet');
+    }
+    
+    // Add dual legend with dropdown (secondary)  
     addMapLegend();
     
     setupMapControls();
     console.log('🚀 Initializing map with year 1994');
-    updateMapForYear(1994); // Start at 1994 to show Hamas attacks
+    await updateMapForYear(1994); // Start at 1994 to show Hamas attacks
 }
 
 // Add military grid overlay
@@ -1647,63 +1798,169 @@ const militaryFactions = {
 };
 
 // Add comprehensive map legend
+// Dual legend system: Enhanced NATO legend + Original military factions dropdown
 function addMapLegend() {
+    // Enhanced NATO legend is already in HTML, just initialize it
+    if (typeof setupEnhancedLegend === 'function') {
+        setupEnhancedLegend();
+    }
+    
+    // Original legend as dropdown for compatibility
     const legend = L.control({ position: 'topright' });
     
     legend.onAdd = function(map) {
-        const div = L.DomUtil.create('div', 'map-legend');
-        console.log('Creating legend...');
-        const legendContent = `<div style="background: rgba(44, 62, 80, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 240px; max-height: 600px; overflow-y: auto;">
-            <div style="margin-bottom: 8px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">TERRITORY CONTROL</div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(52, 152, 219, 0.3); border: 2px solid rgba(52, 152, 219, 0.7); margin-right: 5px;"></div><span>Israeli Control</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(155, 89, 182, 0.3); border: 2px solid rgba(155, 89, 182, 0.7); margin-right: 5px;"></div><span>Palestinian Control</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><div style="width: 12px; height: 12px; background: rgba(231, 76, 60, 0.4); border: 2px solid rgba(231, 76, 60, 0.8); margin-right: 5px;"></div><span>Hamas Control</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 6px;"><div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 5px;"></div><span>Occupied Areas</span></div>
-            <div style="margin-bottom: 6px; font-weight: bold; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">EVENT MARKERS</div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/></svg><span>Military/Attack</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,20 2,20" fill="#dc2626" stroke="white" stroke-width="1"/></svg><span>Hamas Attacks</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/></svg><span>Political Events</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/></svg><span>Social Events</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/></svg><span>Settlements</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/></svg><span>Territory Changes</span></div>
-            <div style="display: flex; align-items: center; margin-bottom: 4px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 5px;"><circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/></svg><span>Major Cities</span></div>
-
-            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 10px; color: #9ca3af;">
-                <div style="font-weight: bold; margin-bottom: 5px; text-align: center;">MILITARY FACTIONS:</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 9px;">
-                    ${Object.entries(militaryFactions).map(([key, faction]) => {
-                        let icon = '';
-                        if (faction.symbol === '★') {
-                            icon = `<polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                        } else if (faction.symbol === '▲') {
-                            icon = `<polygon points="12,2 22,20 2,20" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                        } else if (faction.symbol === '●') {
-                            icon = `<circle cx="12" cy="12" r="8" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                        } else if (faction.symbol === '⬟') {
-                            icon = `<polygon points="12,2 22,12 12,22 2,12" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                        } else if (faction.symbol === '⬢') {
-                            icon = `<polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                        }
-                        return `<div style="display: flex; align-items: center;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 4px;">${icon}</svg><span>${faction.name}</span></div>`;
-                    }).join('')}
+        const div = L.DomUtil.create('div', 'legacy-map-legend');
+        
+        const legendContent = `
+            <div style="background: rgba(44, 62, 80, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 220px;">
+                <div style="margin-bottom: 12px;">
+                    <label for="legend-dropdown" style="display: block; margin-bottom: 5px; font-weight: bold;">Legend Options:</label>
+                    <select id="legend-dropdown" style="width: 100%; padding: 5px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 4px;">
+                        <option value="enhanced">Military Symbols (NEW)</option>
+                        <option value="territory">Territory Control</option>
+                        <option value="military">Military Factions</option>
+                        <option value="events">Event Types</option>
+                    </select>
+                </div>
+                
+                <div id="legend-content-area">
+                    <!-- Enhanced NATO symbols will be inserted here by default -->
                 </div>
             </div>
-            <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
-                Total Events: ${getAllEvents().length}
-            </div>
-            <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; text-align: center; font-size: 9px;">
-                TEST: Military Factions Section
-            </div>
-        </div>`;
-        console.log('Legend content created, length:', legendContent.length);
-        console.log('Factions section included:', legendContent.includes('MILITARY FACTIONS:'));
-        console.log('TEST section included:', legendContent.includes('TEST: Military Factions Section'));
+        `;
+        
         div.innerHTML = legendContent;
-        console.log('Legend innerHTML set');
+        
+        // Setup dropdown listener
+        const dropdown = div.querySelector('#legend-dropdown');
+        const contentArea = div.querySelector('#legend-content-area');
+        
+        dropdown.addEventListener('change', (e) => {
+            switch(e.target.value) {
+                case 'enhanced':
+                    contentArea.innerHTML = '<div class="note" style="padding: 10px; background: rgba(52, 152, 219, 0.2); border-radius: 4px; text-align: center;">Enhanced NATO symbols legend is displayed in main panel (top-right)</div>';
+                    break;
+                case 'territory':
+                    contentArea.innerHTML = generateTerritoryLegend();
+                    break;
+                case 'military':
+                    contentArea.innerHTML = generateMilitaryFactionsLegend();
+                    break;
+                case 'events':
+                    contentArea.innerHTML = generateEventTypesLegend();
+                    break;
+            }
+        });
+        
+        // Show enhanced option by default
+        contentArea.innerHTML = '<div class="note" style="padding: 10px; background: rgba(52, 152, 219, 0.2); border-radius: 4px; text-align: center;">Enhanced NATO symbols legend is displayed in main panel (top-right)</div>';
+        
         return div;
     };
-
+    
     legend.addTo(mapState.map);
+}
+    
+// Generate territory control legend content
+function generateTerritoryLegend() {
+    return `
+        <div>
+            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">TERRITORY CONTROL</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: rgba(52, 152, 219, 0.3); border: 2px solid rgba(52, 152, 219, 0.7); margin-right: 8px;"></div>
+                    <span>Israeli Control</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: rgba(155, 89, 182, 0.3); border: 2px solid rgba(155, 89, 182, 0.7); margin-right: 8px;"></div>
+                    <span>Palestinian Control</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: rgba(231, 76, 60, 0.4); border: 2px solid rgba(231, 76, 60, 0.8); margin-right: 8px;"></div>
+                    <span>Hamas Control</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 8px;"></div>
+                    <span>Occupied Areas</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Generate military factions legend content
+function generateMilitaryFactionsLegend() {
+    return `
+        <div>
+            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">MILITARY FACTIONS</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; font-size: 9px;">
+                ${Object.entries(militaryFactions).map(([key, faction]) => {
+                    let icon = '';
+                    if (faction.symbol === '★') {
+                        icon = `<polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                    } else if (faction.symbol === '▲') {
+                        icon = `<polygon points="12,2 22,20 2,20" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                    } else if (faction.symbol === '●') {
+                        icon = `<circle cx="12" cy="12" r="8" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
+                    }
+                    return `<div style="display: flex; align-items: center; margin-bottom: 8px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">${icon}</svg><span>${faction.name}</span></div>`;
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// Generate event types legend content
+function generateEventTypesLegend() {
+    return `
+        <div>
+            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">EVENT MARKERS</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 9px;">
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Military/Attack</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <polygon points="12,2 22,20 2,20" fill="#dc2626" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Hamas Attacks</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Political Events</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Social Events</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Settlements</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Territory Changes</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span>Major Cities</span>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // Setup map control listeners
@@ -1728,51 +1985,74 @@ function setupMapControls() {
     const showMovements = document.getElementById('show-movements');
     
     if (showAttacks) {
-        showAttacks.addEventListener('change', (e) => {
+        showAttacks.addEventListener('change', async (e) => {
             mapState.showAttacks = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showPolitical) {
-        showPolitical.addEventListener('change', (e) => {
+        showPolitical.addEventListener('change', async (e) => {
             mapState.showPolitical = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showSocial) {
-        showSocial.addEventListener('change', (e) => {
+        showSocial.addEventListener('change', async (e) => {
             mapState.showSocial = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showTerritory) {
-        showTerritory.addEventListener('change', (e) => {
+        showTerritory.addEventListener('change', async (e) => {
             mapState.showTerritory = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showSettlements) {
-        showSettlements.addEventListener('change', (e) => {
+        showSettlements.addEventListener('change', async (e) => {
             mapState.showSettlements = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showCities) {
-        showCities.addEventListener('change', (e) => {
+        showCities.addEventListener('change', async (e) => {
             mapState.showCities = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
         });
     }
     
     if (showMovements) {
-        showMovements.addEventListener('change', (e) => {
+        showMovements.addEventListener('change', async (e) => {
             mapState.showMovements = e.target.checked;
-            updateMapForYear(mapState.currentYear);
+            await updateMapForYear(mapState.currentYear);
+        });
+    }
+    
+    // Flag toggle control
+    const showFlags = document.getElementById('show-flags');
+    if (showFlags) {
+        // Initialize clusterState if it doesn't exist
+        if (!window.clusterState) {
+            window.clusterState = {
+                enabled: true,
+                showFlags: showFlags.checked,
+                clusters: [],
+                minClusterSize: 30,
+                currentZoom: 7
+            };
+        } else {
+            window.clusterState.showFlags = showFlags.checked;
+        }
+        
+        showFlags.addEventListener('change', async (e) => {
+            window.clusterState.showFlags = e.target.checked;
+            console.log('🏳 Flag toggle:', e.target.checked);
+            await updateMapForYear(mapState.currentYear);
         });
     }
 }
@@ -1819,11 +2099,11 @@ function pauseMapAnimation() {
 }
 
 // Handle slider change
-function handleSliderChange(e) {
+async function handleSliderChange(e) {
     mapState.currentYear = parseInt(e.target.value);
     const yearDisplay = document.getElementById('current-year');
     if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
-    updateMapForYear(mapState.currentYear);
+    await updateMapForYear(mapState.currentYear);
 }
 
 // Handle speed change
@@ -1849,7 +2129,7 @@ function getEventYear(dateString) {
 }
 
 // Update map for specific year with recursion prevention
-function updateMapForYear(year) {
+async function updateMapForYear(year) {
     console.log('🔄 updateMapForYear called with year:', year);
     
     // Prevent recursive calls
@@ -1881,8 +2161,8 @@ function updateMapForYear(year) {
         mapState.cityLayer = L.layerGroup();
         mapState.movementLayer = L.layerGroup();
         
-        // Get events for this year and earlier
-        const allEvents = getAllEvents();
+        // Get events for this year and earlier (now async)
+        const allEvents = await getAllEvents();
         const relevantEvents = allEvents.filter(event => {
             const eventYear = getEventYear(event.date);
             return eventYear <= year;
@@ -2249,12 +2529,44 @@ function drawAllEventMarkers(events) {
                     event.geography.coordinates[1] + lngOffset
                 ];
                 
+                // Create flag overlay if flags are enabled
+                const flagOverlay = (clusterState && clusterState.showFlags) ? createFlagOverlayForEvent(event) : '';
+                
                 const marker = L.marker(
                     adjustedCoords, 
                     {
-                        icon: createMarkerIcon(markerType, markerColor, 20, event.geography.intensity)
+                    icon: (typeof createEnhancedMilitaryMarker === 'function') 
+                        ? (() => {
+                            const baseIcon = createEnhancedMilitaryMarker(event, {
+                                showFlags: false, // We'll add our own flags
+                                enableClustering: false
+                            });
+                            
+                            // Add flag overlay to the icon
+                            if (flagOverlay) {
+                                const wrapper = document.createElement('div');
+                                wrapper.style.position = 'relative';
+                                wrapper.innerHTML = baseIcon.options.html + flagOverlay;
+                                return L.divIcon({
+                                    html: wrapper.innerHTML,
+                                    className: 'enhanced-military-marker-with-flags',
+                                    iconSize: [40, 40],
+                                    iconAnchor: [20, 20]
+                                });
+                            }
+                            return baseIcon;
+                        })()
+                        : L.divIcon({
+                            html: `<div class="basic-marker" style="background: ${markerColor}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; position: relative;">${flagOverlay}</div>`,
+                            className: 'basic-marker-icon-with-flags',
+                            iconSize: flagOverlay ? [24, 24] : [16, 16],
+                            iconAnchor: flagOverlay ? [12, 12] : [8, 8]
+                        })
                     }
                 );
+                
+                // Detect involved nations for this event
+                const involvedNations = detectInvolvedNations(event);
                 
                 // Create enhanced popup content with overlap information
                 const overlapInfo = group.length > 1 ? 
@@ -2282,6 +2594,13 @@ function drawAllEventMarkers(events) {
                         • Claimed by: ${event.attackDetails.claimedBy}<br>
                         • Target: ${event.attackDetails.targetType}
                     </div>` : '';
+
+                // Nations involved information
+                const nationsInfo = involvedNations.length > 0 ? 
+                    `<div style="margin-top: 5px; padding: 5px; background: rgba(52, 152, 219, 0.1); border-radius: 3px; font-size: 11px;">
+                        <strong>Nations Involved:</strong><br>
+                        ${involvedNations.map(nation => `• ${nation.charAt(0).toUpperCase() + nation.slice(1)}`).join('<br>')}
+                    </div>` : '';
                 
                 const popupContent = `
                     <div style="max-width: 250px;">
@@ -2294,6 +2613,7 @@ function drawAllEventMarkers(events) {
                         <em style="font-size: 12px; color: #34495e;"><strong>Impact:</strong> ${event.impact}</em>
                         ${attackDetails}
                         ${additionalInfo}
+                        ${nationsInfo}
                         ${overlapInfo}
                     </div>
                 `;
@@ -2307,7 +2627,22 @@ function drawAllEventMarkers(events) {
                         if (pulsing) {
                             const currentSize = 20;
                             const newSize = currentSize === 20 * 1.3 ? 20 : 20 * 1.3;
-                            marker.setIcon(createMarkerIcon(markerType, markerColor, newSize, 'high'));
+                            
+                            // Use fallback if createEnhancedMilitaryMarker is not available
+                            if (typeof createEnhancedMilitaryMarker === 'function') {
+                                marker.setIcon(createEnhancedMilitaryMarker(event, {
+                                    showFlags: clusterState && clusterState.showFlags ? clusterState.showFlags : true,
+                                    enableClustering: false
+                                }));
+                            } else {
+                                // Basic pulsing marker fallback
+                                marker.setIcon(L.divIcon({
+                                    html: `<div class="basic-marker" style="background: #e74c3c; width: ${newSize}px; height: ${newSize}px; border-radius: 50%; border: 2px solid white;"></div>`,
+                                    className: 'basic-marker-icon',
+                                    iconSize: [newSize, newSize],
+                                    iconAnchor: [newSize/2, newSize/2]
+                                }));
+                            }
                         }
                     }, 1000);
                 }
