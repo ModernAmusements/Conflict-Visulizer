@@ -1,7 +1,7 @@
 # 2026-Conflict Project Documentation
 
 ## Project Overview
-An interactive web application visualizing the Israeli-Palestinian conflict timeline from 1987-2023, focusing on Hamas attacks and territorial control changes. The application features an interactive timeline, strategic map with SVG overlays, military symbol system, and comprehensive event filtering.
+An interactive web application visualizing military conflicts with 1994-era NATO symbology standards. The application features an interactive timeline, strategic map with SVG overlays, military symbol system, and comprehensive event filtering. The design follows a functional, restrained 1994-era aesthetic without modern UI embellishments.
 
 ## Architecture
 The application is built with vanilla JavaScript, HTML5, CSS3, and SVG for scalable graphics. It uses a modular architecture with separate files for different concerns.
@@ -41,12 +41,13 @@ The application is built with vanilla JavaScript, HTML5, CSS3, and SVG for scala
   4. Renders timeline and map visualizations
 
 ### 4. `symbols.js` - Military Symbol System
-- **Purpose**: NATO APP-6 style military symbol generation
+- **Purpose**: 1994 NATO APP-6 style military symbol generation
 - **Key Classes**:
   - `MilitarySymbolFactory` - Creates tactical symbols
   - `SymbolRenderer` - Renders symbols to SVG
 - **Symbol Types**: Ground forces, facilities, attacks, settlements, observation posts
 - **Integration**: Called by timeline and map rendering functions in `script.js`
+- **Features**: Clean map loading without symbol repetition or tiling artifacts
 - **Fix Applied**: Converted percentage-based SVG path coordinates to numeric values for valid SVG paths
 
 ### 5. `flags.js` - Flag and Territory Visual System
@@ -55,6 +56,7 @@ The application is built with vanilla JavaScript, HTML5, CSS3, and SVG for scala
   - `FlagRenderer` - Creates scalable SVG flags
   - `TerritoryControl` - Manages territorial control percentages
 - **Integration**: Used by map rendering in `script.js` for territory control visualization
+- **Features**: Enhanced flag scaling for clear legibility, prevention of linear repetition patterns
 
 ### 6. `Hamasterrorattacks.csv` - Attack Data Source
 - **Purpose**: Comprehensive database of Hamas attacks (1987-2023)
@@ -87,8 +89,15 @@ Map Rendering ← symbols.js/flags.js ← Event Data
 ### Strategic Map
 - **SVG-based**: Scalable vector graphics for territories and symbols
 - **Territory Control**: Dynamic percentage-based visualization
-- **Military Symbols**: NATO APP-6 style tactical symbols
+- **Military Symbols**: 1994 NATO APP-6 style tactical symbols
 - **Interactive Filters**: Year-based filtering with smooth transitions
+- **Clean Loading**: No symbol repetition or tiling artifacts during initialization
+
+### Military Movement System
+- **Thin Line Rendering**: Movement lines rendered thinner and visually subordinate to terrain and unit symbols
+- **Directional Arrows**: All movement lines include directional arrows indicating advance/withdrawal direction
+- **Visual Hierarchy**: Movement lines designed to not interfere with other map elements
+- **Faction-specific markers** with unique symbols for different military units
 
 ### Event Classification System
 - **Categories**: military, political, diplomatic, social
@@ -114,14 +123,28 @@ Map Rendering ← symbols.js/flags.js ← Event Data
 
 ### Military Symbol System
 - Scalable vector graphics for zoom independence
-- NATO APP-6 compliance for military symbols
+- 1994 NATO APP-6 compliance for military symbols
 - Dynamic color coding based on era and event type
+- Complete legend reference for all symbol types
+- Clean rendering without repetition artifacts
+
+### Military Movement System
+- Thin line rendering subordinate to terrain and unit symbols
+- Directional arrows on all movement lines
+- Advance/withdrawal direction indicators
+- No visual interference with other map elements
 
 ### Responsive Design
 - Mobile-first approach
 - CSS Grid for timeline layout
 - Flexible map container sizing
 - Touch-friendly controls
+
+### UI Integration
+- **National Forces Integration**: National Forces panel relocated into Legend Options panel as selectable subsection
+- **1994-Era Styling**: Functional, restrained design aesthetic without modern UI embellishments
+- **Coherent Hierarchy**: Logical UI structure with proper panel organization
+- **Complete Legend Reference**: All NATO symbols fully visible and properly documented
 
 ## Error Handling and Fixes
 
@@ -163,8 +186,22 @@ Map Rendering ← symbols.js/flags.js ← Event Data
 - Server-side rendering for performance
 - Progressive loading for mobile devices
 
+## 1994-Era Strategic Visualization Requirements
+
+### Design Philosophy
+- **Functional Over Decorative**: Prioritize clarity and information over visual embellishments
+- **Restrained Aesthetic**: Clean, minimal design without modern UI effects
+- **Military Standards**: Adherence to 1994 NATO symbology and mapping conventions
+- **Hierarchical Clarity**: Clear visual hierarchy with proper symbol and text sizing
+
+### Implementation Standards
+- **No Modern Effects**: Avoid shadows, gradients, animations, or other modern UI embellishments
+- **Traditional Colors**: Use standard military and cartographic color schemes
+- **Clear Typography**: Legible fonts with appropriate sizing for military documentation
+- **Structured Layout**: Organized panels and controls following military map conventions
+
 ## Conclusion
 
 The 2026-Conflict project demonstrates a sophisticated approach to historical conflict visualization, combining accurate data representation with intuitive user interface design. The modular architecture allows for easy maintenance and enhancement while the SVG-based graphics ensure scalability across devices.
 
-Recent fixes have resolved critical errors in CSV loading and SVG rendering, resulting in a stable and functional application that effectively visualizes complex geopolitical and military data.
+Recent updates have implemented 1994-era strategic visualization standards, ensuring clean map loading without symbol repetition, enhanced flag scaling, proper military movement visualization with directional arrows, and integrated UI components following functional design principles. The application now provides a stable, professional-grade visualization tool that effectively displays complex geopolitical and military data while maintaining strict adherence to military symbology standards.

@@ -32,17 +32,21 @@
 ### **SUCCESS SUMMARY**
 
 #### **1. NATO APP-6 Military Symbol System** ✅ COMPLETE
-- ✅ **Full APP-6 Compliance**: Professional military frames (rectangle, diamond, square, quatrefoil)
+- ✅ **1994 NATO Standard Compliance**: Professional military frames (rectangle, diamond, square, quatrefoil)
 - ✅ **Complete Unit Library**: 25+ military unit types (infantry, armor, artillery, air defense, etc.)
 - ✅ **Symbol Modifiers**: Unit hierarchy (squad → division) with visual indicators
+- ✅ **Clean Map Loading**: No symbol repetition or tiling artifacts during initialization
+- ✅ **Complete Legend Reference**: All NATO symbols visible and properly documented in legend
 - ✅ **Zoom-Based Scaling**: Dynamic sizing from 50% to 150% based on map zoom
 - ✅ **High Performance**: Optimized rendering with caching and debouncing
 
 #### **2. National Flag Integration System** ✅ COMPLETE  
 - ✅ **9 Nations Supported**: Israel, Palestine, Egypt, Syria, Jordan, Lebanon, USA, UK, UN
 - ✅ **Accurate Flag Designs**: Proper aspect ratios and colors
-- ✅ **Dynamic Flag Badges**: Small flags positioned next to military units
-- ✅ **Zoom-Based Scaling**: Flags scale proportionally with zoom level (16px-48px)
+- ✅ **Enhanced Flag Scaling**: Larger flags for clear legibility at default zoom levels
+- ✅ **No Linear Repetition**: Flags prevented from repeating in patterns during load/initialization
+- ✅ **Dynamic Flag Badges**: Flags positioned next to military units with proper spacing
+- ✅ **Zoom-Based Scaling**: Flags scale proportionally with zoom level (24px-64px)
 - ✅ **Toggle Control**: Enable/disable flag system
 
 #### **3. Advanced Event Clustering System** ✅ COMPLETE
@@ -55,6 +59,8 @@
 #### **4. Enhanced Dual Legend System** ✅ COMPLETE
 - ✅ **No Overlap Design**: NATO symbols (right) + dropdown controls (left)
 - ✅ **Complete Reference Guide**: Professional military symbol documentation
+- ✅ **Integrated National Forces**: National Forces panel relocated into Legend Options as subsection
+- ✅ **1994-Era Styling**: Functional, restrained design without modern UI embellishments
 - ✅ **Responsive Design**: Mobile-friendly layout with breakpoints
 - ✅ **Interactive Controls**: Toggle between different legend views
 
@@ -146,6 +152,8 @@ const performanceOptimizer = new PerformanceOptimizer();
   - Palestinian Authority (purple circles)
   - Hezbollah (yellow hexagons)
   - Coalition Forces (orange diamonds)
+- **Thin Movement Lines**: Rendered thinner and visually subordinate to terrain and unit symbols
+- **Directional Arrows**: All movement lines include arrows indicating advance/withdrawal direction
 - **Directional markers** pointing toward attack direction
 - **Detailed popups** with operation type, timing, and waypoint information
 - **October 7, 2023 Hamas Attack** implemented with full movement data:

@@ -1,4 +1,15 @@
-# 2026-Conflict Project Structure
+# 2026-Conflict Project
+
+## 📋 Project Overview
+An interactive web application visualizing military conflicts with 1994-era NATO symbology standards. The application features strategic map visualization, military symbol systems, and territorial control displays with a functional, restrained design aesthetic.
+
+## 🎯 Key Features
+- **1994 NATO Symbology**: Standard military symbols with complete legend reference
+- **Clean Map Loading**: No symbol repetition or tiling artifacts
+- **Enhanced Flag System**: Larger, clearly legible national flags
+- **Military Movement**: Thin lines with directional arrows
+- **Integrated UI**: National Forces panel within Legend Options
+- **1994-Era Styling**: Functional, restrained visualization without modern embellishments
 
 ## 📁 Project Organization
 

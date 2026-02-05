@@ -2,6 +2,34 @@
 
 Strict validation rules for all JavaScript code generation. Code must pass ALL checks before output.
 
+## 2026-Conflict Project Specific Requirements
+
+### Map Loading and Symbol Rendering
+- **No Symbol Repetition**: Prevent blue dots and national flags from repeating in linear patterns during load/initialization
+- **Clean Map Loading**: Ensure map loads cleanly without tiling artifacts or symbol repetition
+- **1994 NATO Standards**: Display standard 1994 NATO symbology correctly on both map and legend
+- **Complete Symbol Reference**: All enhanced/advanced NATO symbols must be fully visible and properly referenced in legend
+
+### Flag System Requirements
+- **Enhanced Scaling**: Scale national flags larger for clear legibility at default zoom levels
+- **No Linear Patterns**: Prevent flags from creating linear repetition patterns during initialization
+- **Proper Spacing**: Ensure flags are positioned with adequate spacing to prevent visual clutter
+
+### Military Movement Visualization
+- **Thin Line Rendering**: Military movement lines must be thinner and visually subordinate to terrain and unit symbols
+- **Directional Arrows**: All movement lines must include directional arrows indicating advance/withdrawal direction
+- **Visual Hierarchy**: Movement lines should not interfere with other map elements
+
+### UI Integration Requirements
+- **National Forces Integration**: Relocate National Forces panel into Legend Options panel as selectable subsection
+- **1994-Era Styling**: Apply functional, restrained design aesthetic without modern UI embellishments
+- **Coherent Hierarchy**: Maintain logical UI structure with proper panel organization
+
+### Performance Requirements
+- **No JavaScript Errors**: Critical requirement - any JS errors will result in no reward
+- **Clean Initialization**: Map must load cleanly without visual artifacts
+- **Symbol Integrity**: All symbols must render properly without duplication or tiling issues
+
 ---
 
 ## 1. File Structure Requirements
