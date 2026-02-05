@@ -7,8 +7,8 @@ let L = window.L || {};
 // Initialize the enhanced military systems when available
 let natoSymbolLibrary, flagSystem;
 
-// Enhanced map state with clustering
-let clusterState = {
+// Enhanced map state with clustering - make globally accessible
+window.clusterState = {
     enabled: true,
     showFlags: true,
     clusters: [],
@@ -198,7 +198,7 @@ class IntensityClusterer {
 
 // Enhanced marker creation with NATO symbols and flags
 function createEnhancedMilitaryMarker(event, options = {}) {
-    const { showFlags = clusterState.showFlags, enableClustering = clusterState.enabled } = options;
+    const { showFlags = window.clusterState.showFlags, enableClustering = window.clusterState.enabled } = options;
 
     // Determine affiliation and unit type
     const { affiliation, unitType, nation } = determineMilitaryDetails(event);
@@ -404,15 +404,201 @@ function createClusterPopup(cluster) {
     return popupHtml;
 }
 
-// Setup enhanced legend controls
+// Setup enhanced legend controls with complete 1994 NATO symbology
 function setupEnhancedLegend() {
-    // Initialize flag legend
-    const flagsLegend = document.getElementById('flags-legend');
-    if (flagsLegend && flagSystem) {
-        flagsLegend.innerHTML = flagSystem.generateFlagLegends();
+    // Initialize systems
+    if (!window.NATOSymbolLibrary) {
+        console.warn('NATOSymbolLibrary not available');
+        return;
+    }
+    natoSymbolLibrary = new window.NATOSymbolLibrary();
+    if (!window.FlagSystem) {
+        console.warn('FlagSystem not available');
+    } else {
+        flagSystem = new window.FlagSystem();
     }
     
-    // Toggle buttons
+    // Find left legend container (from HTML)
+    const leftLegendContainer = document.getElementById('left-legend-content');
+    if (!leftLegendContainer) {
+        console.warn('Left legend container not found');
+        return;
+    }
+    
+    // Generate comprehensive NATO legend content
+    const natoLegendContent = generateCompleteNATOLegend();
+    leftLegendContainer.innerHTML = natoLegendContent;
+    
+    // Setup interactive controls
+    setupLegendControls();
+}
+
+// Generate complete 1994 NATO symbology legend
+function generateCompleteNATOLegend() {
+    const affiliations = [
+        { key: 'friendly', name: 'Friendly Forces', color: '#0066CC' },
+        { key: 'hostile', name: 'Hostile Forces', color: '#CC0000' },
+        { key: 'neutral', name: 'Neutral Forces', color: '#00AA00' },
+        { key: 'unknown', name: 'Unknown Forces', color: '#FFAA00' }
+    ];
+    
+    const unitTypes = [
+        { key: 'infantry', name: 'Infantry' },
+        { key: 'armor', name: 'Armor/Mechanized' },
+        { key: 'artillery', name: 'Artillery' },
+        { key: 'air_defense', name: 'Air Defense' },
+        { key: 'engineers', name: 'Engineers' },
+        { key: 'recon', name: 'Reconnaissance' },
+        { key: 'headquarters', name: 'Headquarters' },
+        { key: 'supply', name: 'Supply/Logistics' },
+        { key: 'medical', name: 'Medical' },
+        { key: 'military_police', name: 'Military Police' },
+        { key: 'checkpoint', name: 'Checkpoint' },
+        { key: 'settlement', name: 'Settlement' },
+        { key: 'observation_post', name: 'Observation Post' },
+        { key: 'attack', name: 'Attack Operation' },
+        { key: 'fortification', name: 'Fortification' }
+    ];
+    
+    let legendHTML = `
+        <div class="enhanced-nato-legend">
+            <div class="legend-header">
+                <h4>1994 NATO Military Symbology</h4>
+                <button id="legend-toggle" class="legend-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            
+            <div id="legend-content" class="legend-content">
+                <!-- Affiliation Frames -->
+                <div class="legend-section">
+                    <h5>Affiliation Frames</h5>
+                    <div class="symbol-grid">
+    `;
+    
+    // Add affiliation symbols
+    affiliations.forEach(affiliation => {
+        const symbol = natoSymbolLibrary.generateSymbol(affiliation.key, 'infantry', 'unit');
+        legendHTML += `
+            <div class="symbol-item">
+                <div class="symbol-display">${symbol.svg}</div>
+                <span class="symbol-label">${affiliation.name}</span>
+            </div>
+        `;
+    });
+    
+    legendHTML += `
+                    </div>
+                </div>
+                
+                <!-- Unit Types -->
+                <div class="legend-section">
+                    <h5>Unit Types (Example: Friendly)</h5>
+                    <div class="symbol-grid">
+    `;
+    
+    // Add unit type examples
+    unitTypes.slice(0, 8).forEach(unitType => {
+        const symbol = natoSymbolLibrary.generateSymbol('friendly', unitType.key, 'unit');
+        legendHTML += `
+            <div class="symbol-item">
+                <div class="symbol-display">${symbol.svg}</div>
+                <span class="symbol-label">${unitType.name}</span>
+            </div>
+        `;
+    });
+    
+    legendHTML += `
+                    </div>
+                </div>
+                
+                <!-- Unit Size Modifiers -->
+                <div class="legend-section">
+                    <h5>Unit Size Hierarchy</h5>
+                    <div class="symbol-grid">
+    `;
+    
+    const unitSizes = [
+        { key: 'squad', name: 'Squad' },
+        { key: 'platoon', name: 'Platoon' },
+        { key: 'company', name: 'Company' },
+        { key: 'battalion', name: 'Battalion' },
+        { key: 'brigade', name: 'Brigade' },
+        { key: 'division', name: 'Division' }
+    ];
+    
+    unitSizes.forEach(size => {
+        const symbol = natoSymbolLibrary.generateSymbol('friendly', 'infantry', 'unit', { size: size.key });
+        legendHTML += `
+            <div class="symbol-item">
+                <div class="symbol-display">${symbol.svg}</div>
+                <span class="symbol-label">${size.name}</span>
+            </div>
+        `;
+    });
+    
+    legendHTML += `
+                    </div>
+                </div>
+                
+                <!-- National Forces (Integrated Subsection) -->
+                <div class="legend-section">
+                    <h5>National Forces</h5>
+                    <div class="flags-legend">
+                        ${flagSystem ? generateFlagSubsection() : '<p>Flag system not available</p>'}
+                    </div>
+                </div>
+                
+                <!-- Control Panel -->
+                <div class="legend-controls">
+                    <div class="control-row">
+                        <button id="toggle-flags" class="control-btn">
+                            <i class="fas fa-flag"></i> National Flags
+                        </button>
+                        <button id="toggle-clustering" class="control-btn">
+                            <i class="fas fa-object-group"></i> Clustering
+                        </button>
+                    </div>
+                    <div class="control-row">
+                        <button id="reset-view" class="control-btn">
+                            <i class="fas fa-home"></i> Reset View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return legendHTML;
+}
+
+// Generate flag subsection for integrated legend
+function generateFlagSubsection() {
+    if (!flagSystem) return '';
+    
+    const nations = [
+        { key: 'israel', name: 'Israel' },
+        { key: 'palestine', name: 'Palestine' },
+        { key: 'egypt', name: 'Egypt' },
+        { key: 'syria', name: 'Syria' },
+        { key: 'jordan', name: 'Jordan' },
+        { key: 'lebanon', name: 'Lebanon' },
+        { key: 'usa', name: 'United States' },
+        { key: 'uk', name: 'United Kingdom' },
+        { key: 'un', name: 'United Nations' }
+    ];
+    
+    return nations.map(nation => `
+        <div class="flag-legend-item">
+            <div class="legend-flag-icon">${flagSystem.getFlagElement(nation.key, 24)}</div>
+            <span class="legend-flag-label">${nation.name}</span>
+        </div>
+    `).join('');
+}
+
+// Setup legend control buttons
+function setupLegendControls() {
+    // Toggle button
     const legendToggle = document.getElementById('legend-toggle');
     const legendContent = document.getElementById('legend-content');
     
@@ -434,23 +620,27 @@ function setupEnhancedLegend() {
     
     if (toggleFlagsBtn) {
         toggleFlagsBtn.addEventListener('click', () => {
-            clusterState.showFlags = !clusterState.showFlags;
-            toggleFlagsBtn.classList.toggle('active', clusterState.showFlags);
-            updateMapForYear(mapState.currentYear);
+            window.clusterState.showFlags = !window.clusterState.showFlags;
+            toggleFlagsBtn.classList.toggle('active', window.clusterState.showFlags);
+            if (typeof updateMapForYear === 'function') {
+                updateMapForYear(mapState.currentYear);
+            }
         });
-        toggleFlagsBtn.classList.toggle('active', clusterState.showFlags);
+        toggleFlagsBtn.classList.toggle('active', window.clusterState.showFlags);
     }
     
     if (toggleClusteringBtn) {
         toggleClusteringBtn.addEventListener('click', () => {
-            clusterState.enabled = !clusterState.enabled;
-            toggleClusteringBtn.classList.toggle('active', clusterState.enabled);
-            updateMapForYear(mapState.currentYear);
+            window.clusterState.enabled = !window.clusterState.enabled;
+            toggleClusteringBtn.classList.toggle('active', window.clusterState.enabled);
+            if (typeof updateMapForYear === 'function') {
+                updateMapForYear(mapState.currentYear);
+            }
         });
-        toggleClusteringBtn.classList.toggle('active', clusterState.enabled);
+        toggleClusteringBtn.classList.toggle('active', window.clusterState.enabled);
     }
     
-    if (resetViewBtn) {
+    if (resetViewBtn && mapState.map) {
         resetViewBtn.addEventListener('click', () => {
             mapState.map.setView([31.5, 35.0], 7);
         });
@@ -463,7 +653,7 @@ function drawAllEventMarkers(events) {
     // Group events by coordinates for overlapping handling
     const eventGroups = groupEventsByCoordinates(events);
     
-    if (clusterState.enabled && mapState.map.getZoom() < 9) {
+    if (window.clusterState.enabled && mapState.map.getZoom() < 9) {
         // Use enhanced clustering system
         drawAllEventMarkersWithClustering(events);
     } else {
@@ -480,7 +670,7 @@ function drawAllEventMarkers(events) {
                 ];
                 
                 const marker = createEnhancedMilitaryMarker(event, {
-                    showFlags: clusterState.showFlags,
+                    showFlags: window.clusterState.showFlags,
                     enableClustering: false
                 });
                 
@@ -573,7 +763,7 @@ const performanceOptimizer = new PerformanceOptimizer();
 
 // Enhanced marker creation with performance optimization and zoom-based sizing
 function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
-    const { showFlags = clusterState.showFlags, enableClustering = clusterState.enabled } = options;
+    const { showFlags = window.clusterState.showFlags, enableClustering = window.clusterState.enabled } = options;
 
     // Determine affiliation and unit type
     const { affiliation, unitType, nation } = determineMilitaryDetails(event);
@@ -658,7 +848,7 @@ function drawAllEventMarkersOptimized(events) {
     console.log('🎯 Drawing optimized enhanced military markers...');
     
     const currentZoom = mapState.map.getZoom();
-    const shouldCluster = currentZoom < 9 && clusterState.enabled;
+    const shouldCluster = currentZoom < 9 && window.clusterState.enabled;
     
     // Performance optimization: only redraw if zoom changed significantly
     if (Math.abs(currentZoom - performanceOptimizer.lastZoom) < 1) {
@@ -686,7 +876,7 @@ function drawAllEventMarkersOptimized(events) {
             if (!event.geography || !event.geography.coordinates) return;
             
             const marker = createEnhancedMilitaryMarkerOptimized(event, {
-                showFlags: clusterState.showFlags,
+                showFlags: window.clusterState.showFlags,
                 enableClustering: false
             });
             

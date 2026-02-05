@@ -9,13 +9,30 @@ class NATOSymbolLibrary {
             neutral: '#00AA00',      // Green
             unknown: '#FFAA00'       // Yellow/Amber
         };
+    }
 
-        this.frameShapes = {
+    // Convert percentage to numeric coordinate
+    percentToCoord(percent, size) {
+        return (parseFloat(percent) / 100) * size;
+    }
+
+    // Process SVG content to convert percentages to numbers
+    processPercentages(svgContent, size) {
+        return svgContent.replace(/(\d+(?:\.\d+)?)%/g, (match) => {
+            return this.percentToCoord(match, size);
+        });
+    }
+
+    // Get frame shape based on affiliation
+    getFrame(affiliation) {
+        const frameShapes = {
             friend: 'rectangle',
             hostile: 'diamond', 
             neutral: 'square',
             unknown: 'quatrefoil'
         };
+        
+        return frameShapes[affiliation] || frameShapes.rectangle;
     }
 
     // Generate complete NATO symbol
@@ -465,15 +482,22 @@ class NATOSymbolLibrary {
 
     // Create complete symbol SVG with frame and icon
     createSymbolSVG(frame, icon, color, size, modifiers) {
-        const frameSVG = this.createFrameSVG(frame, color, size);
-        const sizeModifier = this.createSizeModifier(size, modifiers.size);
+        // Convert size to numeric value
+        const numericSize = typeof size === 'string' ? 40 : parseInt(size) || 40;
+        const frameSVG = this.createFrameSVG(frame, color, numericSize);
+        const sizeModifier = this.createSizeModifier(numericSize, modifiers.size);
+        
+        // Process percentages in icon to numeric coordinates
+        const processedIcon = this.processPercentages(icon, numericSize);
+        const processedFrame = this.processPercentages(frameSVG, numericSize);
+        const processedModifier = this.processPercentages(sizeModifier, numericSize);
         
         return `
-            <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" 
+            <svg width="${numericSize}" height="${numericSize}" viewBox="0 0 ${numericSize} ${numericSize}" 
                  xmlns="http://www.w3.org/2000/svg">
-                ${frameSVG}
-                ${icon}
-                ${sizeModifier}
+                ${processedFrame}
+                ${processedIcon}
+                ${processedModifier}
             </svg>
         `;
     }

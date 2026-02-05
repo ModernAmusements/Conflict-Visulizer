@@ -259,11 +259,38 @@ function createFlagOverlayForEvent(event, markerSize = 40) {
     }
     
     const flagSystem = new window.FlagSystem();
-    const flagElements = involvedNations.slice(0, 3).map(nation => 
-        flagSystem.getFlagElement(nation, 12)
-    ).join('');
     
-    return `<div class="event-flag-overlay" style="...">${flagElements}</div>`;
+    // Calculate flag size based on zoom level for better visibility
+    const currentZoom = mapState.map ? mapState.map.getZoom() : 7;
+    let flagSize = 24; // Base size for default zoom
+    
+    // Scale flags based on zoom level
+    if (currentZoom >= 10) {
+        flagSize = 32;
+    } else if (currentZoom >= 8) {
+        flagSize = 28;
+    } else if (currentZoom >= 6) {
+        flagSize = 24;
+    } else {
+        flagSize = 20;
+    }
+    
+    // Limit to 2 flags per event to prevent overcrowding
+    const flagElements = involvedNations.slice(0, 2).map((nation, index) => {
+        const flagHtml = flagSystem.getFlagElement(nation, flagSize);
+        const offset = index * (flagSize + 4);
+        return `
+            <div class="event-flag-item" style="position: absolute; top: ${-flagSize - 8}px; left: ${offset}px; z-index: 1000;">
+                ${flagHtml}
+            </div>
+        `;
+    }).join('');
+    
+    return `
+        <div class="event-flag-overlay" style="position: relative; width: 100%; height: 100%; pointer-events: none;">
+            ${flagElements}
+        </div>
+    `;
 }
 
 
@@ -1746,14 +1773,7 @@ async function initializeMap() {
     // Add military grid overlay
     addMilitaryGrid();
     
-    // Add enhanced NATO legend (primary)
-    if (typeof setupEnhancedLegend === 'function') {
-        setupEnhancedLegend();
-    } else {
-        console.warn('setupEnhancedLegend function not available yet');
-    }
-    
-    // Add dual legend with dropdown (secondary)  
+    // Add comprehensive legend with dropdown (single legend window)
     addMapLegend();
     
     setupMapControls();
@@ -1856,6 +1876,7 @@ function addMapLegend() {
                         <option value="enhanced">Military Symbols (NEW)</option>
                         <option value="territory">Territory Control</option>
                         <option value="military">Military Factions</option>
+                        <option value="national_forces">National Forces</option>
                         <option value="events">Event Types</option>
                     </select>
                 </div>
@@ -1882,6 +1903,9 @@ function addMapLegend() {
                     break;
                 case 'military':
                     contentArea.innerHTML = generateMilitaryFactionsLegend();
+                    break;
+                case 'national_forces':
+                    contentArea.innerHTML = generateNationalForcesLegend();
                     break;
                 case 'events':
                     contentArea.innerHTML = generateEventTypesLegend();
@@ -1947,53 +1971,69 @@ function generateMilitaryFactionsLegend() {
     `;
 }
 
+// Generate national forces legend content
+function generateNationalForcesLegend() {
+    if (typeof window.FlagSystem === 'undefined') {
+        return '<div style="padding: 10px; text-align: center;">Flag system not available</div>';
+    }
+    
+    const flagSystem = new window.FlagSystem();
+    const nations = [
+        { key: 'israel', name: 'Israel' },
+        { key: 'palestine', name: 'Palestine' },
+        { key: 'egypt', name: 'Egypt' },
+        { key: 'syria', name: 'Syria' },
+        { key: 'jordan', name: 'Jordan' },
+        { key: 'lebanon', name: 'Lebanon' },
+        { key: 'usa', name: 'United States' },
+        { key: 'uk', name: 'United Kingdom' },
+        { key: 'un', name: 'United Nations' }
+    ];
+    
+    const flagsHTML = nations.map(nation => `
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 4px;">
+            <div style="width: 32px; height: 20px; border-radius: 2px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                ${flagSystem.getFlagElement(nation.key, 24)}
+            </div>
+            <span style="color: #e1e8ed; font-size: 11px; font-weight: 500;">${nation.name}</span>
+        </div>
+    `).join('');
+    
+    return `
+        <div>
+            <div style="font-weight: bold; margin-bottom: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">NATIONAL FORCES</div>
+            <div style="max-height: 400px; overflow-y: auto;">
+                ${flagsHTML}
+            </div>
+        </div>
+    `;
+}
+
 // Generate event types legend content
 function generateEventTypesLegend() {
     return `
         <div>
-            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">EVENT MARKERS</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 9px;">
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <polygon points="12,2 22,20 2,20" fill="#e74c3c" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Military/Attack</span>
+            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">EVENT TYPES</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: #e74c3c; border-radius: 2px; margin-right: 8px;"></div>
+                    <span>Attacks</span>
                 </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <polygon points="12,2 22,20 2,20" fill="#dc2626" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Hamas Attacks</span>
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <polygon points="12,2 22,12 12,22 2,12" fill="#9b59b6" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Political Events</span>
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="#f39c12" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Social Events</span>
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <rect x="4" y="4" width="16" height="16" fill="#3498db" stroke="white" stroke-width="1"/>
-                    </svg>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: #3498db; border-radius: 2px; margin-right: 8px;"></div>
                     <span>Settlements</span>
                 </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" fill="#27ae60" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Territory Changes</span>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: #9b59b6; border-radius: 2px; margin-right: 8px;"></div>
+                    <span>Political</span>
                 </div>
-                <div style="display: flex; align-items: center;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">
-                        <circle cx="12" cy="12" r="10" fill="#f39c12" stroke="white" stroke-width="1"/>
-                    </svg>
-                    <span>Major Cities</span>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: #f39c12; border-radius: 2px; margin-right: 8px;"></div>
+                    <span>Social</span>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom:6px;">
+                    <div style="width: 12px; height: 12px; background: #27ae60; border-radius: 2px; margin-right: 8px;"></div>
+                    <span>Territory</span>
                 </div>
             </div>
         </div>
@@ -2073,17 +2113,9 @@ function setupMapControls() {
     // Flag toggle control
     const showFlags = document.getElementById('show-flags');
     if (showFlags) {
-        // Initialize clusterState if it doesn't exist
-        if (!window.clusterState) {
-            window.clusterState = {
-                enabled: true,
-                showFlags: showFlags.checked,
-                clusters: [],
-                minClusterSize: 30,
-                currentZoom: 7
-            };
-        } else {
-            window.clusterState.showFlags = showFlags.checked;
+        // Use existing clusterState from clustering system
+        if (typeof clusterState !== 'undefined') {
+            clusterState.showFlags = showFlags.checked;
         }
         
         showFlags.addEventListener('change', async (e) => {
@@ -2242,7 +2274,7 @@ async function updateMapForYear(year) {
         }
         
         // Draw flags (only if enabled)
-        if (window.clusterState && window.clusterState.showFlags) {
+        if (typeof clusterState !== 'undefined' && clusterState.showFlags) {
             console.log('🏁 Adding flags to map...');
             drawFlagsForEvents(relevantEvents);
         }
@@ -2259,7 +2291,7 @@ async function updateMapForYear(year) {
             mapState.movementLayer.addTo(mapState.map);
             console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
         }
-        if (window.clusterState && window.clusterState.showFlags) {
+        if (typeof clusterState !== 'undefined' && clusterState.showFlags) {
             mapState.flagLayer.addTo(mapState.map);
             console.log('✅ Flag layer added');
         }
@@ -2530,14 +2562,30 @@ function getSpiralOffset(index, total, spacing = 0.008) {
     return { latOffset, lngOffset };
 }
 
-// Draw all event markers with proper layer management and overlap handling
+// Draw all event markers with proper layer management and NO symbol repetition
 function drawAllEventMarkers(events) {
-    // Group events by coordinates to handle overlaps
+    // Clear existing markers to prevent duplication and tiling artifacts
+    if (mapState.markerLayer) {
+        mapState.markerLayer.clearLayers();
+    }
+    
+    // Track unique coordinates to prevent blue dots/flags repetition patterns
+    const processedCoordinates = new Set();
+    const uniqueEventKeys = new Set();
+    
+    // Group events by coordinates to handle overlaps efficiently
     const eventGroups = groupEventsByCoordinates(events);
     
     eventGroups.forEach(group => {
         group.forEach((event, indexInGroup) => {
             if (!event.geography || !event.geography.coordinates) return;
+            
+            // Create unique event key to prevent duplicates
+            const eventKey = `${event.geography.coordinates[0]},${event.geography.coordinates[1]}_${event.date}_${event.title}`;
+            if (uniqueEventKeys.has(eventKey)) {
+                return; // Skip duplicate events
+            }
+            uniqueEventKeys.add(eventKey);
             
             let markerType = 'default';
             let markerColor = '#95a5a6';
@@ -2573,15 +2621,32 @@ function drawAllEventMarkers(events) {
             
             // Only create marker if it should be shown
             if (shouldShow) {
-                // Calculate offset for overlapping markers
-                const { latOffset, lngOffset } = getSpiralOffset(indexInGroup, group.length);
-                const adjustedCoords = [
-                    event.geography.coordinates[0] + latOffset,
-                    event.geography.coordinates[1] + lngOffset
-                ];
+                // Check for coordinate patterns to prevent linear repetition
+                const coordKey = `${event.geography.coordinates[0].toFixed(3)},${event.geography.coordinates[1].toFixed(3)}`;
                 
-                // Create flag overlay if flags are enabled
-                const flagOverlay = (clusterState && clusterState.showFlags) ? createFlagOverlayForEvent(event) : '';
+                // Calculate offset for overlapping markers, but prevent systematic patterns
+                let adjustedCoords;
+                if (processedCoordinates.has(coordKey)) {
+                    // Use random offset instead of systematic spiral to avoid linear patterns
+                    const randomOffset = () => (Math.random() - 0.5) * 0.005;
+                    adjustedCoords = [
+                        event.geography.coordinates[0] + randomOffset(),
+                        event.geography.coordinates[1] + randomOffset()
+                    ];
+                } else {
+                    // First occurrence of this coordinate - use minimal systematic offset
+                    const { latOffset, lngOffset } = getSpiralOffset(indexInGroup, Math.min(group.length, 3));
+                    adjustedCoords = [
+                        event.geography.coordinates[0] + latOffset,
+                        event.geography.coordinates[1] + lngOffset
+                    ];
+                    processedCoordinates.add(coordKey);
+                }
+                
+                // Create flag overlay if flags are enabled (limit to 1 per coordinate to prevent repetition)
+                const flagOverlay = (clusterState && clusterState.showFlags && !processedCoordinates.has(coordKey)) 
+                    ? createFlagOverlayForEvent(event, 32) // Larger flags for better visibility
+                    : '';
                 
                 const marker = L.marker(
                     adjustedCoords, 
@@ -2600,18 +2665,18 @@ function drawAllEventMarkers(events) {
                                 wrapper.innerHTML = baseIcon.options.html + flagOverlay;
                                 return L.divIcon({
                                     html: wrapper.innerHTML,
-                                    className: 'enhanced-military-marker-with-flags',
-                                    iconSize: [40, 40],
-                                    iconAnchor: [20, 20]
+                                    className: 'enhanced-military-marker-clean', // New class for clean rendering
+                                    iconSize: [48, 48], // Larger for better NATO symbol visibility
+                                    iconAnchor: [24, 24]
                                 });
                             }
                             return baseIcon;
                         })()
                         : L.divIcon({
-                            html: `<div class="basic-marker" style="background: ${markerColor}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; position: relative;">${flagOverlay}</div>`,
-                            className: 'basic-marker-icon-with-flags',
-                            iconSize: flagOverlay ? [24, 24] : [16, 16],
-                            iconAnchor: flagOverlay ? [12, 12] : [8, 8]
+                            html: `<div class="basic-marker-clean" style="background: ${markerColor}; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">${flagOverlay}</div>`,
+                            className: 'basic-marker-icon-clean',
+                            iconSize: flagOverlay ? [32, 32] : [20, 20],
+                            iconAnchor: flagOverlay ? [16, 16] : [10, 10]
                         })
                     }
                 );
@@ -2774,13 +2839,34 @@ function drawMovementPaths(events) {
         
         console.log('📊 Processing movement:', event.title, '| Faction:', faction.name, '| Points:', movement.coordinates.length);
         
-        // Create animated movement path
+        // Create thin military movement path with directional arrows
         const path = L.polyline(movement.coordinates, {
             color: faction.color,
-            weight: 4,
-            opacity: 0.9,
+            weight: 1.5, // Much thinner lines, visually subordinate to terrain
+            opacity: 0.7, // Lower opacity to be less intrusive
             dashArray: getFactionDashPattern(faction.symbol)
         });
+        
+        // Add directional arrows to indicate movement direction
+        for (let i = 0; i < movement.coordinates.length - 1; i++) {
+            const start = movement.coordinates[i];
+            const end = movement.coordinates[i + 1];
+            const midPoint = [
+                (start[0] + end[0]) / 2,
+                (start[1] + end[1]) / 2
+            ];
+            
+            // Calculate arrow direction
+            const bearing = calculateBearing(start, end);
+            const arrowIcon = createDirectionalArrow(faction.color, bearing);
+            
+            const arrowMarker = L.marker(midPoint, {
+                icon: arrowIcon,
+                opacity: 0.8
+            });
+            
+            arrowMarker.addTo(mapState.movementLayer);
+        }
         
         // Add faction markers at each coordinate (without overlapping duplicates)
         const processedCoordinates = new Set();
@@ -2841,6 +2927,38 @@ function drawMovementPaths(events) {
     });
     
     console.log('✅ Movement layer now contains:', mapState.movementLayer.getLayers().length, 'unique markers');
+}
+
+// Create directional arrow marker for movement paths
+function createDirectionalArrow(color, bearing) {
+    const arrowSize = 12;
+    
+    return L.divIcon({
+        html: `
+            <div style="
+                width: ${arrowSize}px; 
+                height: ${arrowSize}px; 
+                position: relative;
+                transform: rotate(${bearing}deg);
+            ">
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 0;
+                    height: 0;
+                    border-left: ${arrowSize/2}px solid transparent;
+                    border-right: ${arrowSize/2}px solid transparent;
+                    border-bottom: ${arrowSize}px solid ${color};
+                    transform: translate(-50%, -100%);
+                    opacity: 0.8;
+                "></div>
+            </div>
+        `,
+        className: 'directional-arrow',
+        iconSize: [arrowSize, arrowSize],
+        iconAnchor: [arrowSize/2, arrowSize/2]
+    });
 }
 
 // Calculate bearing between two coordinates for arrow direction

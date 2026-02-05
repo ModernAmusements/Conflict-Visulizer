@@ -58,13 +58,17 @@ class FlagSystem {
         return flagData ? flagData.flag : this.createDefaultFlag();
     }
 
-    // Get flag as HTML element
-    getFlagElement(nation, size = 20) {
+    // Get flag as HTML element with enhanced visibility
+    getFlagElement(nation, size = 32) {
         const flagSVG = this.getFlag(nation);
+        const aspectRatio = 0.67; // Standard flag aspect ratio
+        
         return `
-            <div class="flag-icon" style="width: ${size}px; height: ${size * 0.67}px;" 
+            <div class="flag-icon-enhanced" style="width: ${size}px; height: ${size * aspectRatio}px;" 
                  data-nation="${nation}">
-                ${flagSVG}
+                <div class="flag-wrapper" style="position: relative; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.3); overflow: hidden;">
+                    ${flagSVG}
+                </div>
             </div>
         `;
     }
