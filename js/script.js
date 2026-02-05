@@ -1896,7 +1896,7 @@ function addMapLegend() {
         dropdown.addEventListener('change', (e) => {
             switch(e.target.value) {
                 case 'enhanced':
-                    contentArea.innerHTML = '<div class="note" style="padding: 10px; background: rgba(52, 152, 219, 0.2); border-radius: 4px; text-align: center;">Enhanced NATO symbols legend is displayed in main panel (top-right)</div>';
+                    contentArea.innerHTML = generateMilitarySymbolsLegend();
                     break;
                 case 'territory':
                     contentArea.innerHTML = generateTerritoryLegend();
@@ -1969,6 +1969,121 @@ function generateMilitaryFactionsLegend() {
             </div>
         </div>
     `;
+}
+
+// Generate military symbols legend content
+function generateMilitarySymbolsLegend() {
+    const affiliations = [
+        { key: 'friendly', name: 'Friendly Forces', color: '#0066CC' },
+        { key: 'hostile', name: 'Hostile Forces', color: '#CC0000' },
+        { key: 'neutral', name: 'Neutral Forces', color: '#00AA00' },
+        { key: 'unknown', name: 'Unknown Forces', color: '#FFAA00' }
+    ];
+    
+    const unitTypes = [
+        { key: 'infantry', name: 'Infantry' },
+        { key: 'armor', name: 'Armor' },
+        { key: 'artillery', name: 'Artillery' },
+        { key: 'headquarters', name: 'Headquarters' },
+        { key: 'checkpoint', name: 'Checkpoint' },
+        { key: 'settlement', name: 'Settlement' }
+    ];
+    
+    let legendHTML = `
+        <div>
+            <div style="font-weight: bold; margin-bottom: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">MILITARY SYMBOLS (1994 NATO)</div>
+            
+            <div style="margin-bottom: 16px;">
+                <div style="font-weight: bold; margin-bottom: 8px; color: #fff; font-size: 12px; text-align: center;">Affiliation Frames</div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+    `;
+    
+    // Add affiliation symbols - using same pattern as working functions
+    affiliations.forEach(affiliation => {
+        let frameIcon = '';
+        if (affiliation.key === 'friendly') {
+            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
+        } else if (affiliation.key === 'hostile') {
+            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2" transform="rotate(45 20 20)"/>`;
+        } else if (affiliation.key === 'neutral') {
+            frameIcon = `<rect x="10" y="10" width="20" height="20" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
+        } else {
+            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
+        }
+        
+        legendHTML += `
+            <div style="display: flex; align-items: center; gap: 8px; padding: 6px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            ${frameIcon}
+                            <g stroke="white" stroke-width="2" fill="none">
+                                <line x1="14" y1="14" x2="26" y2="26"/>
+                                <line x1="26" y1="14" x2="14" y2="26"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <span style="color: #e1e8ed; font-size: 11px;">${affiliation.name}</span>
+                </div>
+        `;
+    });
+    
+    legendHTML += `
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <div style="font-weight: bold; margin-bottom: 8px; color: #fff; font-size: 12px; text-align: center;">Unit Types (Example)</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+    `;
+    
+    // Add unit type examples - simple icons like working functions
+    unitTypes.slice(0, 6).forEach(unitType => {
+        let unitIcon = '';
+        if (unitType.key === 'infantry') {
+            unitIcon = `<g stroke="white" stroke-width="2" fill="none">
+                            <line x1="14" y1="14" x2="26" y2="26"/>
+                            <line x1="26" y1="14" x2="14" y2="26"/>
+                        </g>`;
+        } else if (unitType.key === 'armor') {
+            unitIcon = `<ellipse cx="20" cy="20" rx="10" ry="7" fill="none" stroke="white" stroke-width="2"/>`;
+        } else if (unitType.key === 'artillery') {
+            unitIcon = `<circle cx="20" cy="20" r="8" fill="none" stroke="white" stroke-width="2"/>`;
+        } else if (unitType.key === 'headquarters') {
+            unitIcon = `<rect x="14" y="18" width="12" height="4" fill="white" stroke="none"/>`;
+        } else if (unitType.key === 'checkpoint') {
+            unitIcon = `<rect x="14" y="16" width="12" height="8" fill="none" stroke="white" stroke-width="2"/>`;
+        } else if (unitType.key === 'settlement') {
+            unitIcon = `<g stroke="white" stroke-width="1.5" fill="white">
+                            <circle cx="20" cy="8" r="3"/>
+                            <path d="M 12 24 L 20 16 L 28 24 L 28 32 L 12 32 Z"/>
+                        </g>`;
+        } else {
+            unitIcon = `<g stroke="white" stroke-width="2" fill="none">
+                            <line x1="14" y1="14" x2="26" y2="26"/>
+                            <line x1="26" y1="14" x2="14" y2="26"/>
+                        </g>`;
+        }
+        
+        legendHTML += `
+            <div style="display: flex; flex-direction: column; align-items: center; padding: 6px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="24" height="24" fill="${affiliations[0].color}" fill-opacity="0.7" stroke="${affiliations[0].color}" stroke-width="2"/>
+                            ${unitIcon}
+                        </svg>
+                    </div>
+                    <span style="color: #e1e8ed; font-size: 10px; text-align: center;">${unitType.name}</span>
+                </div>
+        `;
+    });
+    
+    legendHTML += `
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return legendHTML;
 }
 
 // Generate national forces legend content
