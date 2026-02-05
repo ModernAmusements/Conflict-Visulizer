@@ -40,7 +40,7 @@ async function loadHamasAttacksCSV() {
     
     try {
         console.log('🔄 Loading Hamas attacks CSV...');
-        const response = await fetch('Hamasterrorattacks.csv');
+        const response = await fetch('data/Hamasterrorattacks.csv');
         const csvText = await response.text();
         const parsedData = parseCSV(csvText);
         

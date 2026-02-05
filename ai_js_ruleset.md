@@ -570,6 +570,254 @@ if (typeof MilitarySymbolFactory !== 'undefined') {
 - [ ] Fallback behavior implemented
 - [ ] Error handling in place
 
+---
+
+## 27. Integration & Timing Rules
+
+### 27.1 HTML-CSS-JS Connectivity
+
+**MUST ensure proper integration between all files:**
+
+**HTML Structure Requirements:**
+- [ ] All CSS files linked in `<head>` before any `<script>` tags
+- [ ] All JavaScript files linked at end of `<body>` in correct dependency order
+- [ ] IDs and classes referenced in JS exist in HTML
+- [ ] Event listeners attached after DOM is ready
+
+**CSS-JS Coordination:**
+- [ ] CSS classes referenced in JS exist in stylesheets
+- [ ] Dynamic styling uses valid CSS properties
+- [ ] Media queries don't conflict with JS manipulation
+- [ ] CSS animations work with JS timing
+
+**Invalid Pattern:**
+```javascript
+// CSS class doesn't exist
+element.classList.add('nonexistent-class');
+
+// HTML element doesn't exist
+document.getElementById('missing-element').addEventListener('click', handler);
+
+// Script loaded before CSS
+<script src="script.js"></script>
+<link rel="stylesheet" href="styles.css">
+```
+
+**Valid Pattern:**
+```javascript
+// Verify CSS class exists
+if (document.querySelector('.timeline-event')) {
+    element.classList.add('timeline-event');
+}
+
+// Verify HTML element exists
+const element = document.getElementById('timeline');
+if (element) {
+    element.addEventListener('click', handler);
+}
+
+// Correct loading order
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="timeline"></div>
+    <script src="script.js"></script>
+</body>
+```
+
+### 27.2 Script Loading Order
+
+**MUST load dependencies in correct sequence:**
+
+```html
+<!-- VALID: Dependencies loaded first -->
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <div id="app"></div>
+    </main>
+    
+    <!-- Load in dependency order -->
+    <script src="libraries.js"></script>     <!-- Third-party -->
+    <script src="symbols.js"></script>        <!-- Base classes -->
+    <script src="flags.js"></script>         <!-- Depends on symbols.js -->
+    <script src="clustering-system.js"></script> <!-- Depends on both -->
+    <script src="script.js"></script>         <!-- Main application -->
+</body>
+
+<!-- INVALID: Wrong order or missing dependencies -->
+<script src="script.js"></script>           <!-- Tries to use undefined classes -->
+<script src="symbols.js"></script>          <!-- Loaded too late -->
+```
+
+### 27.3 Function Call Timing
+
+**MUST call functions at appropriate lifecycle stages:**
+
+**DOM-Ready Pattern:**
+```javascript
+// VALID: Wait for DOM
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+});
+
+// VALID: Use defer attribute
+<script defer src="script.js"></script>
+
+// INVALID: Assume DOM is ready
+const element = document.getElementById('app'); // May be null
+element.addEventListener('click', handler);
+```
+
+**Async Data Pattern:**
+```javascript
+// VALID: Handle async loading
+async function initializeApp() {
+    try {
+        const data = await loadData();
+        processData(data);
+        renderUI();
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+// INVALID: Assume data is loaded
+const data = loadData(); // Returns Promise
+renderUI(data); // Uses undefined data
+```
+
+### 27.4 Event Listener Lifecycle
+
+**MUST attach and remove listeners properly:**
+
+```javascript
+// VALID: Attach after element exists
+function setupEventListeners() {
+    const element = document.getElementById('button');
+    if (element) {
+        element.addEventListener('click', handleClick);
+    }
+}
+
+// VALID: Remove when cleaning up
+function cleanup() {
+    const element = document.getElementById('button');
+    if (element) {
+        element.removeEventListener('click', handleClick);
+    }
+}
+
+// INVALID: Attach to non-existent element
+document.getElementById('missing-button').addEventListener('click', handler);
+```
+
+### 27.5 CSS-JS Synchronization
+
+**MUST coordinate styling between CSS and JS:**
+
+```css
+/* styles.css */
+.timeline-event {
+    transition: opacity 0.3s ease;
+}
+
+.timeline-event.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+```
+
+```javascript
+// script.js
+// VALID: Use existing CSS classes
+function hideEvent(element) {
+    if (element && element.classList) {
+        element.classList.add('hidden');
+    }
+}
+
+// INVALID: Override CSS styles directly
+function hideEvent(element) {
+    element.style.opacity = '0';
+    element.style.pointerEvents = 'none'; // Won't work with camelCase
+}
+```
+
+### 27.6 Module Dependency Verification
+
+**MUST verify all modules are loaded before use:**
+
+```javascript
+// VALID: Check module availability
+const initializeModules = () => {
+    const modules = {
+        NATOSymbolLibrary: typeof NATOSymbolLibrary !== 'undefined',
+        FlagRenderer: typeof FlagRenderer !== 'undefined',
+        Leaflet: typeof L !== 'undefined'
+    };
+    
+    const missingModules = Object.entries(modules)
+        .filter(([name, available]) => !available)
+        .map(([name]) => name);
+    
+    if (missingModules.length > 0) {
+        console.error('Missing modules:', missingModules);
+        return false;
+    }
+    
+    console.log('All modules loaded successfully');
+    return true;
+};
+
+// VALID: Initialize after verification
+if (initializeModules()) {
+    initializeApp();
+}
+
+// INVALID: Assume modules are loaded
+const natoLibrary = new NATOSymbolLibrary(); // ReferenceError
+```
+
+### 27.7 Integration Pre-Flight Checklist
+
+**Before running application, verify ALL:**
+
+### HTML Structure
+- [ ] All required CSS files linked in `<head>`
+- [ ] All script files linked at end of `<body>`
+- [ ] Script loading order respects dependencies
+- [ ] All IDs referenced in JS exist in HTML
+- [ ] All classes referenced in JS exist in CSS
+
+### CSS-JS Coordination  
+- [ ] CSS classes used in JS are defined in stylesheets
+- [ ] Dynamic styling uses valid CSS properties
+- [ ] CSS transitions work with JS timing
+- [ ] Media queries don't break JS functionality
+
+### Function Timing
+- [ ] DOM is ready before accessing elements
+- [ ] Async operations complete before using data
+- [ ] Event listeners attached after elements exist
+- [ ] Cleanup functions called when needed
+
+### Module Loading
+- [ ] All external modules are loaded and accessible
+- [ ] Dependency order is correct
+- [ ] Fallback behavior for missing modules
+- [ ] Error handling for module failures
+
+### Runtime Validation
+- [ ] No undefined class references
+- [ ] No undefined element references
+- [ ] No undefined CSS class references
+- [ ] All event listeners properly attached
+- [ ] All async operations handled correctly
+
 **Invalid:**
 ```javascript
 const x = 'John';                    // Undescriptive

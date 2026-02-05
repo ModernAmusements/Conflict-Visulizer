@@ -1,0 +1,50 @@
+{
+  "name": "2026-conflict-timeline",
+  "version": "1.0.0",
+  "description": "Interactive timeline visualization of the Israel-Hamas conflict (1987-2023)",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": [
+    "conflict",
+    "timeline",
+    "visualization",
+    "israel",
+    "hamas",
+    "military",
+    "history"
+  ],
+  "author": "Shady Tawfik",
+  "license": "Educational Use Only",
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {},
+  "directories": {
+    "css": "css/",
+    "js": "js/",
+    "components": "js/components/",
+    "data": "data/",
+    "assets": "assets/"
+  },
+  "structure": {
+    "css": [
+      "css/styles.css"
+    ],
+    "javascript": [
+      "js/components/symbols.js",
+      "js/components/flags.js", 
+      "js/components/clustering-system.js",
+      "js/script.js"
+    ],
+    "data": [
+      "data/Hamasterrorattacks.csv"
+    ],
+    "assets": [
+      "assets/images/",
+      "assets/fonts/"
+    ]
+  }
+}
