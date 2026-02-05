@@ -770,23 +770,23 @@
 }
 
 .movement-star {
-    stroke-dasharray: 12, 4;
+    stroke-dasharray: 20, 8;
 }
 
 .movement-triangle {
-    stroke-dasharray: 8, 6;
+    stroke-dasharray: 16, 10;
 }
 
 .movement-diamond {
-    stroke-dasharray: 10, 5;
+    stroke-dasharray: 18, 12;
 }
 
 .movement-circle {
-    stroke-dasharray: 15, 3;
+    stroke-dasharray: 25, 10;
 }
 
 .movement-hexagon {
-    stroke-dasharray: 6, 8;
+    stroke-dasharray: 14, 12;
 }
 
 body {
@@ -1313,14 +1313,79 @@ main {
     position: absolute;
     left: 50%;
     top: 1rem;
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
     background: #3498db;
     border: 4px solid white;
     border-radius: 50%;
     transform: translateX(-50%);
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.military-symbol-container {
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+.military-symbol-container svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
+
+.default-marker {
+    width: 12px;
+    height: 12px;
+    background: #3498db;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.military-classification {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #e74c3c;
+}
+
+.classification-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    text-transform: uppercase;
+}
+
+.classification-badge.high {
+    background: #e74c3c;
+    color: white;
+}
+
+.classification-badge.medium {
+    background: #f39c12;
+    color: white;
+}
+
+.classification-badge.low {
+    background: #27ae60;
+    color: white;
+}
+
+.casualty-count {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    background: #2c3e50;
+    color: white;
 }
 
 .timeline-event.military .event-marker {
@@ -1535,6 +1600,21 @@ footer {
     color: white;
     padding: 2rem 1rem;
     margin-top: 4rem;
+}
+
+.flag-overlay {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.flag-overlay svg {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.2s ease;
+}
+
+.flag-overlay:hover svg {
+    transform: scale(1.1);
 }
 
 .footer-content {

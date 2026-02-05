@@ -1567,6 +1567,7 @@ let mapState = {
     markerLayer: null,
     cityLayer: null,
     movementLayer: null,
+    flagLayer: null,
     isUpdating: false // Add this important flag
 };
 
@@ -1597,17 +1598,53 @@ async function initializeTimeline() {
 }
 
 function createTimelineEvent(event, index) {
+    'use strict';
+    
     const eventDiv = document.createElement('div');
     eventDiv.className = `timeline-event ${event.category}`;
     eventDiv.dataset.era = event.era;
     eventDiv.dataset.category = event.category;
     
+    // Create military symbol for military events using existing NATOSymbolLibrary
+    let militarySymbolHtml = '';
+    if (event.category === 'military' && event.militaryClassification && typeof NATOSymbolLibrary !== 'undefined') {
+        try {
+            const natoLibrary = new NATOSymbolLibrary();
+            const symbol = natoLibrary.createSymbol(
+                event.militaryClassification.unitType || 'infantry',
+                event.militaryClassification.affiliation || 'neutral',
+                { size: event.militaryClassification.size || 'squad' }
+            );
+            const svgSymbol = natoLibrary.createSymbolSVG(symbol, 32, 32);
+            militarySymbolHtml = `<div class="military-symbol-container">${svgSymbol}</div>`;
+        } catch (error) {
+            console.warn('Failed to create military symbol:', error);
+            militarySymbolHtml = '<div class="default-marker"></div>';
+        }
+    } else {
+        militarySymbolHtml = '<div class="default-marker"></div>';
+    }
+    
     eventDiv.innerHTML = `
-        <div class="event-marker"></div>
+        <div class="event-marker">
+            ${militarySymbolHtml}
+        </div>
         <div class="event-content">
             <div class="event-date">${event.date}</div>
             <h3 class="event-title">${event.title}</h3>
             <p class="event-description">${event.description}</p>
+            ${event.militaryClassification ? `
+                <div class="military-classification">
+                    <span class="classification-badge ${event.militaryClassification.intensity}">
+                        ${event.militaryClassification.unitType} - ${event.militaryClassification.size}
+                    </span>
+                    ${event.casualties ? `
+                        <span class="casualty-count">
+                            ${event.casualties.totalCasualties || 0} casualties
+                        </span>
+                    ` : ''}
+                </div>
+            ` : ''}
             <div class="event-impact">
                 <strong style="color: #000;">Impact:</strong> <span style="color: #e74c3c;">${event.impact}</span>
             </div>
@@ -2154,12 +2191,16 @@ async function updateMapForYear(year) {
         if (mapState.movementLayer) {
             mapState.map.removeLayer(mapState.movementLayer);
         }
+        if (mapState.flagLayer) {
+            mapState.map.removeLayer(mapState.flagLayer);
+        }
         
         // Create new layers
         mapState.territoryLayer = L.layerGroup();
         mapState.markerLayer = L.layerGroup();
         mapState.cityLayer = L.layerGroup();
         mapState.movementLayer = L.layerGroup();
+        mapState.flagLayer = L.layerGroup();
         
         // Get events for this year and earlier (now async)
         const allEvents = await getAllEvents();
@@ -2200,6 +2241,12 @@ async function updateMapForYear(year) {
             console.log('⏸️ Movement display is disabled');
         }
         
+        // Draw flags (only if enabled)
+        if (window.clusterState && window.clusterState.showFlags) {
+            console.log('🏁 Adding flags to map...');
+            drawFlagsForEvents(relevantEvents);
+        }
+        
         // Add layers to map
         if (mapState.showTerritory) {
             mapState.territoryLayer.addTo(mapState.map);
@@ -2211,6 +2258,10 @@ async function updateMapForYear(year) {
         if (mapState.showMovements) {
             mapState.movementLayer.addTo(mapState.map);
             console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
+        }
+        if (window.clusterState && window.clusterState.showFlags) {
+            mapState.flagLayer.addTo(mapState.map);
+            console.log('✅ Flag layer added');
         }
         
         // Update statistics
@@ -2923,6 +2974,38 @@ function addMajorCities() {
         `);
         
         marker.addTo(mapState.cityLayer);
+    });
+}
+
+// Draw flags for events
+function drawFlagsForEvents(events) {
+    'use strict';
+    
+    events.forEach(event => {
+        if (event.geography && event.geography.coordinates) {
+            const flagOverlay = createFlagOverlayForEvent(event);
+            if (flagOverlay) {
+                const flagIcon = L.divIcon({
+                    html: flagOverlay,
+                    className: 'flag-overlay',
+                    iconSize: [40, 30],
+                    iconAnchor: [20, 15]
+                });
+                
+                const flagMarker = L.marker(event.geography.coordinates, {
+                    icon: flagIcon,
+                    zIndexOffset: 1000
+                });
+                
+                flagMarker.bindPopup(`
+                    <strong>${event.title}</strong><br>
+                    <small>${event.date}</small><br>
+                    ${event.description ? event.description.substring(0, 100) + '...' : ''}
+                `);
+                
+                mapState.flagLayer.addLayer(flagMarker);
+            }
+        }
     });
 }
 

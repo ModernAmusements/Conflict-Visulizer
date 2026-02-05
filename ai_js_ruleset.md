@@ -494,60 +494,81 @@ try {
 
 ---
 
-## 13. Syntax Error Examples to Avoid
+## 26. Dependency Management Rules
 
-| Error Type | Wrong | Correct |
-|------------|-------|---------|
-| Missing brace | `if (x) {` | `if (x) {}` |
-| Missing paren | `console.log('x'` | `console.log('x')` |
-| Missing semicolon | `const x = 1` | `const x = 1;` |
-| Unbalanced bracket | `arr[1, 2]` | `arr[1, 2]` |
-| Unclosed template | `` const t = ` `` | `` const t = `x`; `` |
-| Mixed quotes | `"hello'` | `"hello"` |
-| Unescaped quote | `"hello""` | `"hello\\""` |
-| Trailing comma | `[1, 2,]` | `[1, 2]` |
-| Implicit return | `const f = () => 1` | `const f = () => { return 1; }` |
+### 26.1 External Dependencies
 
----
+**MUST verify external dependencies exist:**
 
-## 14. Zero-Tolerance Policy
+```javascript
+// Valid - Check if external class exists
+if (typeof ExternalLibrary !== 'undefined') {
+    const instance = new ExternalLibrary();
+} else {
+    console.warn('ExternalLibrary not available');
+    // Fallback behavior
+}
 
-**Syntax errors are NOT acceptable under any circumstances.**
+// Invalid - Assume external class exists
+const instance = new ExternalLibrary(); // Could throw error
+```
 
-- Every output must pass `eval()` without errors
-- Every output must run in browser console without warnings
-- Every output must pass JSHint/ESLint with zero errors
-- If unsure about syntax → test in console before output
+### 26.2 Safe Class Instantiation
 
-**Output code ONLY when 100% confident in syntax correctness.**
+**MUST wrap class instantiation in try-catch:**
 
----
+```javascript
+// Valid
+let symbol = null;
+if (typeof NATOSymbolLibrary !== 'undefined') {
+    try {
+        const library = new NATOSymbolLibrary();
+        symbol = library.createSymbol('infantry', 'neutral');
+    } catch (error) {
+        console.warn('Symbol creation failed:', error);
+        symbol = null;
+    }
+}
 
-## 15. Naming Conventions
+// Invalid
+const library = new NATOSymbolLibrary(); // May not exist
+const symbol = library.createSymbol('infantry', 'neutral');
+```
 
-### 15.1 Variable Names
+### 26.3 Undefined Class Reference Prevention
 
-**MUST follow these patterns:**
-
-| Pattern | Example | Use For |
-|---------|---------|---------|
-| camelCase | `const userName = 'John';` | Variables, function parameters |
-| UPPER_SNAKE_CASE | `const MAX_SIZE = 100;` | Constants (true immutables) |
-| PascalCase | `const UserProfile = {};` | Classes, constructors |
+**MUST prevent ReferenceError from undefined classes:**
 
 **Rules:**
-- [ ] Descriptive and meaningful names
-- [ ] No single letters except loop counters (`i`, `j`, `k`)
-- [ ] No abbreviations unless widely understood (`id`, `url`, `html`)
-- [ ] No reserved words as names
+- [ ] Check `typeof ClassName !== 'undefined'` before use
+- [ ] Use try-catch around class instantiation
+- [ ] Provide fallback behavior when class not available
+- [ ] Log warnings for missing dependencies
 
-**Valid:**
+**Invalid Pattern:**
 ```javascript
-const userName = 'John';
-const itemCount = 5;
-const apiEndpoint = '/api/users';
-const MAX_RETRY_COUNT = 3;
+const factory = new MilitarySymbolFactory(); // ReferenceError if not defined
 ```
+
+**Valid Pattern:**
+```javascript
+let factory = null;
+if (typeof MilitarySymbolFactory !== 'undefined') {
+    try {
+        factory = new MilitarySymbolFactory();
+    } catch (error) {
+        console.warn('MilitarySymbolFactory unavailable:', error);
+        factory = null;
+    }
+}
+```
+
+**Pre-Flight Checklist for External Classes:**
+- [ ] Class exists in loaded scripts
+- [ ] Class constructor is accessible
+- [ ] Required methods are available
+- [ ] Fallback behavior implemented
+- [ ] Error handling in place
 
 **Invalid:**
 ```javascript
