@@ -2245,14 +2245,14 @@ function setupMapControls() {
 // Start map animation
 function startMapAnimation() {
     if (mapState.isPlaying) return;
-    
+
     mapState.isPlaying = true;
     const playBtn = document.getElementById('play-btn');
     const pauseBtn = document.getElementById('pause-btn');
-    
+
     if (playBtn) playBtn.classList.add('hidden');
     if (pauseBtn) pauseBtn.classList.remove('hidden');
-    
+
     mapState.playInterval = setInterval(() => {
         if (mapState.currentYear >= 2025) {
             pauseMapAnimation();
@@ -2261,10 +2261,14 @@ function startMapAnimation() {
         mapState.currentYear++;
         const slider = document.getElementById('timeline-slider');
         const yearDisplay = document.getElementById('current-year');
-        
-        if (slider) slider.value = mapState.currentYear;
+
+        if (slider) {
+            slider._isProgrammatic = true;
+            slider.value = mapState.currentYear;
+        }
         if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
         updateMapForYear(mapState.currentYear);
+        updateActiveTickMarks(mapState.currentYear);
     }, mapState.playSpeed);
 }
 
@@ -2285,10 +2289,195 @@ function pauseMapAnimation() {
 
 // Handle slider change
 async function handleSliderChange(e) {
-    mapState.currentYear = parseInt(e.target.value);
+    const slider = e.target;
     const yearDisplay = document.getElementById('current-year');
+
+    // Check if this is a programmatic change (from animation)
+    if (slider._isProgrammatic) {
+        slider._isProgrammatic = false;
+        mapState.currentYear = parseInt(slider.value);
+        if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
+        await updateMapForYear(mapState.currentYear);
+        updateActiveTickMarks(mapState.currentYear);
+        return;
+    }
+
+    const currentValue = parseInt(slider.value);
+    const eventYears = getEventYears();
+
+    // Find the nearest event year
+    const nearestYear = findNearestEventYear(currentValue, eventYears);
+
+    // Snap to nearest event year if close enough (within 3 years)
+    if (Math.abs(currentValue - nearestYear) <= 3) {
+        slider.value = nearestYear;
+        mapState.currentYear = nearestYear;
+    } else {
+        mapState.currentYear = currentValue;
+    }
+
     if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
     await updateMapForYear(mapState.currentYear);
+    updateActiveTickMarks(mapState.currentYear);
+}
+
+// Extract unique event years from timelineEvents
+function getEventYears() {
+    const years = new Set();
+    const allEvents = getAllEventsSync();
+
+    allEvents.forEach(event => {
+        if (!event.date) return;
+
+        const dateStr = event.date.toString();
+
+        // Handle date ranges (e.g., "1900-1917", "2008-2009")
+        if (dateStr.includes('-')) {
+            const parts = dateStr.split('-');
+            const startYear = parseInt(parts[0]);
+            const endYear = parseInt(parts[1]);
+
+            // Add start year
+            if (!isNaN(startYear)) {
+                years.add(startYear);
+            }
+
+            // For ranges longer than 5 years, also add intermediate decades
+            if (!isNaN(startYear) && !isNaN(endYear) && (endYear - startYear) > 5) {
+                for (let year = startYear + 10; year < endYear; year += 10) {
+                    years.add(year);
+                }
+            }
+
+            // Add end year if it's a significant event
+            if (!isNaN(endYear)) {
+                years.add(endYear);
+            }
+        } else {
+            // Handle single year
+            const year = parseInt(dateStr);
+            if (!isNaN(year)) {
+                years.add(year);
+            }
+        }
+    });
+
+    // Filter to only years within slider range
+    return Array.from(years).filter(year => year >= 1900 && year <= 2025).sort((a, b) => a - b);
+}
+
+// Find nearest event year
+function findNearestEventYear(currentValue, eventYears) {
+    if (eventYears.length === 0) return currentValue;
+
+    let nearest = eventYears[0];
+    let minDiff = Math.abs(currentValue - nearest);
+
+    for (const year of eventYears) {
+        const diff = Math.abs(currentValue - year);
+        if (diff < minDiff) {
+            minDiff = diff;
+            nearest = year;
+        }
+    }
+
+    return nearest;
+}
+
+// Create tick marks for event years
+function createTickMarks() {
+    const container = document.querySelector('.timeline-slider-container');
+    if (!container) return;
+
+    // Check if tick track already exists
+    let trackContainer = container.querySelector('.slider-track-container');
+    if (trackContainer) {
+        trackContainer.remove();
+    }
+
+    const slider = document.getElementById('timeline-slider');
+    if (!slider) return;
+
+    // Create track container
+    trackContainer = document.createElement('div');
+    trackContainer.className = 'slider-track-container';
+
+    const eventYears = getEventYears();
+    const minYear = 1900;
+    const maxYear = 2025;
+    const sliderWidth = slider.offsetWidth;
+
+    // Only show ticks for major decades to avoid overcrowding
+    const decadeYears = eventYears.filter(year => year % 10 === 0 || eventYears.indexOf(year) % Math.ceil(eventYears.length / 15) === 0);
+
+    decadeYears.forEach(year => {
+        // Create tick mark
+        const tick = document.createElement('div');
+        tick.className = 'slider-tick-mark';
+        tick.dataset.year = year;
+
+        const position = ((year - minYear) / (maxYear - minYear)) * 100;
+        tick.style.left = `${position}%`;
+
+        trackContainer.appendChild(tick);
+
+        // Create label for decade years
+        if (year % 10 === 0) {
+            const label = document.createElement('span');
+            label.className = 'slider-tick-label';
+            label.textContent = year;
+            label.dataset.year = year;
+            label.style.left = `${position}%`;
+            trackContainer.appendChild(label);
+        }
+    });
+
+    // Insert after slider
+    slider.parentNode.insertBefore(trackContainer, slider.nextSibling);
+}
+
+// Update active tick marks based on current year
+function updateActiveTickMarks(currentYear) {
+    const ticks = document.querySelectorAll('.slider-tick-mark');
+    const labels = document.querySelectorAll('.slider-tick-label');
+
+    ticks.forEach(tick => {
+        const year = parseInt(tick.dataset.year);
+        if (!isNaN(year)) {
+            tick.classList.toggle('active', year === currentYear);
+        }
+    });
+
+    labels.forEach(label => {
+        const year = parseInt(label.dataset.year);
+        if (!isNaN(year)) {
+            label.classList.toggle('active', year === currentYear);
+        }
+    });
+}
+
+// Initialize timeline tick marks
+function initializeTimelineTicks() {
+    // Wait for DOM to be ready
+    setTimeout(() => {
+        createTickMarks();
+
+        // Update active ticks for initial year
+        const slider = document.getElementById('timeline-slider');
+        if (slider) {
+            const initialYear = parseInt(slider.value) || 1994;
+            updateActiveTickMarks(initialYear);
+        }
+
+        // Handle window resize to reposition ticks
+        window.addEventListener('resize', () => {
+            createTickMarks();
+            const slider = document.getElementById('timeline-slider');
+            if (slider) {
+                updateActiveTickMarks(parseInt(slider.value) || 1994);
+            }
+        });
+    }, 100);
 }
 
 
@@ -3360,6 +3549,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Timeline disabled - only initialize map
     initializeMap();
     initializeCheckboxStates();
+    initializeTimelineTicks();
 });
 
 // Add smooth scrolling
