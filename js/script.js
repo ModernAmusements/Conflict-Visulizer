@@ -255,43 +255,28 @@ function detectInvolvedNations(event) {
 function createFlagOverlayForEvent(event, markerSize = 40) {
     const involvedNations = detectInvolvedNations(event);
     if (involvedNations.length === 0) return '';
-    
-    if (typeof window.FlagSystem === 'undefined') {
-        console.warn('FlagSystem not available');
-        return '';
-    }
-    
-    const flagSystem = new window.FlagSystem();
-    
-    // Calculate flag size based on zoom level for better visibility
-    const currentZoom = mapState.map ? mapState.map.getZoom() : 7;
-    let flagSize = 28; // Base size for default zoom
 
-    // Scale flags based on zoom level
-    if (currentZoom >= 10) {
-        flagSize = 36;
-    } else if (currentZoom >= 8) {
-        flagSize = 32;
-    } else if (currentZoom >= 6) {
-        flagSize = 28;
-    } else {
-        flagSize = 24;
-    }
-    
-    // Limit to 2 flags per event to prevent overcrowding
-    const flagElements = involvedNations.slice(0, 2).map((nation, index) => {
-        const flagHtml = flagSystem.getFlagElement(nation, flagSize);
-        const offset = index * (flagSize + 4);
-        return `
-            <div class="event-flag-item" style="position: absolute; top: ${-flagSize - 8}px; left: ${offset}px; z-index: 1000;">
-                ${flagHtml}
-            </div>
-        `;
+    const flagEmojis = {
+        israel: '🇮🇱',
+        palestine: '🇵🇸',
+        hamas: '⚡',
+        egypt: '🇪🇬',
+        syria: '🇸🇾',
+        jordan: '🇯🇴',
+        lebanon: '🇱🇧',
+        usa: '🇺🇸',
+        uk: '🇬🇧',
+        un: '🇺🇳'
+    };
+
+    const flagElement = involvedNations.slice(0, 2).map(nation => {
+        const emoji = flagEmojis[nation.toLowerCase()] || '🏳️';
+        return `<span class="flag-emoji">${emoji}</span>`;
     }).join('');
-    
+
     return `
-        <div class="event-flag-overlay" style="position: relative; width: 100%; height: 100%; pointer-events: none;">
-            ${flagElements}
+        <div class="event-flag-beside">
+            ${flagElement}
         </div>
     `;
 }
@@ -1873,7 +1858,7 @@ function addMapLegend() {
         const div = L.DomUtil.create('div', 'legacy-map-legend');
         
         const legendContent = `
-            <div style="background: rgba(44, 62, 80, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 220px;">
+            <div style="background: rgba(0, 0, 0, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 220px;">
                 <div style="margin-bottom: 12px;">
                     <label for="legend-dropdown" style="display: block; margin-bottom: 5px; font-weight: bold;">Legend Options:</label>
                     <select id="legend-dropdown" style="width: 100%; padding: 5px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 4px;">
@@ -1896,8 +1881,32 @@ function addMapLegend() {
         // Setup dropdown listener
         const dropdown = div.querySelector('#legend-dropdown');
         const contentArea = div.querySelector('#legend-content-area');
-        
+
+        // Sync dropdown with filter state
+        function syncDropdownWithFilters() {
+            if (mapState.showTerritory) {
+                dropdown.value = 'territory';
+                contentArea.innerHTML = generateTerritoryLegend();
+            } else if (mapState.showAttacks || mapState.showPolitical || mapState.showSocial) {
+                dropdown.value = 'enhanced';
+                contentArea.innerHTML = generateMilitarySymbolsLegend();
+            }
+        }
+
         dropdown.addEventListener('change', (e) => {
+            // Sync with map legend selector
+            const mapLegendSelect = document.getElementById('map-legend-select');
+            if (mapLegendSelect) {
+                const valueMap = {
+                    'enhanced': 'military',
+                    'territory': 'territory',
+                    'military': 'factions',
+                    'national_forces': 'factions',
+                    'events': 'events'
+                };
+                mapLegendSelect.value = valueMap[e.target.value] || 'auto';
+            }
+
             switch(e.target.value) {
                 case 'enhanced':
                     contentArea.innerHTML = generateMilitarySymbolsLegend();
@@ -1916,9 +1925,9 @@ function addMapLegend() {
                     break;
             }
         });
-        
-        // Show enhanced option by default
-        contentArea.innerHTML = generateMilitarySymbolsLegend();
+
+        // Show appropriate legend based on filters
+        syncDropdownWithFilters();
         
         return div;
     };
@@ -1953,26 +1962,63 @@ function generateTerritoryLegend() {
     `;
 }
 
-// Generate military factions legend content
+// Generate military factions legend with NATO symbol shapes
 function generateMilitaryFactionsLegend() {
+    const factions = [
+        { key: 'idf', name: 'IDF (Israel)', affiliation: 'friendly', color: '#2563eb' },
+        { key: 'hamas', name: 'Hamas', affiliation: 'hostile', color: '#dc2626' },
+        { key: 'egyptian_syrian', name: 'Egypt-Syria Coalition', affiliation: 'hostile', color: '#ea580c' },
+        { key: 'arab_forces', name: 'Arab Forces', affiliation: 'hostile', color: '#f97316' },
+        { key: 'pij', name: 'Palestinian Islamic Jihad', affiliation: 'hostile', color: '#ea580c' },
+        { key: 'hezbollah', name: 'Hezbollah', affiliation: 'hostile', color: '#7c3aed' },
+        { key: 'fatah', name: 'Fatah/PA', affiliation: 'neutral', color: '#16a34a' },
+        { key: 'iran', name: 'Iran (Supporter)', affiliation: 'hostile', color: '#991b1b' }
+    ];
+
+    const frameShapes = {
+        'friendly': 'rectangle',
+        'hostile': 'diamond',
+        'neutral': 'square',
+        'unknown': 'quatrefoil'
+    };
+
     return `
         <div>
-            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">MILITARY FACTIONS</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; font-size: 9px;">
-                ${Object.entries(militaryFactions).map(([key, faction]) => {
-                    let icon = '';
-                    if (faction.symbol === '★') {
-                        icon = `<polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                    } else if (faction.symbol === '▲') {
-                        icon = `<polygon points="12,2 22,20 2,20" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                    } else if (faction.symbol === '●') {
-                        icon = `<circle cx="12" cy="12" r="8" fill="${faction.color}" stroke="white" stroke-width="0.5"/>`;
-                    }
-                    return `<div style="display: flex; align-items: center; margin-bottom: 8px;"><svg width="12" height="12" viewBox="0 0 24 24" style="margin-right: 6px;">${icon}</svg><span>${faction.name}</span></div>`;
+            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">MILITARY FACTIONS</div>
+            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
+                ${factions.map(faction => {
+                    const shape = frameShapes[faction.affiliation];
+                    const frameSVG = getFrameSVG(shape, faction.color);
+                    return `
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" style="flex-shrink: 0;">${frameSVG}</svg>
+                            <span>${faction.name}</span>
+                        </div>
+                    `;
                 }).join('')}
+            </div>
+            <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 10px; color: #9ca3af;">
+                <strong>NATO Frames:</strong><br>
+                ■ Rectangle = Friendly<br>
+                ◆ Diamond = Hostile<br>
+                □ Square = Neutral
             </div>
         </div>
     `;
+}
+
+// Helper: Get NATO frame SVG shape
+function getFrameSVG(shape, color) {
+    switch (shape) {
+        case 'rectangle':
+            return `<rect x="2" y="2" width="20" height="20" fill="${color}" fill-opacity="0.8" stroke="white" stroke-width="1"/>`;
+        case 'diamond':
+            return `<rect x="2" y="2" width="20" height="20" fill="${color}" fill-opacity="0.8" stroke="white" stroke-width="1" transform="rotate(45 12 12)"/>`;
+        case 'square':
+            return `<rect x="4" y="4" width="16" height="16" fill="${color}" fill-opacity="0.8" stroke="white" stroke-width="1"/>`;
+        default:
+            return `<circle cx="12" cy="12" r="10" fill="${color}" fill-opacity="0.8" stroke="white" stroke-width="1"/>`;
+    }
 }
 
 // Generate military symbols legend content
@@ -2583,7 +2629,7 @@ async function updateMapForYear(year) {
         }
         
         // Draw flags (only if enabled)
-        if (typeof clusterState !== 'undefined' && clusterState.showFlags) {
+        if (window.clusterState && window.clusterState.showFlags) {
             console.log('🏁 Adding flags to map...');
             drawFlagsForEvents(relevantEvents);
         }
@@ -2600,7 +2646,7 @@ async function updateMapForYear(year) {
             mapState.movementLayer.addTo(mapState.map);
             console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
         }
-        if (typeof clusterState !== 'undefined' && clusterState.showFlags) {
+        if (window.clusterState && window.clusterState.showFlags) {
             mapState.flagLayer.addTo(mapState.map);
             console.log('✅ Flag layer added');
         }
@@ -2865,15 +2911,15 @@ function getHierarchicalOffset(index, total, zoomLevel = 7) {
         return { latOffset: 0, lngOffset: 0, priority: 0 };
     }
 
-    const baseSpacing = 0.015; // Base ~1.5km at zoom 7
+    const baseSpacing = 0.035; // Base ~3.5km at zoom 7 (increased for better separation)
     const zoomScale = Math.max(0.5, Math.min(2, zoomLevel / 7));
     const spacing = baseSpacing * zoomScale;
 
-    const angleStep = Math.PI * 2 / Math.min(total, 8);
+    const angleStep = Math.PI * 2 / Math.min(total, 6);
     const radiusIncrement = spacing;
 
     const angle = index * angleStep;
-    const radius = spacing + (index * radiusIncrement * 0.3);
+    const radius = spacing + (index * radiusIncrement * 0.6);
 
     return {
         latOffset: Math.sin(angle) * radius,
@@ -2927,29 +2973,52 @@ const CLUSTER_COUNT_THRESHOLD = 5;
 // Create a count badge marker for large event clusters
 function createClusterCountMarker(group, coordinates) {
     const count = group.length;
-    const eventTypes = {};
+
+    // Detect dominant faction from events
+    const factions = { idf: 0, hamas: 0, arab_forces: 0, egyptian_syrian: 0, iran: 0, hezbollah: 0, pij: 0, fatah: 0 };
 
     group.forEach(e => {
-        const cat = e.category || 'unknown';
-        eventTypes[cat] = (eventTypes[cat] || 0) + 1;
+        const title = (e.title || '').toLowerCase();
+        const desc = (e.description || '').toLowerCase();
+
+        if (title.includes('idf') || title.includes('israel')) factions.idf++;
+        else if (title.includes('hamas')) factions.hamas++;
+        else if (title.includes('egypt') || title.includes('syria')) factions.egyptian_syrian++;
+        else if (title.includes('arab') || title.includes('jordan') || title.includes('lebanon')) factions.arab_forces++;
+        else if (title.includes('iran')) factions.iran++;
+        else if (title.includes('hezbollah')) factions.hezbollah++;
+        else if (title.includes('pij') || title.includes('islamic jihad')) factions.pij++;
+        else if (title.includes('fatah') || title.includes('palestinian authority')) factions.fatah++;
+        else if (desc.includes('israeli')) factions.idf++;
+        else if (desc.includes('palestinian')) factions.hamas++;
     });
 
-    const typeLabel = Object.entries(eventTypes)
-        .sort((a, b) => b[1] - a[1])
-        .map(([type, num]) => `${type}: ${num}`)
-        .join(', ');
+    // Find dominant faction
+    const dominantFaction = Object.entries(factions).sort((a, b) => b[1] - a[1])[0];
+    const factionKey = dominantFaction[0];
+    const factionScore = dominantFaction[1];
 
-    let symbolAffiliation = 'hostile';
-    if (eventTypes.military && eventTypes.military >= count / 2) {
-        symbolAffiliation = 'hostile';
-    } else if (eventTypes.political && eventTypes.political >= count / 2) {
-        symbolAffiliation = 'neutral';
-    }
+    // Map faction to NATO affiliation
+    const factionAffiliations = {
+        idf: 'friendly',
+        hamas: 'hostile',
+        arab_forces: 'hostile',
+        egyptian_syrian: 'hostile',
+        iran: 'hostile',
+        hezbollah: 'hostile',
+        pij: 'hostile',
+        fatah: 'neutral'
+    };
 
+    const affiliation = factionScore > 0 ? factionAffiliations[factionKey] || 'hostile' : 'unknown';
+
+    // Get NATO symbol
+    let symbolData;
     if (typeof NATOSymbolLibrary !== 'undefined') {
-        var symbolData = natoSymbolLibrary.generateSymbol(symbolAffiliation, 'infantry', 'unit');
+        symbolData = natoSymbolLibrary.generateSymbol(affiliation, 'infantry', 'unit');
     } else {
-        var symbolData = { svg: `<svg viewBox="0 0 24 24"><polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="#e74c3c" stroke="white" stroke-width="1"/></svg>` };
+        const colors = { friendly: '#0066CC', hostile: '#CC0000', neutral: '#00AA00', unknown: '#FFAA00' };
+        symbolData = { svg: `<svg viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" fill="${colors[affiliation]}" fill-opacity="0.7" stroke="white" stroke-width="2" transform="rotate(45 20 20)"/><g stroke="white" stroke-width="2" fill="none"><line x1="12" y1="12" x2="28" y2="28"/><line x1="28" y1="12" x2="12" y2="28"/></g></svg>` };
     }
 
     const badgeHtml = `<div class="cluster-count-badge">${count}</div>`;
@@ -2972,7 +3041,18 @@ function createClusterCountMarker(group, coordinates) {
         openEventSidePanel(group);
     });
 
-    marker.bindTooltip(`${count} events (${typeLabel})`, {
+    marker.on('mouseover', function() {
+        if (this._icon) this._icon.style.zIndex = '9999';
+        if (this._shadow) this._shadow.style.zIndex = '9998';
+    });
+
+    marker.on('mouseout', function() {
+        if (this._icon) this._icon.style.zIndex = 'auto';
+        if (this._shadow) this._shadow.style.zIndex = 'auto';
+    });
+
+    const factionNames = { idf: 'IDF', hamas: 'Hamas', arab_forces: 'Arab Forces', egyptian_syria: 'Egypt-Syria', iran: 'Iran', hezbollah: 'Hezbollah', pij: 'PIJ', fatah: 'Fatah' };
+    marker.bindTooltip(`${count} events - ${factionScore > 0 ? factionNames[factionKey] : 'Mixed'}`, {
         direction: 'top',
         offset: [0, -30]
     });
@@ -3061,6 +3141,11 @@ document.addEventListener('click', (e) => {
 
 // Draw all event markers with proper layer management and hierarchical positioning
 function drawAllEventMarkers(events) {
+    // Use optimized version from clustering system if available
+    if (window.drawAllEventMarkers && window.drawAllEventMarkers !== drawAllEventMarkers) {
+        return window.drawAllEventMarkers(events);
+    }
+    
     if (mapState.markerLayer) {
         mapState.markerLayer.clearLayers();
     }
@@ -3103,23 +3188,23 @@ function drawAllEventMarkers(events) {
                 } else {
                     markerColor = '#e74c3c';
                 }
-                shouldShow = mapState.showAttacks;
+                shouldShow = mapState.showAttacks !== false;
             } else if (event.geography.type === 'settlement') {
                 markerType = 'settlement';
                 markerColor = '#3498db';
-                shouldShow = mapState.showSettlements;
+                shouldShow = mapState.showSettlements !== false;
             } else if (event.category === 'political') {
                 markerType = 'political';
                 markerColor = '#9b59b6';
-                shouldShow = mapState.showPolitical;
+                shouldShow = mapState.showPolitical !== false;
             } else if (event.category === 'social') {
                 markerType = 'social';
                 markerColor = '#f39c12';
-                shouldShow = mapState.showSocial;
+                shouldShow = mapState.showSocial !== false;
             } else if (event.geography.type === 'territory_change') {
                 markerType = 'territory_change';
                 markerColor = '#27ae60';
-                shouldShow = mapState.showTerritory;
+                shouldShow = mapState.showTerritory !== false;
             }
 
             if (shouldShow) {
@@ -3144,7 +3229,7 @@ function drawAllEventMarkers(events) {
                 const priority = calculateEventPriority(event);
                 const isHighPriority = priority > 50;
 
-                const flagOverlay = (clusterState && clusterState.showFlags && !processedCoordinates.has(coordKey))
+                const flagOverlay = (window.clusterState && window.clusterState.showFlags && !processedCoordinates.has(coordKey))
                     ? createFlagOverlayForEvent(event, isHighPriority ? 36 : 28)
                     : '';
 
@@ -3154,9 +3239,9 @@ function drawAllEventMarkers(events) {
                 const marker = L.marker(
                     adjustedCoords,
                     {
-                        icon: (typeof createEnhancedMilitaryMarker === 'function')
+                        icon: (typeof window.createEnhancedMilitaryMarker === 'function')
                             ? (() => {
-                                const baseIcon = createEnhancedMilitaryMarker(event, {
+                                const baseIcon = window.createEnhancedMilitaryMarker(event, {
                                     showFlags: false,
                                     enableClustering: false
                                 });
@@ -3226,59 +3311,86 @@ function drawAllEventMarkers(events) {
                     className: 'military-popup'
                 });
 
+                marker.on('mouseover', function() {
+                    if (this._icon) {
+                        this._icon.style.zIndex = '9999';
+                    }
+                    if (this._shadow) {
+                        this._shadow.style.zIndex = '9998';
+                    }
+                });
+
+                marker.on('mouseout', function() {
+                    if (this._icon) {
+                        this._icon.style.zIndex = 'auto';
+                    }
+                    if (this._shadow) {
+                        this._shadow.style.zIndex = 'auto';
+                    }
+                });
+
                 marker.addTo(mapState.markerLayer);
             }
         });
     });
 }
 
-// Get faction-specific colors and symbols
+// Get faction-specific colors, symbols, and NATO affiliation
 function getFactionColor(faction) {
     const factions = {
         'idf': {
             color: '#2563eb',           // IDF Blue
             symbol: 'star',              // Star of David influence
+            affiliation: 'friendly',      // NATO: Friendly
             name: 'Israeli Defense Force'
         },
         'hamas': {
             color: '#dc2626',           // Hamas Red
-            symbol: 'triangle',           // Triangle attack symbol
+            symbol: 'triangle',         // Triangle attack symbol
+            affiliation: 'hostile',      // NATO: Hostile
             name: 'Hamas'
         },
         'egyptian_syrian': {
             color: '#ea580c',           // Egypt/Syria Orange
-            symbol: 'diamond',            // Diamond coalition
+            symbol: 'diamond',          // Diamond coalition
+            affiliation: 'hostile',     // NATO: Hostile
             name: 'Egypt-Syria Coalition'
         },
         'arab_forces': {
             color: '#f97316',           // Arab Forces Dark Orange
-            symbol: 'diamond',            // Diamond coalition
+            symbol: 'diamond',          // Diamond coalition
+            affiliation: 'hostile',     // NATO: Hostile
             name: 'Arab Forces'
         },
         'pij': {
             color: '#ea580c',           // PIJ Orange
-            symbol: 'triangle',           // Triangle militant
+            symbol: 'triangle',        // Triangle militant
+            affiliation: 'hostile',     // NATO: Hostile
             name: 'Palestinian Islamic Jihad'
         },
         'hezbollah': {
             color: '#7c3aed',           // Hezbollah Purple
-            symbol: 'star',              // Star resistance
+            symbol: 'star',             // Star resistance
+            affiliation: 'hostile',     // NATO: Hostile
             name: 'Hezbollah'
         },
         'fatah': {
-            color: '#16a34a',           // Fatah Green
-            symbol: 'circle',            // Circle governance
+            color: '#16a34a',          // Fatah Green
+            symbol: 'circle',          // Circle governance
+            affiliation: 'neutral',    // NATO: Neutral
             name: 'Fatah/Palestinian Authority'
         },
         'iran': {
-            color: '#991b1b',           // Iran Dark Red
-            symbol: 'hexagon',            // Hexagon support
+            color: '#991b1b',          // Iran Dark Red
+            symbol: 'hexagon',         // Hexagon support
+            affiliation: 'hostile',     // NATO: Hostile
             name: 'Iran (Supporter)'
         }
     };
     return factions[faction] || { 
         color: '#6b7280', 
-        symbol: 'circle', 
+        symbol: 'circle',
+        affiliation: 'unknown',
         name: 'Unknown Faction' 
     };
 }
@@ -3348,7 +3460,7 @@ function drawMovementPaths(events) {
                 const nextCoord = movement.coordinates[index + 1];
                 const bearing = calculateBearing(coord, nextCoord);
 
-                const markerIcon = createMovementNATOSymbol(faction.color, bearing, 28);
+                const markerIcon = createMovementNATOSymbol(faction.color, faction.affiliation, 28);
                 const marker = L.marker(coord, {
                     icon: markerIcon,
                     opacity: 1,
@@ -3505,15 +3617,15 @@ function createFactionMarker(faction, bearing) {
 }
 
 // Create NATO symbol for military movement markers
-function createMovementNATOSymbol(factionColor, bearing, size = 24) {
+function createMovementNATOSymbol(factionColor, factionAffiliation, size = 24) {
     if (typeof NATOSymbolLibrary === 'undefined') {
         console.warn('NATOSymbolLibrary not available, using fallback');
-        return createFactionMarker({ color: factionColor, name: 'Movement' }, bearing);
+        return createFactionMarker({ color: factionColor, name: 'Movement' }, 0);
     }
 
     const natoLibrary = new NATOSymbolLibrary();
 
-    const natoSymbol = natoLibrary.generateSymbol('hostile', 'infantry', 'unit');
+    const natoSymbol = natoLibrary.generateSymbol(factionAffiliation, 'infantry', 'unit');
 
     return L.divIcon({
         html: natoSymbol.svg,
@@ -3678,54 +3790,231 @@ function initializeCheckboxStates() {
     const showSettlements = document.getElementById('show-settlements');
     const showCities = document.getElementById('show-cities');
     const showMovements = document.getElementById('show-movements');
-    
-    // Read checkbox states from HTML and sync with mapState
+    const showFlags = document.getElementById('show-flags');
+    const legendSelect = document.getElementById('map-legend-select');
+    const legendContentArea = document.getElementById('legend-content-area');
+
+    // Update legend based on active filters
+    function updateLegendForFilters() {
+        if (!legendSelect || !legendContentArea) return;
+
+        if (legendSelect.value === 'auto') {
+            if (mapState.showTerritory) {
+                legendContentArea.innerHTML = generateTerritoryLegend();
+            } else if (mapState.showAttacks || mapState.showPolitical || mapState.showSocial) {
+                legendContentArea.innerHTML = generateMilitarySymbolsLegend();
+            } else {
+                // Default to military symbols if no filters
+                legendContentArea.innerHTML = generateMilitarySymbolsLegend();
+            }
+        }
+    }
+
+    // Sync legend dropdown with filters
+    function syncLegendDropdown() {
+        if (!legendSelect) return;
+        if (legendSelect.value !== 'auto') return;
+
+        if (mapState.showTerritory) {
+            legendSelect.value = 'territory';
+        } else if (mapState.showAttacks || mapState.showPolitical || mapState.showSocial) {
+            legendSelect.value = 'military';
+        }
+    }
+
+    async function refreshCurrentYear() {
+        if (mapState.currentYear) {
+            await updateMapForYear(mapState.currentYear);
+        }
+    }
+
+    // Attach event listeners to all checkboxes
     if (showAttacks) {
-        mapState.showAttacks = showAttacks.checked;
-        console.log('🔧 showAttacks.checked:', showAttacks.checked);
+        showAttacks.addEventListener('change', async (e) => {
+            mapState.showAttacks = e.target.checked;
+            syncLegendDropdown();
+            await refreshCurrentYear();
+        });
     }
     if (showPolitical) {
-        mapState.showPolitical = showPolitical.checked;
-        console.log('🔧 showPolitical.checked:', showPolitical.checked);
+        showPolitical.addEventListener('change', async (e) => {
+            mapState.showPolitical = e.target.checked;
+            syncLegendDropdown();
+            await refreshCurrentYear();
+        });
     }
     if (showSocial) {
-        mapState.showSocial = showSocial.checked;
-        console.log('🔧 showSocial.checked:', showSocial.checked);
+        showSocial.addEventListener('change', async (e) => {
+            mapState.showSocial = e.target.checked;
+            syncLegendDropdown();
+            await refreshCurrentYear();
+        });
     }
     if (showTerritory) {
-        mapState.showTerritory = showTerritory.checked;
-        console.log('🔧 showTerritory.checked:', showTerritory.checked);
+        showTerritory.addEventListener('change', async (e) => {
+            mapState.showTerritory = e.target.checked;
+            syncLegendDropdown();
+            updateLegendForFilters();
+            await refreshCurrentYear();
+        });
     }
     if (showSettlements) {
-        mapState.showSettlements = showSettlements.checked;
-        console.log('🔧 showSettlements.checked:', showSettlements.checked);
+        showSettlements.addEventListener('change', async (e) => {
+            mapState.showSettlements = e.target.checked;
+            await refreshCurrentYear();
+        });
     }
     if (showCities) {
-        mapState.showCities = showCities.checked;
-        console.log('🔧 showCities.checked:', showCities.checked);
+        showCities.addEventListener('change', async (e) => {
+            mapState.showCities = e.target.checked;
+            await refreshCurrentYear();
+        });
     }
     if (showMovements) {
-        mapState.showMovements = showMovements.checked;
-        console.log('🔧 showMovements.checked:', showMovements.checked);
+        showMovements.addEventListener('change', async (e) => {
+            mapState.showMovements = e.target.checked;
+            await refreshCurrentYear();
+        });
+    }
+    if (showFlags && window.clusterState) {
+        showFlags.addEventListener('change', async (e) => {
+            window.clusterState.showFlags = e.target.checked;
+            await refreshCurrentYear();
+        });
+    }
+
+    // Legend selector
+    if (legendSelect) {
+        legendSelect.addEventListener('change', async (e) => {
+            if (!legendContentArea) return;
+
+            switch(e.target.value) {
+                case 'auto':
+                    updateLegendForFilters();
+                    break;
+                case 'military':
+                    legendContentArea.innerHTML = generateMilitarySymbolsLegend();
+                    // Enable events
+                    if (showAttacks) showAttacks.checked = true;
+                    if (showPolitical) showPolitical.checked = true;
+                    if (showSocial) showSocial.checked = true;
+                    mapState.showAttacks = true;
+                    mapState.showPolitical = true;
+                    mapState.showSocial = true;
+                    await refreshCurrentYear();
+                    break;
+                case 'territory':
+                    legendContentArea.innerHTML = generateTerritoryLegend();
+                    if (showTerritory) showTerritory.checked = true;
+                    mapState.showTerritory = true;
+                    await refreshCurrentYear();
+                    break;
+                case 'factions':
+                    legendContentArea.innerHTML = generateMilitaryFactionsLegend();
+                    break;
+                case 'events':
+                    legendContentArea.innerHTML = generateEventTypesLegend();
+                    break;
+            }
+        });
+    }
+
+    // Initial legend sync
+    setTimeout(() => {
+        syncLegendDropdown();
+        updateLegendForFilters();
+    }, 100);
+    
+    // ===== Military Layer Controls =====
+    const layerFriendly = document.getElementById('layer-friendly');
+    const layerHostile = document.getElementById('layer-hostile');
+    const layerNeutral = document.getElementById('layer-neutral');
+    const layerAirspace = document.getElementById('layer-airspace');
+    const layerTerrain = document.getElementById('layer-terrain');
+    
+    // Initialize military layer visibility in window.militaryLayers
+    if (window.militaryLayers) {
+        if (layerFriendly) {
+            layerFriendly.checked = window.militaryLayers.visibility.friendly !== false;
+            window.militaryLayers.visibility.friendly = layerFriendly.checked;
+            layerFriendly.addEventListener('change', async (e) => {
+                window.militaryLayers.visibility.friendly = e.target.checked;
+                await refreshCurrentYear();
+            });
+        }
+        if (layerHostile) {
+            layerHostile.checked = window.militaryLayers.visibility.hostile !== false;
+            window.militaryLayers.visibility.hostile = layerHostile.checked;
+            layerHostile.addEventListener('change', async (e) => {
+                window.militaryLayers.visibility.hostile = e.target.checked;
+                await refreshCurrentYear();
+            });
+        }
+        if (layerNeutral) {
+            layerNeutral.checked = window.militaryLayers.visibility.neutral !== false;
+            window.militaryLayers.visibility.neutral = layerNeutral.checked;
+            layerNeutral.addEventListener('change', async (e) => {
+                window.militaryLayers.visibility.neutral = e.target.checked;
+                await refreshCurrentYear();
+            });
+        }
+        if (layerAirspace) {
+            layerAirspace.checked = window.militaryLayers.visibility.airspace === true;
+            layerAirspace.addEventListener('change', async (e) => {
+                window.militaryLayers.visibility.airspace = e.target.checked;
+                await refreshCurrentYear();
+            });
+        }
+        if (layerTerrain) {
+            layerTerrain.checked = window.militaryLayers.visibility.terrain === true;
+            layerTerrain.addEventListener('change', async (e) => {
+                window.militaryLayers.visibility.terrain = e.target.checked;
+                await refreshCurrentYear();
+            });
+        }
     }
     
-    console.log('🔧 Final mapState:', {
-        currentYear: mapState.currentYear,
-        showAttacks: mapState.showAttacks,
-        showPolitical: mapState.showPolitical,
-        showSocial: mapState.showSocial,
-        showTerritory: mapState.showTerritory,
-        showSettlements: mapState.showSettlements,
-        showCities: mapState.showCities,
-        showMovements: mapState.showMovements
-    });
+    // ===== Priority & Data Quality Controls =====
+    const priorityToggle = document.getElementById('priority-toggle');
+    const priorityPanel = document.getElementById('priority-panel');
+    const priorityFilter = document.getElementById('priority-filter');
+    const ageFilter = document.getElementById('age-filter');
+    
+    if (priorityToggle && priorityPanel) {
+        priorityToggle.addEventListener('click', () => {
+            priorityPanel.classList.toggle('collapsed');
+            const arrow = priorityToggle.querySelector('.toggle-arrow');
+            if (arrow) {
+                arrow.textContent = priorityPanel.classList.contains('collapsed') ? '▶' : '▼';
+            }
+        });
+    }
+    
+    if (priorityFilter && window.militaryLayers) {
+        priorityFilter.value = window.militaryLayers.priorityFilter || 'all';
+        priorityFilter.addEventListener('change', async (e) => {
+            window.militaryLayers.priorityFilter = e.target.value;
+            console.log('🎯 Priority filter changed to:', e.target.value);
+            await refreshCurrentYear();
+        });
+    }
+    
+    if (ageFilter && window.militaryLayers) {
+        ageFilter.value = window.militaryLayers.maxAgeDays || 50000;
+        ageFilter.addEventListener('change', async (e) => {
+            window.militaryLayers.maxAgeDays = parseInt(e.target.value);
+            console.log('🎯 Age filter changed to:', e.target.value, 'days');
+            await refreshCurrentYear();
+        });
+    }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Timeline disabled - only initialize map
-    initializeMap();
+    // Initialize checkbox states FIRST so they're ready when map draws
     initializeCheckboxStates();
+    // Then initialize map
+    initializeMap();
     initializeTimelineTicks();
 });
 

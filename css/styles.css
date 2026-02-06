@@ -999,7 +999,7 @@ main {
 }
 
 .verification-panel {
-    background: #1a1f2e;
+     
     padding: 1.5rem;
 
     margin-top: 1.5rem;
@@ -1021,7 +1021,7 @@ main {
     display: flex;
     align-items: center;
     padding: 0.5rem;
-    background: #1a1f2e;
+     
  
     border: 1px solid #2a3441;
 }
@@ -1102,25 +1102,149 @@ main {
 
 .layer-controls {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .layer-controls label {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
-#map {
-    height: 500px;
-    background: #1a1a1a;
-    border: 2px solid #34495e;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+/* Military Layers Subsection */
+.layer-subsection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+.subsection-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7f8c8d;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+/* Layer Icons - NATO Colors */
+.layer-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.layer-icon.friendly {
+    background: #0066CC;
+}
+
+.layer-icon.hostile {
+    background: #CC0000;
+}
+
+.layer-icon.neutral {
+    background: #00AA00;
+}
+
+/* Priority & Data Quality Panel */
+.priority-controls {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.priority-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: rgba(52, 73, 94, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #ecf0f1;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.priority-toggle-btn:hover {
+    background: rgba(52, 73, 94, 0.8);
+}
+
+.toggle-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+.priority-panel {
+    max-height: 300px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 6px 6px;
+    margin-top: 0.25rem;
+}
+
+.priority-panel.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.priority-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.priority-row:last-child {
+    border-bottom: none;
+}
+
+.priority-row label {
+    min-width: 80px;
+    font-size: 0.8rem;
+    color: #bdc3c7;
+}
+
+.priority-row select {
+    flex: 1;
+    padding: 0.35rem 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    color: #ecf0f1;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.priority-row select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.priority-info {
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.15);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.priority-info small {
+    color: #95a5a6;
+}
+
 
 .timeline-slider-container {
     margin-top: 1.5rem;
@@ -1141,7 +1265,7 @@ main {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #1a1f2e;
+     
     border: 3px solid #000;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -1151,7 +1275,7 @@ main {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #1a1f2e;
+     
     border: 3px solid #000;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -1356,7 +1480,7 @@ main {
 }
 
 .timeline-controls {
-    background: #1a1f2e;
+     
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -1372,7 +1496,7 @@ main {
 .filter-btn {
     padding: 0.5rem 1rem;
     border: 2px solid #3498db;
-    background: #1a1f2e;
+     
     color: #3498db;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1405,7 +1529,7 @@ main {
     padding: 0.5rem 1rem;
     border: 2px solid #95a5a6;
     border-radius: 5px;
-    background: #1a1f2e;
+     
     font-size: 1rem;
 }
 
@@ -1579,7 +1703,7 @@ main {
 
 .perspectives {
     margin-top: 4rem;
-    background: #1a1f2e;
+     
     padding: 2rem;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
@@ -1619,7 +1743,7 @@ main {
 }
 
 .sources {
-    background: #1a1f2e;
+     
     padding: 2rem;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-top: 3rem;

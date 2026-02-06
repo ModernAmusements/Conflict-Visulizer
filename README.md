@@ -256,6 +256,14 @@ initializeTimelineTicks() // Initialize on DOM ready
 
 ## 🔧 Customization
 
+### Map Container Styling:
+Current map container specifications:
+- Height: 650px
+- Border radius: 8px
+- Background: Black with 2px border
+
+To modify map dimensions, edit `scss/components/_map.scss` in the `#map` selector.
+
 ### Adding New SCSS Variables:
 1. Add to `scss/_variables.scss`
 2. Use throughout SCSS files

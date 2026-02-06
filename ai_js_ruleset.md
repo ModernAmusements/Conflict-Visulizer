@@ -3073,3 +3073,127 @@ const flagSize = isHighPriority ? 36 : 28;
 *Knowledge base last updated: February 2026*
 *Project: 2026-Conflict Timeline Visualization*
 
+---
+
+## 29. Marker Clickability & Overlap Prevention
+
+### 29.1 Marker Spacing Rules
+
+**Problem**: Overlapping markers make underlying elements unreachable with mouse clicks.
+
+**Solution**: Increased base spacing and proper z-index layering.
+
+**Spiral Offset Parameters:**
+```javascript
+function getHierarchicalOffset(index, total, zoomLevel = 7) {
+    if (total === 1) {
+        return { latOffset: 0, lngOffset: 0, priority: 0 };
+    }
+
+    const baseSpacing = 0.025; // ~2.5km at zoom 7 (increased from 0.015)
+    const zoomScale = Math.max(0.5, Math.min(2, zoomLevel / 7));
+    const spacing = baseSpacing * zoomScale;
+
+    const angleStep = Math.PI * 2 / Math.min(total, 8);
+    const radiusIncrement = spacing;
+
+    const angle = index * angleStep;
+    const radius = spacing + (index * radiusIncrement * 0.5);
+
+    return {
+        latOffset: Math.sin(angle) * radius,
+        lngOffset: Math.cos(angle) * radius,
+        priority: total - index
+    };
+}
+```
+
+**Spacing Guidelines:**
+| Setting | Value | Rationale |
+|---------|--------|-----------|
+| Base spacing | 0.025° | ~2.5km, prevents overlap |
+| Angle step | 360° / min(total, 8) | Even distribution |
+| Radius increment | spacing × 0.5 | Gradual spread |
+| Max spiral positions | 8 | Prevents excessive spread |
+
+### 29.2 Z-Index Layering
+
+**CSS Rules for Clickability:**
+```scss
+// Markers must be clickable
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean,
+.cluster-marker {
+    cursor: pointer !important;
+}
+
+// Hover brings marker to front
+.enhanced-military-marker-clean:hover,
+.basic-marker-icon-clean:hover,
+.cluster-marker:hover {
+    z-index: 2000 !important;
+    transform: scale(1.15);
+}
+
+// Flags must never block clicks
+.event-flag-beside {
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+```
+
+**Z-Index Stack:**
+| Element | z-index | Purpose |
+|---------|---------|---------|
+| Markers (default) | auto | Base layer |
+| Markers (hover) | 2000 | Click feedback |
+| Flag overlays | -1 | Behind markers |
+| Popups | auto | Leaflet managed |
+| Side panel | 10000 | Topmost |
+
+### 29.3 Clickability Checklist
+
+**Before deploying marker changes:**
+- [ ] Test clicking markers in dense clusters
+- [ ] Verify hover states show visual feedback
+- [ ] Ensure flags don't block marker clicks
+- [ ] Check all markers have cursor: pointer
+- [ ] Verify z-index layering doesn't trap elements
+
+### 29.4 Leaflet Z-Index Override Pattern
+
+**Problem**: Leaflet sets inline `z-index` styles that override CSS rules.
+
+**Solution**: Use JavaScript mouseover/mouseout to modify inline styles:
+
+```javascript
+marker.on('mouseover', function() {
+    if (this._icon) {
+        this._icon.style.zIndex = '9999';
+    }
+    if (this._shadow) {
+        this._shadow.style.zIndex = '9998';
+    }
+});
+
+marker.on('mouseout', function() {
+    if (this._icon) {
+        this._icon.style.zIndex = 'auto';
+    }
+    if (this._shadow) {
+        this._shadow.style.zIndex = 'auto';
+    }
+});
+```
+
+**CSS for Fallback:**
+```scss
+.leaflet-marker-icon:hover {
+    z-index: 9999 !important;
+}
+```
+
+---
+
+*Ruleset section added: February 2026*
+

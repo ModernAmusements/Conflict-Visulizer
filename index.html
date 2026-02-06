@@ -27,12 +27,12 @@
                 </div>
             </div>
             <p>This timeline aims to provide a comprehensive overview of the key historical events that have contributed to the ongoing tension between Israel and Hamas. Understanding this complex history requires examining multiple perspectives and acknowledging the deep-rooted issues on both sides.</p>
-            <div class="verification-panel">
+            <!-- <div class="verification-panel">
                 <h4>Data Verification Status</h4>
                 <div class="verification-grid">
                     <div class="verification-item">
                         <span class="check-mark">✓</span>
-                        <span>Multiple Source Verification</span>
+                        <span>Multiple Source</span>
                     </div>
                     <div class="verification-item">
                         <span class="check-mark">✓</span>
@@ -51,48 +51,224 @@
                         <span>Neutrality Protocol</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </section>
 
         <section class="map-container">
             <div class="map-header">
                 <h3>Strategic Conflict Map (1900-2025)</h3>
-                <div class="map-controls">
-                    <button id="play-btn" class="map-btn">▶ Play</button>
-                    <button id="pause-btn" class="map-btn hidden">⏸ Pause</button>
-                    <div class="speed-control">
-                        <label>Speed:</label>
-                        <select id="speed-select">
-                            <option value="1000">1x</option>
-                            <option value="500">2x</option>
-                            <option value="250">4x</option>
+                <!-- <div class="map-controls">
+                  
+                    <div class="control-group animation-controls">
+                        <button id="play-btn" class="map-btn">▶ Play</button>
+                        <button id="pause-btn" class="map-btn hidden">⏸ Pause</button>
+                        <div class="speed-control">
+                            <label>Speed:</label>
+                            <select id="speed-select">
+                                <option value="1000">1x</option>
+                                <option value="500">2x</option>
+                                <option value="250">4x</option>
+                            </select>
+                        </div>
+                    </div>
+
+              
+                    <div class="event-filters">
+                        <span class="control-group-label">Events:</span>
+                        <label class="filter-label">
+                            <input type="checkbox" id="show-attacks" checked>
+                            <span class="filter-icon military">
+                                <svg width="14" height="14" viewBox="0 0 20 20">
+                                    <rect x="2" y="2" width="16" height="16" fill="none" stroke="#e74c3c" stroke-width="2" transform="rotate(45 10 10)"/>
+                                    <line x1="6" y1="6" x2="14" y2="14" stroke="#e74c3c" stroke-width="1.5"/>
+                                    <line x1="14" y1="6" x2="6" y2="14" stroke="#e74c3c" stroke-width="1.5"/>
+                                </svg>
+                            </span>
+                            Military
+                        </label>
+                        <label class="filter-label">
+                            <input type="checkbox" id="show-political" checked>
+                            <span class="filter-icon political">
+                                <svg width="14" height="14" viewBox="0 0 20 20">
+                                    <rect x="3" y="3" width="14" height="14" fill="none" stroke="#9b59b6" stroke-width="2"/>
+                                    <line x1="6" y1="6" x2="14" y2="14" stroke="#9b59b6" stroke-width="1.5"/>
+                                    <line x1="14" y1="6" x2="6" y2="14" stroke="#9b59b6" stroke-width="1.5"/>
+                                </svg>
+                            </span>
+                            Political
+                        </label>
+                        <label class="filter-label">
+                            <input type="checkbox" id="show-social" checked>
+                            <span class="filter-icon social">
+                                <svg width="14" height="14" viewBox="0 0 20 20">
+                                    <circle cx="10" cy="10" r="7" fill="none" stroke="#f39c12" stroke-width="2"/>
+                                    <line x1="6" y1="6" x2="14" y2="14" stroke="#f39c12" stroke-width="1.5"/>
+                                    <line x1="14" y1="6" x2="6" y2="14" stroke="#f39c12" stroke-width="1.5"/>
+                                </svg>
+                            </span>
+                            Social
+                        </label>
+                    </div>
+
+                 
+                    <div class="layer-controls military-layers">
+                        <span class="control-group-label">Layers:</span>
+                        
+                      
+                        <div class="layer-subsection">
+                            <span class="subsection-label">Forces</span>
+                            <label class="filter-label layer-friendly">
+                                <input type="checkbox" id="layer-friendly" checked>
+                                <span class="layer-icon friendly" style="background: #0066CC;"></span>
+                                Israeli
+                            </label>
+                            <label class="filter-label layer-hostile">
+                                <input type="checkbox" id="layer-hostile" checked>
+                                <span class="layer-icon hostile" style="background: #CC0000;"></span>
+                                Hamas
+                            </label>
+                            <label class="filter-label layer-neutral">
+                                <input type="checkbox" id="layer-neutral" checked>
+                                <span class="layer-icon neutral" style="background: #00AA00;"></span>
+                                Regional
+                            </label>
+                        </div>
+                        
+                   
+                        <div class="layer-subsection">
+                            <span class="subsection-label">Zones</span>
+                            <label class="filter-label">
+                                <input type="checkbox" id="show-territory" checked>
+                                <span class="filter-icon territory">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <rect x="2" y="2" width="16" height="16" fill="none" stroke="#27ae60" stroke-width="2"/>
+                                    </svg>
+                                </span>
+                                Territory
+                            </label>
+                            <label class="filter-label">
+                                <input type="checkbox" id="show-settlements" checked>
+                                <span class="filter-icon settlements">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <rect x="4" y="8" width="12" height="10" fill="none" stroke="#3498db" stroke-width="2"/>
+                                        <polygon points="6,8 10,4 14,8" fill="none" stroke="#3498db" stroke-width="1.5"/>
+                                    </svg>
+                                </span>
+                                Settlements
+                            </label>
+                            <label class="filter-label">
+                                <input type="checkbox" id="layer-airspace">
+                                <span class="filter-icon airspace">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <circle cx="10" cy="10" r="8" fill="none" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                    </svg>
+                                </span>
+                                Airspace
+                            </label>
+                        </div>
+                        
+                     
+                        <div class="layer-subsection">
+                            <span class="subsection-label">Infrastructure</span>
+                            <label class="filter-label">
+                                <input type="checkbox" id="show-cities" checked>
+                                <span class="filter-icon cities">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <circle cx="10" cy="6" r="3" fill="none" stroke="#1abc9c" stroke-width="1.5"/>
+                                        <rect x="5" y="9" width="10" height="8" fill="none" stroke="#1abc9c" stroke-width="1.5"/>
+                                    </svg>
+                                </span>
+                                Cities
+                            </label>
+                            <label class="filter-label">
+                                <input type="checkbox" id="show-movements" checked>
+                                <span class="filter-icon movements">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <polygon points="4,4 16,10 4,16" fill="none" stroke="#e67e22" stroke-width="2"/>
+                                    </svg>
+                                </span>
+                                Movements
+                            </label>
+                        </div>
+                        
+                      
+                        <div class="layer-subsection">
+                            <span class="subsection-label">Context</span>
+                            <label class="filter-label">
+                                <input type="checkbox" id="show-flags" checked>
+                                <span class="filter-icon flags">⚑</span>
+                                Flags
+                            </label>
+                            <label class="filter-label">
+                                <input type="checkbox" id="layer-terrain">
+                                <span class="filter-icon terrain">
+                                    <svg width="14" height="14" viewBox="0 0 20 20">
+                                        <polyline points="2,18 6,10 10,14 14,6 18,12" fill="none" stroke="#7f8c8d" stroke-width="1.5"/>
+                                    </svg>
+                                </span>
+                                Terrain
+                            </label>
+                        </div>
+                    </div>
+
+                    
+                   
+                    <div class="priority-controls">
+                        <button id="priority-toggle" class="priority-toggle-btn">
+                            Priority & Data Quality <span class="toggle-arrow">▼</span>
+                        </button>
+                        <div id="priority-panel" class="priority-panel collapsed">
+                            <div class="priority-row">
+                                <label for="priority-filter">Priority (PIR):</label>
+                                <select id="priority-filter">
+                                    <option value="all" selected>All Events</option>
+                                    <option value="critical">Critical Only</option>
+                                    <option value="important">Critical + Important</option>
+                                </select>
+                            </div>
+                            <div class="priority-row">
+                                <label for="age-filter">Max Age:</label>
+                                <select id="age-filter">
+                                    <option value="30">30 days (Fresh)</option>
+                                    <option value="90">90 days (Recent)</option>
+                                    <option value="365">365 days (Aging)</option>
+                                    <option value="50000">All (Historical)</option>
+                                </select>
+                            </div>
+                            <div class="priority-info">
+                                <small>
+                                    <span style="color: #dc2626;">●</span> Critical: Wars, >50 casualties, territory changes<br>
+                                    <span style="color: #eab308;">●</span> Important: Operations, 5-50 casualties, political<br>
+                                    <span style="color: #6b7280;">●</span> Info: Minor incidents, routine activities
+                                </small>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- Legend Selector -->
+                    <!-- <div class="control-group legend-selector">
+                        <select id="map-legend-select" class="legend-select">
+                            <option value="auto">Auto Legend</option>
+                            <option value="military">Military Symbols</option>
+                            <option value="territory">Territory Control</option>
+                            <option value="factions">Factions</option>
+                            <option value="events">Event Types</option>
                         </select>
-                    </div>
-                    <div class="layer-controls">
-                        <label><input type="checkbox" id="show-attacks" checked> Military</label>
-                        <label><input type="checkbox" id="show-political" checked> Political</label>
-                        <label><input type="checkbox" id="show-social" checked> Social</label>
-                        <label><input type="checkbox" id="show-territory" checked> Territory</label>
-                        <label><input type="checkbox" id="show-settlements" checked> Settlements</label>
-                        <label><input type="checkbox" id="show-cities" checked> Cities</label>
-                        <label><input type="checkbox" id="show-movements" checked> Military Movements</label>
-                        <label><input type="checkbox" id="show-flags" checked> National Flags</label>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div id="map">
-            </div>
+            <div id="map"></div>
         
             <div class="timeline-slider-container">
                 <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1" class="timeline-slider">
                 <div class="slider-labels">
-                    <span>1900</span>
-                    <span id="current-year">1994</span>
-                    <span>2025</span>
+                   
+                    <span id="current-year">Current Year: 1994</span>
+               
                 </div>
             </div>
          
-            <div class="map-stats">
+            <!-- <div class="map-stats">
                 <div class="stat-item">
                     <span class="stat-label">Israeli Control:</span>
                     <span class="stat-value" id="israeli-territory">0%</span>
@@ -105,9 +281,9 @@
                     <span class="stat-label">Total Conflicts:</span>
                     <span class="stat-value" id="conflict-count">0</span>
                 </div>
-            </div>
+            </div> -->
         </section>
-                <section class="perspectives">
+                <!-- <section class="perspectives">
             <h3>Understanding Different Perspectives</h3>
             <div class="perspective-grid">
                 <div class="perspective-card">
@@ -123,8 +299,8 @@
                     <p>Founded in 1987, Hamas combines political and military resistance against Israeli occupation.</p>
                 </div>
             </div>
-        </section>
-        <section class="sources">
+        </section> -->
+        <!-- <section class="sources">
         <h3>Sources & Methodology</h3>
         <div class="sources-grid">
             <div class="source-category">
@@ -175,7 +351,7 @@
         <p class="source-link">
             <a href="SOURCES.md" target="_blank">View Complete Source Documentation</a>
         </p>
-    </section>
+    </section> -->
 
         <!-- Timeline commented out
         <section class="timeline-controls">

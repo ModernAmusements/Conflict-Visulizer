@@ -61,7 +61,7 @@ class FlagSystem {
     // Get flag as HTML element with enhanced visibility
     getFlagElement(nation, size = 32) {
         const flagSVG = this.getFlag(nation);
-        const aspectRatio = 0.67; // Standard flag aspect ratio
+        const aspectRatio = 0.67; 
 
         return `
             <div class="flag-icon-enhanced" style="width: ${size}px; height: ${size * aspectRatio}px;"

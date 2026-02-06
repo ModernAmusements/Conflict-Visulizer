@@ -297,6 +297,25 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+.event-flag-beside {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+.event-flag-beside .flag-emoji {
+    font-size: 18px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
 .directional-arrow {
     background: transparent;
     border: none;
@@ -719,12 +738,7 @@ main {
     padding: 2rem 1rem;
 }
 
-.intro {
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    margin-bottom: 3rem;
-    border: 1px solid #2a3441;
-}
+
 
 .accuracy-badge {
     display: flex;
@@ -734,6 +748,7 @@ main {
     padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+    border-radius: 8px;
 }
 
 .badge-icon {
@@ -753,9 +768,8 @@ main {
 }
 
 .verification-panel {
-    background: #1a1f2e;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
+    padding: 1.5rem ;
+    margin: 1.5rem 0;
     border-left: 4px solid #28a745;
 }
 
@@ -770,13 +784,7 @@ main {
     gap: 1rem;
 }
 
-.verification-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    background: #1a1f2e;
-    border: 1px solid #2a3441;
-}
+
 
 .check-mark {
     color: #27ae60;
@@ -785,14 +793,6 @@ main {
     font-size: 1.1rem;
 }
 
-/* Map Container */
-.map-container {
-    background: #151923;
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    margin-bottom: 3rem;
-    border: 1px solid #2a3441;
-}
 
 .map-header {
     display: flex;
@@ -811,8 +811,11 @@ main {
 .map-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
+    padding: 0.75rem;
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 8px;
 }
 
 .map-btn {
@@ -822,7 +825,8 @@ main {
     border: none;
     cursor: pointer;
     font-weight: 700;
-    transition: background 0.3s ease;
+    border-radius: 4px;
+    transition: background 0.2s ease;
 }
 
 .map-btn:hover {
@@ -844,24 +848,138 @@ main {
 }
 
 .speed-control select {
-    padding: 0.3rem;
-    border: 1px solid #4a5568;
-    border-radius: 3px;
-    background: #2a3441;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
     color: #e1e8ed;
+    font-size: 0.85rem;
 }
 
+.speed-control select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Control Groups */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-group-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* Event Filters */
+.event-filters {
+    flex-wrap: wrap;
+}
+
+/* Layer Controls */
 .layer-controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+    flex-wrap: wrap;
 }
 
-.layer-controls label {
+.filter-label {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.9rem;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #e1e8ed;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.filter-label:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #3498db;
+}
+
+.filter-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+}
+
+.filter-icon svg {
+    display: block;
+}
+
+/* Hide default checkbox appearance */
+.filter-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.filter-label input[type="checkbox"]:checked {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.filter-label input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.filter-label input[type="checkbox"]:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Legend Selector */
+.legend-selector {
+    padding: 0.4rem 0.75rem;
+}
+
+.legend-select {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e1e8ed;
+    font-size: 0.85rem;
+    cursor: pointer;
+    min-width: 130px;
+}
+
+.legend-select:focus {
+    outline: none;
+    border-color: #3498db;
 }
 
 #map {
@@ -873,18 +991,13 @@ main {
     z-index: 1;
 }
 
-/* Timeline slider styles - kept for reference */
-.timeline-slider-container {
-    margin-top: 1.5rem;
-    position: relative;
-    padding-bottom: 20px;
-}
+
 
 .timeline-slider {
     width: 100%;
     height: 8px;
-    border-radius: 4px;
-    background: linear-gradient(to right, #3498db, #e74c3c);
+
+    background: #fff;
     outline: none;
     -webkit-appearance: none;
     position: relative;
@@ -899,9 +1012,9 @@ main {
     height: 20px;
     border-radius: 50%;
     background: #1a1f2e;
-    border: 3px solid #000;
+    border: 3px solid #fff;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
     transition: transform 0.15s ease;
 }
 
@@ -914,9 +1027,9 @@ main {
     height: 20px;
     border-radius: 50%;
     background: #1a1f2e;
-    border: 3px solid #000;
+     border: 3px solid #fff;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
 }
 
 .timeline-slider::-moz-range-thumb:hover {
@@ -969,8 +1082,8 @@ main {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #1a1f2e;
-    border: 3px solid #000;
+    background: #ff5e00;
+   border: 3px solid #fff;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
@@ -980,14 +1093,14 @@ main {
     height: 20px;
     border-radius: 50%;
     background: #1a1f2e;
-    border: 3px solid #000;
+   border: 3px solid #fff;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .slider-labels {
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
     align-items: center;
     margin-top: 0.5rem;
     font-size: 0.9rem;
@@ -1453,6 +1566,9 @@ footer {
 .nato-movement-marker {
     background: transparent;
     border: none;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    z-index: 800 !important;
 }
 
 .nato-movement-marker svg {
@@ -1460,8 +1576,24 @@ footer {
     transition: transform 0.2s ease;
 }
 
+.nato-movement-marker:hover {
+    z-index: 9999 !important;
+}
+
 .nato-movement-marker:hover svg {
-    transform: scale(1.1);
+    transform: scale(1.15);
+}
+
+// Leaflet marker focus styles
+.leaflet-marker-icon:focus {
+    outline: 2px solid #fff !important;
+    outline-offset: 2px !important;
+}
+
+// Ensure all markers are clickable
+.leaflet-marker-icon {
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }
 
 .leaflet-popup-content-wrapper {
@@ -1779,6 +1911,97 @@ footer {
 
 .marker-low-priority {
     z-index: 500 !important;
+}
+
+// Marker clickability fix - Leaflet inline styles need JavaScript override
+.leaflet-marker-icon.cluster-marker,
+.leaflet-marker-icon.enhanced-military-marker-clean,
+.leaflet-marker-icon.basic-marker-icon-clean {
+    pointer-events: auto !important;
+}
+
+// Ensure markers are always on top when hovered
+.leaflet-marker-icon:hover {
+    z-index: 9999 !important;
+}
+
+// Flag overlay should never block clicks - force behind markers
+.event-flag-beside {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+.event-flag-beside .flag-emoji {
+    font-size: 18px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+// Add visual feedback for clickable markers
+.enhanced-military-marker-clean::after,
+.basic-marker-icon-clean::after,
+.cluster-marker::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: transparent;
+    z-index: -1;
+}
+
+.marker-low-priority {
+    z-index: 500 !important;
+}
+
+// Marker clickability fix - ensure markers are clickable
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean,
+.cluster-marker {
+    cursor: pointer !important;
+}
+
+.enhanced-military-marker-clean:hover,
+.basic-marker-icon-clean:hover,
+.cluster-marker:hover {
+    z-index: 2000 !important;
+    transform: scale(1.15);
+}
+
+// Flag overlay should never block clicks
+.event-flag-beside {
+    pointer-events: none !important;
+}
+
+// Ensure Leaflet marker icons are clickable
+.leaflet-marker-icon {
+    pointer-events: auto;
+}
+
+// Add visual feedback for clickable markers
+.enhanced-military-marker-clean::after,
+.basic-marker-icon-clean::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    z-index: -1;
 }
 
 // Zoom-based marker scaling

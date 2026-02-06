@@ -8,11 +8,173 @@ let L = window.L || {};
 let natoSymbolLibrary, flagSystem;
 
 // Enhanced map state with clustering - make globally accessible
+// Enhanced Military Layer Management System (MIL-STD-2525 compliant)
+// Following NATO APP-6 best practices for operational awareness
+
+window.militaryLayers = {
+    // Layer visibility states
+    visibility: {
+        friendly: true,      // Israeli forces
+        hostile: true,       // Hamas/Palestinian forces
+        neutral: true,       // Egypt, Jordan, Syria, Lebanon
+        logistics: true,     // Supply lines, routes
+        intel: true,         // Intelligence indicators
+        airspace: true,      // Restricted zones
+        terrain: true        // Topographic features
+    },
+    
+    // Transparency levels (0-1)
+    transparency: {
+        friendly: 1.0,
+        hostile: 1.0,
+        neutral: 0.8,
+        logistics: 0.6,
+        intel: 0.5,
+        airspace: 0.3,
+        terrain: 0.5
+    },
+    
+    // Priority Intelligence Requirements (PIR) filter
+    priorityFilter: 'all', // 'critical', 'important', 'informational', 'all'
+    
+    // Uncertainty indicators
+    showMetadata: true,
+    maxAgeDays: 50000 // Effectively disabled for historical data (50000 days ≈ 137 years)
+};
+
+// Military Layer Controller
+class MilitaryLayerController {
+    constructor() {
+        this.layerGroups = {};
+        this.initLayerGroups();
+    }
+    
+    initLayerGroups() {
+        ['friendly', 'hostile', 'neutral', 'logistics', 'intel', 'airspace', 'terrain'].forEach(layer => {
+            if (typeof L !== 'undefined' && window.mapState && window.mapState.map) {
+                this.layerGroups[layer] = L.layerGroup().addTo(window.mapState.map);
+            }
+        });
+    }
+    
+    setVisibility(layer, visible) {
+        if (this.layerGroups[layer]) {
+            if (visible) {
+                window.mapState.map.addLayer(this.layerGroups[layer]);
+            } else {
+                window.mapState.map.removeLayer(this.layerGroups[layer]);
+            }
+            window.militaryLayers.visibility[layer] = visible;
+        }
+    }
+    
+    setTransparency(layer, alpha) {
+        window.militaryLayers.transparency[layer] = alpha;
+        // Apply transparency to layer elements
+        if (this.layerGroups[layer]) {
+            this.layerGroups[layer].getLayers().forEach(marker => {
+                if (marker.setOpacity) {
+                    marker.setOpacity(alpha);
+                }
+            });
+        }
+    }
+    
+    // Filter events based on PIR priority
+    filterByPriority(events) {
+        const priority = window.militaryLayers.priorityFilter;
+        if (priority === 'all') return events;
+        
+        return events.filter(event => {
+            const priorityLevel = this.getEventPriority(event);
+            return priorityLevel <= this.getPriorityLevel(priority);
+        });
+    }
+    
+    getEventPriority(event) {
+        // Critical: Major operations, high casualties (>50), territorial changes
+        if (event.casualties?.totalCasualties > 50 || 
+            event.geography?.type === 'territory_change' ||
+            event.title?.includes('War') ||
+            event.title?.includes('Major')) {
+            return 1; // Critical
+        }
+        // Important: Significant attacks (5-50 casualties), key political events
+        if (event.casualties?.totalCasualties >= 5 ||
+            event.category === 'political' ||
+            event.title?.includes('Operation')) {
+            return 2; // Important
+        }
+        // Informational: Minor incidents, routine activities
+        return 3; // Informational
+    }
+    
+    getPriorityLevel(priority) {
+        const levels = { 'critical': 1, 'important': 2, 'informational': 3, 'all': 4 };
+        return levels[priority] || 4;
+    }
+    
+    // Calculate event age in days
+    getEventAgeDays(event) {
+        const eventDate = new Date(event.date);
+        const now = new Date();
+        return Math.floor((now - eventDate) / (1000 * 60 * 60 * 24));
+    }
+    
+    // Get reliability indicator based on data freshness
+    getReliabilityIndicator(event) {
+        const age = this.getEventAgeDays(event);
+        if (age <= 30) return { level: 'fresh', label: 'Fresh', color: '#22c55e' };
+        if (age <= 90) return { level: 'recent', label: 'Recent', color: '#eab308' };
+        if (age <= 365) return { level: 'aging', label: 'Aging', color: '#f97316' };
+        return { level: 'stale', label: 'Historical', color: '#6b7280' };
+    }
+    
+    // Get priority label
+    getPriorityLabel(event) {
+        const priority = this.getEventPriority(event);
+        const labels = { 1: 'CRITICAL', 2: 'IMPORTANT', 3: 'INFO' };
+        return labels[priority] || 'INFO';
+    }
+    
+    // Calculate event age in days
+    getEventAgeDays(event) {
+        const eventDate = new Date(event.date);
+        const now = new Date();
+        return Math.floor((now - eventDate) / (1000 * 60 * 60 * 24));
+    }
+    
+    // Get reliability indicator based on data freshness
+    getReliabilityIndicator(event) {
+        const age = this.getEventAgeDays(event);
+        if (age <= 30) return { level: 'fresh', label: 'Fresh', color: '#22c55e' };
+        if (age <= 90) return { level: 'recent', label: 'Recent', color: '#eab308' };
+        if (age <= 365) return { level: 'aging', label: 'Aging', color: '#f97316' };
+        return { level: 'stale', label: 'Historical', color: '#6b7280' };
+    }
+    
+    // Get events filtered by age
+    filterByAge(events) {
+        const maxAge = window.militaryLayers.maxAgeDays;
+        const now = new Date();
+        
+        return events.filter(event => {
+            const eventDate = new Date(event.date);
+            const daysDiff = (now - eventDate) / (1000 * 60 * 60 * 24);
+            return daysDiff <= maxAge;
+        });
+    }
+}
+
+// Initialize layer controller
+window.layerController = new MilitaryLayerController();
+
+// Backward-compatible cluster state (used by script.js)
 window.clusterState = {
     enabled: true,
     showFlags: true,
     clusters: [],
-    minClusterSize: 30, // pixels
+    minClusterSize: 30,
     currentZoom: 7
 };
 
@@ -31,9 +193,29 @@ function getEventYear(dateString) {
 }
 
 function createEnhancedPopup(event) {
+    // Get military metadata if layer controller is available
+    let metadataHtml = '';
+    if (window.layerController) {
+        const priority = window.layerController.getPriorityLabel(event);
+        const age = window.layerController.getEventAgeDays(event);
+        const reliability = window.layerController.getReliabilityIndicator(event);
+        
+        metadataHtml = `
+            <div class="popup-metadata" style="display: flex; gap: 12px; margin: 8px 0; padding: 8px; background: rgba(0,0,0,0.2); border-radius: 4px;">
+                <span class="priority-badge" style="background: ${priority === 'CRITICAL' ? '#dc2626' : priority === 'IMPORTANT' ? '#eab308' : '#6b7280'}; color: white; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+                    ${priority}
+                </span>
+                <span class="age-indicator" style="color: ${reliability.color}; font-size: 11px;">
+                    Age: ${age} days
+                </span>
+            </div>
+        `;
+    }
+    
     return `
         <div class="enhanced-popup">
             <h4>${event.title || 'Unknown Event'}</h4>
+            ${metadataHtml}
             <p><strong>Date:</strong> ${event.date || 'Unknown'}</p>
             <p><strong>Location:</strong> ${event.geography ? event.geography.placeName || 'Unknown' : 'Unknown'}</p>
             ${event.casualties ? `<p><strong>Casualties:</strong> ${event.casualties.totalCasualties || 0}</p>` : ''}
@@ -400,7 +582,6 @@ function createClusterPopup(cluster) {
         </div>
     `;
 
-    popupHtml += '</div>';
     return popupHtml;
 }
 
@@ -693,6 +874,11 @@ class PerformanceOptimizer {
         this.clusterCache = new Map();
         this.lastZoom = 0;
         this.debounceTimer = null;
+        this.lastDraw = {
+            zoom: 0,
+            year: null,
+            filters: null
+        };
     }
 
     // Cache NATO symbols
@@ -763,7 +949,8 @@ const performanceOptimizer = new PerformanceOptimizer();
 
 // Enhanced marker creation with performance optimization and zoom-based sizing
 function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
-    const { showFlags = window.clusterState.showFlags, enableClustering = window.clusterState.enabled } = options;
+    const showFlags = options.showFlags !== undefined ? options.showFlags : (window.clusterState?.showFlags ?? true);
+    const enableClustering = options.enableClustering !== undefined ? options.enableClustering : (window.clusterState?.enabled ?? true);
 
     // Determine affiliation and unit type
     const { affiliation, unitType, nation } = determineMilitaryDetails(event);
@@ -776,7 +963,7 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
 
     // Get cached symbol with dynamic sizing
     const symbolData = performanceOptimizer.getCachedSymbol(affiliation, unitType, finalSize);
-    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, Math.round(24 * zoomScale)) : '';
+    const flagElement = (showFlags && nation && flagSystem) ? flagSystem.getFlagElement(nation, Math.round(24 * zoomScale)) : '';
 
     const markerHtml = `
         <div class="enhanced-military-marker" 
@@ -802,6 +989,8 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
 
 // Optimized cluster marker creation
 function createClusterMarkerOptimized(events) {
+    if (!mapState || !mapState.map) return null;
+    
     const currentZoom = mapState.map.getZoom();
     
     // Get cached cluster
@@ -843,21 +1032,121 @@ function createClusterMarkerOptimized(events) {
 
 // Optimized event marker drawing with performance improvements
 function drawAllEventMarkersOptimized(events) {
-    if (!mapState.markerLayer) return;
-
-    console.log('🎯 Drawing optimized enhanced military markers...');
+    console.log('🎯 drawAllEventMarkersOptimized called with', events?.length || 0, 'events');
     
-    const currentZoom = mapState.map.getZoom();
-    const shouldCluster = currentZoom < 9 && window.clusterState.enabled;
-    
-    // Performance optimization: only redraw if zoom changed significantly
-    if (Math.abs(currentZoom - performanceOptimizer.lastZoom) < 1) {
-        console.log('⏭️ Skipping redraw - zoom change too small');
+    if (!mapState || !mapState.markerLayer) {
+        console.log('⏭️ No marker layer yet');
         return;
     }
-    
-    performanceOptimizer.lastZoom = currentZoom;
-    
+
+    // Clear existing markers before drawing new ones
+    mapState.markerLayer.clearLayers();
+    console.log('🗑️ Cleared marker layer');
+
+    const currentZoom = mapState.map ? mapState.map.getZoom() : 7;
+    const clusterEnabled = window.clusterState ? window.clusterState.enabled : true;
+    const shouldCluster = currentZoom < 9 && clusterEnabled;
+    const currentYear = mapState.currentYear || 2024;
+
+    console.log(`🎯 Zoom ${currentZoom}, Clustering: ${shouldCluster ? 'ACTIVE' : 'individual markers'}, Year: ${currentYear}`);
+
+    // Apply military layer filters (with fallback)
+    if (window.layerController && window.militaryLayers) {
+        const priorityFilter = window.militaryLayers.priorityFilter || 'all';
+        const maxAge = window.militaryLayers.maxAgeDays || 50000;
+        const visibility = window.militaryLayers.visibility || {};
+        
+        if (priorityFilter !== 'all') {
+            events = window.layerController.filterByPriority(events);
+        }
+        events = events.filter(event => {
+            const eventDate = new Date(event.date);
+            const now = new Date();
+            const daysDiff = (now - eventDate) / (1000 * 60 * 60 * 24);
+            if (daysDiff > maxAge) return false;
+            
+            // Check Event Type filters (Military/Political/Social)
+            const isMilitary = event.category === 'military' || event.geography?.type === 'attack';
+            const isPolitical = event.category === 'political';
+            const isSocial = event.category === 'social';
+            
+            // Show event if any relevant filter is active
+            const showMilitary = mapState.showAttacks !== false;
+            const showPolitical = mapState.showPolitical !== false;
+            const showSocial = mapState.showSocial !== false;
+            
+            if (isMilitary && !showMilitary) return false;
+            if (isPolitical && !showPolitical) return false;
+            if (isSocial && !showSocial) return false;
+            
+            // If not any of the main categories, show by default (territory, settlements, etc)
+            if (!isMilitary && !isPolitical && !isSocial) {
+                // These are shown based on other layer settings
+            }
+            
+            // Filter by military layer visibility (forces) - only if affiliation is known
+            const { affiliation } = determineMilitaryDetails(event);
+            
+            if (affiliation === 'friendly' && visibility.friendly === false) return false;
+            if (affiliation === 'hostile' && visibility.hostile === false) return false;
+            if (affiliation === 'neutral' && visibility.neutral === false) return false;
+            
+            return true;
+        });
+        
+        console.log(`🎯 After filtering: ${events.length} events (priority: ${priorityFilter}, maxAge: ${maxAge} days, friendly: ${visibility.friendly}, hostile: ${visibility.hostile}, neutral: ${visibility.neutral})`);
+    } else {
+        // Apply Event Type filters even without military layers
+        events = events.filter(event => {
+            const isMilitary = event.category === 'military' || event.geography?.type === 'attack';
+            const isPolitical = event.category === 'political';
+            const isSocial = event.category === 'social';
+            
+            const showMilitary = mapState.showAttacks !== false;
+            const showPolitical = mapState.showPolitical !== false;
+            const showSocial = mapState.showSocial !== false;
+            
+            if (isMilitary && !showMilitary) return false;
+            if (isPolitical && !showPolitical) return false;
+            if (isSocial && !showSocial) return false;
+            
+            return true;
+        });
+    }
+
+    // Track which filters were used - default to true if undefined
+    const currentFilters = {
+        showAttacks: mapState.showAttacks !== false,
+        showPolitical: mapState.showPolitical !== false,
+        showSocial: mapState.showSocial !== false,
+        showSettlements: mapState.showSettlements !== false,
+        showTerritory: mapState.showTerritory !== false,
+        priority: window.militaryLayers?.priorityFilter || 'all',
+        maxAge: window.militaryLayers?.maxAgeDays || 50000,
+        friendly: window.militaryLayers?.visibility?.friendly ?? true,
+        hostile: window.militaryLayers?.visibility?.hostile ?? true,
+        neutral: window.militaryLayers?.visibility?.neutral ?? true
+    };
+
+    // Performance optimization: only skip if zoom, year, AND filters unchanged
+    const lastDraw = performanceOptimizer.lastDraw || {};
+    const filtersChanged = JSON.stringify(currentFilters) !== JSON.stringify(lastDraw.filters);
+
+    if (Math.abs(currentZoom - (lastDraw.zoom || 0)) < 1 && 
+        currentYear === lastDraw.year && 
+        !filtersChanged) {
+        console.log('⏭️ Skipping redraw - no changes detected');
+        return;
+    }
+
+    console.log('🎯 Drawing optimized markers:', events.length, 'events, clustering:', shouldCluster);
+
+    performanceOptimizer.lastDraw = { 
+        zoom: currentZoom, 
+        year: currentYear,
+        filters: currentFilters
+    };
+
     if (shouldCluster) {
         // Use optimized clustering system
         const clusterer = new IntensityClusterer();
@@ -875,8 +1164,10 @@ function drawAllEventMarkersOptimized(events) {
         events.forEach(event => {
             if (!event.geography || !event.geography.coordinates) return;
             
+            const showFlags = window.clusterState ? window.clusterState.showFlags : true;
+            
             const marker = createEnhancedMilitaryMarkerOptimized(event, {
-                showFlags: window.clusterState.showFlags,
+                showFlags: showFlags,
                 enableClustering: false
             });
             
@@ -897,46 +1188,32 @@ function drawAllEventMarkersOptimized(events) {
     performanceOptimizer.clearCacheIfNeeded();
 }
 
-    // Initialize enhanced systems with performance optimization and error handling
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Leaflet reference
+    // Initialize enhanced systems with performance optimization
+function initializeClusteringSystem() {
     L = window.L;
     
-    // Wait for original map initialization
-    setTimeout(() => {
-        // Initialize systems if available
-        if (typeof NATOSymbolLibrary !== 'undefined') {
-            natoSymbolLibrary = new NATOSymbolLibrary();
-        } else {
-            console.warn('⚠️ NATO Symbol Library not available');
-        }
-        
-        if (typeof FlagSystem !== 'undefined') {
-            flagSystem = new FlagSystem();
-        } else {
-            console.warn('⚠️ Flag System not available');
-        }
-        
-        if (typeof mapState === 'undefined') {
-            console.warn('⚠️ Map State not initialized');
-        }
-        
-        console.log('🎯 Initializing enhanced military systems with performance optimization...');
-        setupLeftLegend();
-        
-        // Replace original marker function with optimized version
+    if (typeof NATOSymbolLibrary !== 'undefined') {
+        natoSymbolLibrary = new NATOSymbolLibrary();
+    }
+    
+    if (typeof FlagSystem !== 'undefined') {
+        flagSystem = new FlagSystem();
+    }
+    
+    setupLeftLegend();
+    
+    console.log('🎯 Enhanced military systems initialized');
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeClusteringSystem();
+    
+    // Override drawAllEventMarkers immediately since clustering is our primary mode
+    if (typeof drawAllEventMarkersOptimized === 'function') {
         window.drawAllEventMarkers = drawAllEventMarkersOptimized;
-        window.createEnhancedMilitaryMarker = createEnhancedMilitaryMarkerOptimized;
-        
-        console.log('⚡ Performance optimizations enabled');
-        
-        // Initialize flag legend if flag system is available
-        if (flagSystem && flagSystem.generateFlagLegends) {
-            console.log('🏳 National flag system initialized');
-        } else {
-            console.warn('⚠️ National flag system unavailable');
-        }
-    }, 1000);
+        console.log('⚡ Clustering optimization active - drawAllEventMarkers overridden');
+    }
 });
 
     // Setup left legend for NATO symbols
@@ -966,3 +1243,4 @@ function generateLegacyDropdownOptions() {
 // Export clustering utilities for global access
 window.IntensityClusterer = IntensityClusterer;
 window.createEnhancedMilitaryMarker = createEnhancedMilitaryMarkerOptimized;
+window.drawAllEventMarkersOptimized = drawAllEventMarkersOptimized;

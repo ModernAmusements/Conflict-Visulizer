@@ -866,7 +866,8 @@ $breakpoint-xl: 1200px;
 - `.map-container`, `.map-header`, `.map-controls`
 - `.map-btn` (play/pause with states)
 - `.speed-control`, `.layer-controls`
-- `#map`, `.map-stats`
+- `#map` - 650px height, 8px border radius, black background with 2px border
+- `.map-stats`
 - Timeline slider with pseudo-elements
 - Territory zones and attack markers
 - Movement paths and faction markers
