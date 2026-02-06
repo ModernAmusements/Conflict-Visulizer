@@ -2300,6 +2300,171 @@ const safeLog = (user) => {
 
 ---
 
+## 27. SCSS Guidelines
+
+### 27.1 File Structure
+
+```
+scss/
+├── styles.scss        # Main entry point
+├── _variables.scss   # Design tokens (colors, spacing, breakpoints)
+└── _mixins.scss      # Reusable style patterns
+```
+
+### 27.2 Variables (`scss/_variables.scss`)
+
+**MUST define for:**
+
+```scss
+// NATO Affiliation Colors
+$nato-friendly: #0066CC;
+$nato-hostile: #CC0000;
+$neutral: #00AA00;
+$unknown: #FFAA00;
+
+// Nation Colors
+$israel-color: #0038B8;
+$palestine-color: #009C48;
+
+// Theme Colors
+$bg-primary: #0a0a0a;
+$bg-secondary: #1a1a2e;
+$text-primary: #e8e8e8;
+$text-secondary: #a0a0a0;
+
+// Spacing
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+```
+
+### 27.3 Mixins (`scss/_mixins.scss`)
+
+**Common patterns to extract:**
+
+```scss
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin btn-primary {
+  padding: 0.5rem 1rem;
+  background: $nato-friendly;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  }
+}
+```
+
+### 27.4 Main Entry (`scss/styles.scss`)
+
+```scss
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Base styles
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Component styles
+.class-name {
+  @include flex-center;
+  color: $text-primary;
+  
+  &:hover {
+    color: $nato-friendly;
+  }
+  
+  @include respond-to('md') {
+    flex-direction: row;
+  }
+}
+```
+
+### 27.5 SCSS to CSS Migration Process
+
+1. **Copy** original CSS to `scss/styles.scss`
+2. **Extract** variables → `_variables.scss`
+3. **Extract** mixins → `_mixins.scss`
+4. **Convert** nesting where appropriate
+5. **Replace** hardcoded values with variables
+6. **Test** in dev server (`npm run dev`)
+7. **Build** for production (`npm run build`)
+
+### 27.6 Nesting Rules
+
+**ALLOWED - Logical component nesting:**
+```scss
+.card {
+  background: $bg-secondary;
+  
+  &-header {
+    padding: $spacing-md;
+  }
+  
+  &-body {
+    padding: $spacing-lg;
+  }
+}
+```
+
+**AVOID - Over-nesting (max 3-4 levels):**
+```scss
+// Bad - too deeply nested
+.parent {
+  .child {
+    .inner {
+      .deep {
+        color: red;
+      }
+    }
+  }
+}
+```
+
+### 27.7 Vite Integration
+
+**Commands:**
+```bash
+npm run dev      # Development with hot reloading
+npm run build    # Production build to dist/
+npm run preview  # Preview production build
+npm run legacy   # Python server (no SCSS)
+```
+
+### 27.8 Migration Checklist
+
+- [ ] Variables defined in `_variables.scss`
+- [ ] Mixins extracted to `_mixins.scss`
+- [ ] `@use` statements at top of `styles.scss`
+- [ ] Hardcoded colors replaced with variables
+- [ ] Hardcoded spacing replaced with variables
+- [ ] Hardcoded breakpoints replaced with variables
+- [ ] Build succeeds (`npm run build`)
+- [ ] Dev server works (`npm run dev`)
+- [ ] Styles render correctly in browser
+
+---
+
 *Last updated: 2026*
 *Version: 2.0*
 

@@ -1,0 +1,174 @@
+// ============================================
+// SCSS Mixins - Conflict Timeline
+// ============================================
+
+@use 'variables' as *;
+
+// Flexbox utilities
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Button base
+@mixin btn-base {
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: $font-primary;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all $transition-normal;
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background: $nato-friendly;
+  color: white;
+
+  &:hover {
+    background: mix(black, $nato-friendly, 15%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  background: $bg-tertiary;
+  color: $text-primary;
+  border: 1px solid $timeline-line;
+
+  &:hover {
+    background: mix(white, $bg-tertiary, 5%);
+    border-color: $nato-friendly;
+  }
+}
+
+@mixin btn-icon {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  background: $bg-tertiary;
+  border: 1px solid $timeline-line;
+  border-radius: $radius-md;
+  color: $text-primary;
+  cursor: pointer;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: $nato-friendly;
+    border-color: $nato-friendly;
+  }
+}
+
+// Card styles
+@mixin card-base {
+  background: $bg-secondary;
+  border: 1px solid $timeline-line;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+}
+
+@mixin card-hover {
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: $nato-friendly;
+    box-shadow: 0 0 20px rgba($nato-friendly, 0.3);
+    transform: translateY(-4px);
+  }
+}
+
+// Text gradient
+@mixin text-gradient {
+  background: linear-gradient(135deg, $text-primary 0%, $nato-friendly 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Cluster base
+@mixin cluster-base($size, $color, $border-color) {
+  width: $size;
+  height: $size;
+  background: $color;
+  border: 2px solid $border-color;
+  border-radius: 50%;
+  @include flex-center;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all $transition-normal;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Responsive breakpoint
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// Animation keyframes
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// Pulse animation
+@include keyframes(pulse) {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+// Scrollbar styling
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-primary;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $timeline-line;
+    border-radius: 4px;
+
+    &:hover {
+      background: mix(white, $timeline-line, 15%);
+    }
+  }
+}

@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="scss/styles.scss">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -82,6 +82,7 @@
             </div>
             <div id="map">
             </div>
+        
             <div class="timeline-slider-container">
                 <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1" class="timeline-slider">
                 <div class="slider-labels">
@@ -90,6 +91,7 @@
                     <span>2025</span>
                 </div>
             </div>
+         
             <div class="map-stats">
                 <div class="stat-item">
                     <span class="stat-label">Israeli Control:</span>
@@ -175,6 +177,7 @@
         </p>
     </section>
 
+        <!-- Timeline commented out
         <section class="timeline-controls">
             <button id="filter-all" class="filter-btn active">All Events</button>
             <button id="filter-political" class="filter-btn">Political</button>
@@ -195,8 +198,8 @@
         </section>
 
         <section class="timeline" id="timeline">
-            <!-- Timeline events will be dynamically generated here -->
         </section>
+        -->
 
     <footer>
         <div class="footer-content">

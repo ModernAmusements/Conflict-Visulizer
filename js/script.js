@@ -2291,6 +2291,7 @@ async function handleSliderChange(e) {
     await updateMapForYear(mapState.currentYear);
 }
 
+
 // Handle speed change
 function handleSpeedChange(e) {
     mapState.playSpeed = parseInt(e.target.value);
@@ -3356,7 +3357,8 @@ function initializeCheckboxStates() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initializeTimeline();
+    // Timeline disabled - only initialize map
+    initializeMap();
     initializeCheckboxStates();
 });
 

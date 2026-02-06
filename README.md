@@ -17,15 +17,23 @@ An interactive web application visualizing military conflicts with 1994-era NATO
 2026-Conflict/
 ├── index.html                     # Main HTML entry point
 ├── package.json                   # Project configuration
-├── PROJECT_DOCUMENTATION.md        # Technical documentation
+├── .gitignore                     # Git ignore rules
+├── README.md                       # Project documentation
+├── PROJECT_DOCUMENTATION.md         # Technical documentation
 ├── ai_js_ruleset.md             # JavaScript coding standards
 │
-├── css/                          # Stylesheets
-│   └── styles.css               # Main application styles
+├── scss/                         # SCSS stylesheets (migrating from CSS)
+│   ├── styles.scss               # Main styles entry point
+│   ├── _variables.scss           # Design tokens and variables
+│   └── _mixins.scss              # Reusable mixins
+│
+├── css/                          # Legacy CSS (being migrated to SCSS)
+│   ├── styles.css                # Original styles
+│   └── styles.css.backup         # Backup of original
 │
 ├── js/                          # JavaScript files
-│   ├── script.js                # Main application logic
-│   └── components/              # Reusable components
+│   ├── script.js                 # Main application logic
+│   └── components/               # Reusable components
 │       ├── symbols.js            # NATO military symbol system
 │       ├── flags.js              # Flag and territory visualization
 │       └── clustering-system.js   # Event clustering and grouping
@@ -40,25 +48,82 @@ An interactive web application visualizing military conflicts with 1994-era NATO
 
 ## 🚀 Getting Started
 
-1. **Start Local Server:**
-   ```bash
-   # From project root
-   python -m http.server 8000
-   # or
-   npm start
-   ```
+### Development Mode (with Vite + SCSS hot reloading):
+```bash
+npm run dev
+# Opens at http://localhost:3000
+```
 
-2. **Open in Browser:**
-   ```
-   http://localhost:8000
-   ```
+### Legacy Mode (Python server):
+```bash
+npm run legacy
+# Opens at http://localhost:8000
+```
+
+### Build for Production:
+```bash
+npm run build
+# Outputs to dist/ folder
+npm run preview
+# Preview production build
+```
+
+## 🎨 SCSS Architecture
+
+### Variables (`scss/_variables.scss`)
+Design tokens and configuration:
+```scss
+// NATO Affiliation Colors
+$nato-friendly: #0066CC;
+$nato-hostile: #CC0000;
+$neutral: #00AA00;
+
+// Nation Colors
+$israel-color: #0038B8;
+$palestine-color: #009C48;
+
+// Theme Colors
+$bg-primary: #0a0a0a;
+$bg-secondary: #1a1a2e;
+$text-primary: #e8e8e8;
+
+// Spacing
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+```
+
+### Mixins (`scss/_mixins.scss`)
+Reusable style patterns:
+```scss
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin btn-primary {
+  padding: 0.5rem 1rem;
+  background: $nato-friendly;
+  color: white;
+  border-radius: 8px;
+}
+```
+
+### Main Entry (`scss/styles.scss`)
+Imports variables, mixins, and component partials. Migrating incrementally from legacy CSS.
 
 ## 📋 File Dependencies
 
 ### Script Loading Order (Critical!)
 ```html
-<!-- CSS (loaded first) -->
-<link rel="stylesheet" href="css/styles.css">
+<!-- CSS (SCSS compiled automatically by Vite) -->
+<link rel="stylesheet" href="scss/styles.scss">
 
 <!-- JavaScript (loaded at end of body) -->
 <script src="js/components/symbols.js"></script>        <!-- Base symbols -->
@@ -69,46 +134,48 @@ An interactive web application visualizing military conflicts with 1994-era NATO
 
 ### Dependencies Flow:
 ```
-CSS → HTML → symbols.js → flags.js → clustering-system.js → script.js
+SCSS → Vite → Compiled CSS → HTML → symbols.js → flags.js → clustering-system.js → script.js
 ```
-
-## 🎯 Key Files by Function
-
-### **Core Application**
-- `index.html` - Main structure and UI layout
-- `css/styles.css` - All styling and responsive design
-- `js/script.js` - Main application controller
-
-### **Military Visualization**
-- `js/components/symbols.js` - NATO APP-6 symbol generation
-- `js/components/flags.js` - Territory and flag overlays
-- `js/components/clustering-system.js` - Event grouping and display
-
-### **Data Layer**
-- `data/Hamasterrorattacks.csv` - Attack event database
 
 ## 🔄 Data Flow
 
 ```
 CSV Data → script.js (loadHamasAttacksCSV) → Event Processing
-                                                        ↓
-Timeline Events ← getAllEvents() ← Military Enhancement
-                                                        ↓
-Timeline Rendering ← createTimelineEvent() ← symbols.js
-                                                        ↓
-Map Rendering ← updateMapForYear() ← flags.js + clustering-system.js
+                                                  ↓
+                          Timeline Events ← getAllEvents()
+                                                  ↓
+                          Timeline Rendering ← createTimelineEvent()
+                                                  ↓
+                          Map Rendering ← updateMapForYear()
 ```
 
 ## 🛠️ Development Guidelines
 
+### CSS to SCSS Migration Process
+1. **Copy** original CSS to `scss/styles.scss`
+2. **Extract** variables to `_variables.scss`
+3. **Extract** mixins to `_mixins.scss`
+4. **Convert** nested rules to SCSS nesting
+5. **Replace** hardcoded values with variables
+6. **Test** thoroughly before moving on
+
+### Current Migration Status
+- ✅ Variables defined
+- ✅ Mixins created  
+- ✅ Map styles (partial)
+- ⏳ Legend styles (partial)
+- ⏳ Timeline styles (commented out)
+- ⏳ Remaining components
+
 ### File Organization Rules:
-1. **CSS** in `/css/` folder
-2. **JavaScript** in `/js/` with components in `/js/components/`
-3. **Data files** in `/data/` folder
-4. **Assets** in `/assets/` subfolders
+1. **SCSS** in `/scss/` folder
+2. **Legacy CSS** in `/css/` folder (being phased out)
+3. **JavaScript** in `/js/` with components in `/js/components/`
+4. **Data files** in `/data/` folder
+5. **Assets** in `/assets/` subfolders
 
 ### Integration Requirements:
-1. **Load Order**: CSS → HTML → JS components (dependency order)
+1. **Load Order**: SCSS → HTML → JS components (dependency order)
 2. **Path References**: Use relative paths from project root
 3. **Module Dependencies**: Verify modules exist before using
 4. **Error Handling**: Graceful fallbacks for missing files
@@ -147,47 +214,52 @@ Date,Location,AttackType,Weapon,TotalKilled,IsraelisKilled,PalestiniansKilled,To
 }
 ```
 
-## 🎨 CSS Organization
+## 🎨 CSS Organization (Legacy → SCSS)
 
-### Main Sections:
-- **Timeline Styles** - Event cards, animations, responsive grid
-- **Map Styles** - Container, controls, overlays
-- **Military Symbols** - NATO symbol rendering
-- **Responsive Design** - Mobile, tablet, desktop layouts
-- **Color Themes** - Era-based color schemes
+### Main Sections (in scss/styles.scss):
+- **Base Styles** - Reset, typography, layout
+- **Header Styles** - Main header and navigation
+- **Map Styles** - Container, controls, overlays (being migrated)
+- **Legend Styles** - Military symbols, flags (being migrated)
+- **Timeline Styles** - Event cards, animations (commented out)
+- **Footer Styles** - Footer content
 
 ### Key Classes:
-- `.timeline-event` - Main event container
-- `.military-symbol-container` - NATO symbol wrapper
-- `.flag-overlay` - Territory flag display
-- `.movement-*` - Military movement paths
+- `.map-container` - Map section wrapper
+- `.map-header` - Map controls header
+- `.map-controls` - Play/pause, speed, layer controls
+- `.military-map-legend` - NATO symbol legend
+- `.timeline-slider-container` - Year slider (timeline disabled)
+- `.cluster-marker` - Intensity-based clustering
 
 ## 🔧 Customization
 
-### Adding New Event Types:
-1. Update CSV file structure
-2. Modify `convertCSVToEvent()` in script.js
-3. Add CSS classes for new category
-4. Update military classification logic
+### Adding New SCSS Variables:
+1. Add to `scss/_variables.scss`
+2. Use throughout SCSS files
 
-### Adding New Symbols:
-1. Update `symbols.js` with new symbol definitions
-2. Add rendering logic in `NATOSymbolLibrary`
-3. Update CSS for new symbol styles
+### Adding New Mixins:
+1. Add to `scss/_mixins.scss`
+2. Import in component partials
 
-### Modifying Map Display:
-1. Update `updateMapForYear()` in script.js
-2. Modify territory drawing functions
-3. Adjust flag rendering logic
+### Building for Production:
+```bash
+npm run build
+# Creates optimized assets in dist/
+```
 
 ## 🚨 Important Notes
 
 ### Critical Dependencies:
+- **Vite** - Build tool and dev server
+- **Sass** - SCSS compilation
 - **Leaflet.js** - Map rendering (loaded from CDN)
 - **Font Awesome** - Icons (loaded from CDN)
 - **Modern Browser** - ES6+ features required
 
 ### Performance Considerations:
+- Vite provides fast HMR during development
+- SCSS compiled efficiently for production
 - Large CSV files need async loading
 - Map updates are debounced to prevent lag
 - Symbol rendering uses SVG for scalability
@@ -200,9 +272,11 @@ Date,Location,AttackType,Weapon,TotalKilled,IsraelisKilled,PalestiniansKilled,To
 
 ## 📱 Responsive Design
 
-- **Mobile**: Single column timeline, simplified map
-- **Tablet**: Two-column timeline, full map functionality
-- **Desktop**: Multi-column timeline, advanced features
+Breakpoints defined in `_variables.scss`:
+- `$breakpoint-sm: 576px`
+- `$breakpoint-md: 768px`
+- `$breakpoint-lg: 992px`
+- `$breakpoint-xl: 1200px`
 
 ## 🔍 Debug Information
 

@@ -4,8 +4,11 @@
   "description": "Interactive timeline visualization of the Israel-Hamas conflict (1987-2023)",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000"
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "legacy": "python -m http.server 8000"
   },
   "keywords": [
     "conflict",
@@ -21,7 +24,10 @@
   "dependencies": {
     "leaflet": "^1.9.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sass": "^1.97.3",
+    "vite": "^7.3.1"
+  },
   "directories": {
     "css": "css/",
     "js": "js/",
@@ -35,7 +41,7 @@
     ],
     "javascript": [
       "js/components/symbols.js",
-      "js/components/flags.js", 
+      "js/components/flags.js",
       "js/components/clustering-system.js",
       "js/script.js"
     ],
