@@ -32,7 +32,7 @@
 
 ### **✅ PROJECT STATUS: PRODUCTION READY (Core Features)** 🚀
 
-### **RECENT UPDATE: Timeline Slider Tick Marks & Bug Fixes** (February 2026)
+### **RECENT UPDATE: Timeline Slider Tick Marks & Event Cluster Badge** (February 2026)
 
 #### **Timeline Slider Tick Marks:**
 
@@ -87,6 +87,95 @@ Implemented interactive tick marks on the timeline slider for snap-to-event navi
      - `js/components/flags.js` - Enhanced `getFlagElement()` styling
      - `js/script.js` - Increased `flagSize` variable
      - `js/components/clustering-system.js` - Updated flag sizes in clustering
+
+#### **Event Cluster Count Badge & Side Panel** (February 2026)
+
+Implemented count badge system for dense event clusters with slide-in side panel.
+
+**Problem Solved:**
+- Clusters of 306+ events showed confusing overlap message but markers weren't visible
+- Fixed spiral offset system was spreading markers too wide/narrow
+
+**Solution - Count Badge System:**
+
+| Cluster Size | Display | Interaction |
+|-------------|---------|-------------|
+| 1 event | NATO symbol | Click for popup |
+| 2-9 events | Spiral markers | Click popup shows "X events nearby" |
+| 10+ events | Count badge (🔵 306) | Click opens side panel |
+
+**New Files Modified:**
+- `scss/styles.scss` - Badge + side panel styles (~120 lines)
+- `js/script.js` - Badge + panel logic (~80 lines)
+
+**New JavaScript Functions:**
+- `CLUSTER_COUNT_THRESHOLD = 10` - Threshold constant
+- `createClusterCountMarker()` - Creates badge marker with NATO symbol
+- `openEventSidePanel()` - Slide-in panel with all events
+- Modified `drawAllEventMarkers()` - Routes to badge or spiral based on count
+
+**Side Panel Features:**
+- Shows all events in cluster with rich detail cards
+- Auto-scrolls to top on open
+- Each event displays: title, date, category, description, impact, territory control %, casualties, involved nations
+- Dark theme matching app design with smooth animations
+- Click outside or X button to close
+- Scroll indicator提示
+
+**CSS Classes Added:**
+- `.cluster-count-badge` - Red circular count badge with hover effect
+- `#event-side-panel` - Slide-in panel container with animation
+- `.panel-event` - Individual event card with category styling
+- `.panel-scroll-indicator` - "Scroll for more" bounce hint
+
+#### **Marker Hierarchy & Spacing System** (February 2026)
+
+Implemented improved marker placement with hierarchical positioning and zoom-based scaling.
+
+**Problems Solved:**
+- Old spiral used only 3 positions, then switched to random offsets (inconsistent)
+- Spacing too tight (0.008 degrees) causing overlap
+- No priority system - all markers treated equally
+
+**New Hierarchical System:**
+
+1. **Event Priority Scoring** (`calculateEventPriority()`):
+   - Base: casualties × 100
+   - Impact: major (30), moderate (20), low (10)
+   - Recency: (year - 1900) / 125 × 5
+   - Hamas attacks: +25 bonus
+
+2. **Improved Spiral Offset** (`getHierarchicalOffset()`):
+   - Base spacing: 0.015 degrees (~1.5km at zoom 7)
+   - Zoom scaling: 0.5x (zoomed out) to 2x (zoomed in)
+   - Consistent 8-position spiral pattern
+   - Higher priority events at center
+
+3. **Priority-Based Sizing**:
+   - High priority (score > 50): 52px icons
+   - Low priority: 44px icons
+   - Larger flags for high priority events
+
+4. **Lowered Cluster Threshold**:
+   - Changed from 10 to 5 events
+   - Count badge shown for 5+ events
+   - Individual markers for 2-4 events
+
+**Files Modified:**
+- `js/script.js` - New hierarchy functions and updated marker rendering
+- `scss/styles.scss` - Enhanced marker CSS with animations
+
+**New JavaScript Functions:**
+- `getHierarchicalOffset()` - Zoom-aware spiral positioning
+- `sortEventsByPriority()` - Event sorting by priority score
+- `calculateEventPriority()` - Numeric priority scoring
+
+**CSS Enhancements:**
+- `.enhanced-military-marker-clean` - Clean marker styling
+- `.basic-marker-icon-clean` - Fallback marker styling
+- Priority-based z-index layering
+- Smooth animations and hover effects
+- Pulse animation for cluster markers
 
 ### **SUCCESS SUMMARY**
 

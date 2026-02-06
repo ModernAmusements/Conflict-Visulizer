@@ -2858,8 +2858,71 @@ function groupEventsByCoordinates(events, threshold = 0.01) {
     return groups;
 }
 
+// Calculate offset positions using improved hierarchical spiral pattern
+// Uses zoom-based scaling and consistent spacing for all events
+function getHierarchicalOffset(index, total, zoomLevel = 7) {
+    if (total === 1) {
+        return { latOffset: 0, lngOffset: 0, priority: 0 };
+    }
+
+    const baseSpacing = 0.015; // Base ~1.5km at zoom 7
+    const zoomScale = Math.max(0.5, Math.min(2, zoomLevel / 7));
+    const spacing = baseSpacing * zoomScale;
+
+    const angleStep = Math.PI * 2 / Math.min(total, 8);
+    const radiusIncrement = spacing;
+
+    const angle = index * angleStep;
+    const radius = spacing + (index * radiusIncrement * 0.3);
+
+    return {
+        latOffset: Math.sin(angle) * radius,
+        lngOffset: Math.cos(angle) * radius,
+        priority: total - index
+    };
+}
+
+// Sort events by priority for hierarchical positioning
+// Priority: casualties > impact level > date (recent first)
+function sortEventsByPriority(events) {
+    return [...events].sort((a, b) => {
+        const priorityA = calculateEventPriority(a);
+        const priorityB = calculateEventPriority(b);
+        return priorityB - priorityA;
+    });
+}
+
+// Calculate numeric priority score for an event
+function calculateEventPriority(event) {
+    let score = 0;
+
+    const casualties = event.casualties?.totalCasualties || 0;
+    score += casualties * 100;
+
+    const impactWeights = { high: 30, medium: 20, low: 10 };
+    const impact = event.impact?.toLowerCase() || '';
+    if (impact.includes('major') || impact.includes('significant')) {
+        score += 30;
+    } else if (impact.includes('moderate')) {
+        score += 20;
+    } else {
+        score += 10;
+    }
+
+    const year = parseInt(event.date?.split('-')[0]) || 2000;
+    const yearScore = (year - 1900) / 125;
+    score += yearScore * 5;
+
+    const isHamas = event.title?.toLowerCase().includes('hamas attack');
+    if (isHamas) {
+        score += 25;
+    }
+
+    return score;
+}
+
 // Cluster count threshold - use count badge for clusters >= this size
-const CLUSTER_COUNT_THRESHOLD = 10;
+const CLUSTER_COUNT_THRESHOLD = 5;
 
 // Create a count badge marker for large event clusters
 function createClusterCountMarker(group, coordinates) {
@@ -2892,14 +2955,12 @@ function createClusterCountMarker(group, coordinates) {
     const badgeHtml = `<div class="cluster-count-badge">${count}</div>`;
 
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'relative';
-    wrapper.style.width = '48px';
-    wrapper.style.height = '48px';
+    wrapper.className = 'marker-wrapper';
     wrapper.innerHTML = symbolData.svg + badgeHtml;
 
     const icon = L.divIcon({
         html: wrapper.innerHTML,
-        className: 'cluster-marker',
+        className: 'cluster-marker marker-wrapper',
         iconSize: [48, 48],
         iconAnchor: [24, 24],
         popupAnchor: [0, -24]
@@ -2998,66 +3059,49 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Calculate offset positions in a spiral pattern
-function getSpiralOffset(index, total, spacing = 0.008) {
-    if (total === 1) return { latOffset: 0, lngOffset: 0 };
-    
-    const angle = index * (2 * Math.PI / 3); // 120 degrees between markers
-    const radius = spacing * Math.ceil(index / 3); // Increase radius every 3 markers
-    
-    const latOffset = radius * Math.cos(angle);
-    const lngOffset = radius * Math.sin(angle);
-    
-    return { latOffset, lngOffset };
-}
-
-// Draw all event markers with proper layer management and NO symbol repetition
+// Draw all event markers with proper layer management and hierarchical positioning
 function drawAllEventMarkers(events) {
-    // Clear existing markers to prevent duplication and tiling artifacts
     if (mapState.markerLayer) {
         mapState.markerLayer.clearLayers();
     }
-    
-    // Track unique coordinates to prevent blue dots/flags repetition patterns
+
+    const currentZoom = mapState.map ? mapState.map.getZoom() : 7;
     const processedCoordinates = new Set();
     const uniqueEventKeys = new Set();
-    
-    // Group events by coordinates to handle overlaps efficiently
+
     const eventGroups = groupEventsByCoordinates(events);
-    
+
     eventGroups.forEach(group => {
-        // For large clusters (>= 10 events), use count badge marker
+        const sortedEvents = sortEventsByPriority(group);
+
         if (group.length >= CLUSTER_COUNT_THRESHOLD) {
-            const firstEvent = group[0];
+            const firstEvent = sortedEvents[0];
             if (firstEvent.geography && firstEvent.geography.coordinates) {
-                const badgeMarker = createClusterCountMarker(group, firstEvent.geography.coordinates);
+                const badgeMarker = createClusterCountMarker(sortedEvents, firstEvent.geography.coordinates);
                 badgeMarker.addTo(mapState.markerLayer);
             }
-            return; // Skip individual marker creation for large clusters
+            return;
         }
 
-        group.forEach((event, indexInGroup) => {
+        sortedEvents.forEach((event, indexInGroup) => {
             if (!event.geography || !event.geography.coordinates) return;
-            
-            // Create unique event key to prevent duplicates
+
             const eventKey = `${event.geography.coordinates[0]},${event.geography.coordinates[1]}_${event.date}_${event.title}`;
             if (uniqueEventKeys.has(eventKey)) {
-                return; // Skip duplicate events
+                return;
             }
             uniqueEventKeys.add(eventKey);
-            
+
             let markerType = 'default';
             let markerColor = '#95a5a6';
             let shouldShow = false;
-            
-            // Determine marker type, color, and visibility based on event type and category
+
             if (event.category === 'military' || event.geography.type === 'attack') {
                 markerType = 'attack';
-                // Special handling for Hamas attacks
                 if (event.title && event.title.includes('Hamas Attack:')) {
-                    markerColor = '#dc2626'; // Darker red for Hamas attacks
+                    markerColor = '#dc2626';
                 } else {
-                    markerColor = '#e74c3c'; // Regular red for other attacks
+                    markerColor = '#e74c3c';
                 }
                 shouldShow = mapState.showAttacks;
             } else if (event.geography.type === 'settlement') {
@@ -3077,82 +3121,73 @@ function drawAllEventMarkers(events) {
                 markerColor = '#27ae60';
                 shouldShow = mapState.showTerritory;
             }
-            
-            // Only create marker if it should be shown
+
             if (shouldShow) {
-                // Check for coordinate patterns to prevent linear repetition
                 const coordKey = `${event.geography.coordinates[0].toFixed(3)},${event.geography.coordinates[1].toFixed(3)}`;
-                
-                // Calculate offset for overlapping markers, but prevent systematic patterns
+
                 let adjustedCoords;
                 if (processedCoordinates.has(coordKey)) {
-                    // Use random offset instead of systematic spiral to avoid linear patterns
-                    const randomOffset = () => (Math.random() - 0.5) * 0.005;
+                    const { latOffset, lngOffset } = getHierarchicalOffset(indexInGroup, sortedEvents.length, currentZoom);
                     adjustedCoords = [
-                        event.geography.coordinates[0] + randomOffset(),
-                        event.geography.coordinates[1] + randomOffset()
+                        event.geography.coordinates[0] + latOffset,
+                        event.geography.coordinates[1] + lngOffset
                     ];
                 } else {
-                    // First occurrence of this coordinate - use minimal systematic offset
-                    const { latOffset, lngOffset } = getSpiralOffset(indexInGroup, Math.min(group.length, 3));
+                    const { latOffset, lngOffset } = getHierarchicalOffset(0, sortedEvents.length, currentZoom);
                     adjustedCoords = [
                         event.geography.coordinates[0] + latOffset,
                         event.geography.coordinates[1] + lngOffset
                     ];
                     processedCoordinates.add(coordKey);
                 }
-                
-                // Create flag overlay if flags are enabled (limit to 1 per coordinate to prevent repetition)
-                const flagOverlay = (clusterState && clusterState.showFlags && !processedCoordinates.has(coordKey)) 
-                    ? createFlagOverlayForEvent(event, 32) // Larger flags for better visibility
+
+                const priority = calculateEventPriority(event);
+                const isHighPriority = priority > 50;
+
+                const flagOverlay = (clusterState && clusterState.showFlags && !processedCoordinates.has(coordKey))
+                    ? createFlagOverlayForEvent(event, isHighPriority ? 36 : 28)
                     : '';
-                
+
+                const iconSize = isHighPriority ? 52 : 44;
+                const iconAnchor = isHighPriority ? 26 : 22;
+
                 const marker = L.marker(
-                    adjustedCoords, 
+                    adjustedCoords,
                     {
-                    icon: (typeof createEnhancedMilitaryMarker === 'function') 
-                        ? (() => {
-                            const baseIcon = createEnhancedMilitaryMarker(event, {
-                                showFlags: false, // We'll add our own flags
-                                enableClustering: false
-                            });
-                            
-                            // Add flag overlay to the icon
-                            if (flagOverlay) {
-                                const wrapper = document.createElement('div');
-                                wrapper.style.position = 'relative';
-                                wrapper.innerHTML = baseIcon.options.html + flagOverlay;
-                                return L.divIcon({
-                                    html: wrapper.innerHTML,
-                                    className: 'enhanced-military-marker-clean', // New class for clean rendering
-                                    iconSize: [48, 48], // Larger for better NATO symbol visibility
-                                    iconAnchor: [24, 24]
+                        icon: (typeof createEnhancedMilitaryMarker === 'function')
+                            ? (() => {
+                                const baseIcon = createEnhancedMilitaryMarker(event, {
+                                    showFlags: false,
+                                    enableClustering: false
                                 });
-                            }
-                            return baseIcon;
-                        })()
-                        : L.divIcon({
-                            html: `<div class="basic-marker-clean" style="background: ${markerColor}; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">${flagOverlay}</div>`,
-                            className: 'basic-marker-icon-clean',
-                            iconSize: flagOverlay ? [32, 32] : [20, 20],
-                            iconAnchor: flagOverlay ? [16, 16] : [10, 10]
-                        })
+
+                                if (flagOverlay) {
+                                    const wrapper = document.createElement('div');
+                                    wrapper.className = 'marker-wrapper';
+                                    wrapper.innerHTML = baseIcon.options.html + flagOverlay;
+                                    return L.divIcon({
+                                        html: wrapper.innerHTML,
+                                        className: 'enhanced-military-marker-clean marker-wrapper marker-shadow',
+                                        iconSize: [iconSize, iconSize],
+                                        iconAnchor: [iconAnchor, iconAnchor]
+                                    });
+                                }
+                                return baseIcon;
+                            })()
+                            : L.divIcon({
+                                html: `<div class="basic-marker-clean marker-wrapper marker-border marker-shadow" style="background: ${markerColor};">${flagOverlay}</div>`,
+                                className: 'basic-marker-icon-clean marker-wrapper',
+                                iconSize: [iconSize, iconSize],
+                                iconAnchor: [iconAnchor, iconAnchor]
+                            })
                     }
                 );
-                
-                // Detect involved nations for this event
+
                 const involvedNations = detectInvolvedNations(event);
-                
-                // Create enhanced popup content with overlap information
-                const overlapInfo = group.length > 1 ?
-                    `<div style="font-size: 11px; color: #f39c12; margin-top: 5px; padding: 4px 8px; background: rgba(243, 156, 18, 0.15); border-radius: 4px;">
-                        <em>⚠️ ${group.length} events nearby (click cluster for all)</em>
-                    </div>` : '';
-                
-                // Enhanced popup content for Hamas attacks
+
                 const isHamasAttack = event.title && event.title.includes('Hamas Attack:');
-                const additionalInfo = isHamasAttack && event.casualties ? 
-                    `<div style="margin-top: 5px; padding: 5px; background: rgba(220, 38, 38, 0.1); border-radius: 3px; font-size: 11px;">
+                const additionalInfo = isHamasAttack && event.casualties ?
+                    `<div class="military-popup-casualties">
                         <strong>Casualties:</strong><br>
                         • Total Killed: ${event.casualties.totalKilled}<br>
                         ${event.casualties.israelisKilled ? `• Israelis Killed: ${event.casualties.israelisKilled}<br>` : ''}
@@ -3161,67 +3196,36 @@ function drawAllEventMarkers(events) {
                         • Total Casualties: ${event.casualties.totalCasualties}
                     </div>` : '';
 
-                const attackDetails = isHamasAttack && event.attackDetails ? 
-                    `<div style="margin-top: 5px; padding: 5px; background: rgba(52, 152, 219, 0.1); border-radius: 3px; font-size: 11px;">
-                        <strong>Attack Details:</strong><br>
-                        • Type: ${event.attackDetails.type}<br>
-                        • Weapon: ${event.attackDetails.weapon}<br>
-                        • Claimed by: ${event.attackDetails.claimedBy}<br>
-                        • Target: ${event.attackDetails.targetType}
-                    </div>` : '';
-
-                // Nations involved information
-                const nationsInfo = involvedNations.length > 0 ? 
-                    `<div style="margin-top: 5px; padding: 5px; background: rgba(52, 152, 219, 0.1); border-radius: 3px; font-size: 11px;">
+                const nationsInfo = involvedNations.length > 0 ?
+                    `<div class="military-popup-nations">
                         <strong>Nations Involved:</strong><br>
                         ${involvedNations.map(nation => `• ${nation.charAt(0).toUpperCase() + nation.slice(1)}`).join('<br>')}
                     </div>` : '';
-                
+
+                const overlapInfo = group.length > 1 ?
+                    `<div class="military-popup-warning">
+                        <em>⚠️ ${group.length} events nearby</em>
+                    </div>` : '';
+
                 const popupContent = `
-                    <div style="max-width: 250px;">
-                        <strong style="color: ${isHamasAttack ? '#dc2626' : '#000'};">${event.title}</strong><br>
-                        <span style="color: #7f8c8d; font-size: 12px;">${event.date}</span><br>
-                        ${event.source ? `<span style="color: #666; font-size: 10px;">Source: ${event.source}</span><br>` : ''}
-                        <hr style="margin: 5px 0;">
-                        <span style="font-size: 13px;">${event.description}</span><br>
-                        <hr style="margin: 5px 0;">
-                        <em style="font-size: 12px; color: #34495e;"><strong>Impact:</strong> ${event.impact}</em>
-                        ${attackDetails}
+                    <div class="military-popup-content">
+                        <span class="military-popup-title ${isHamasAttack ? 'is-hamas' : ''}">${event.title}</span>
+                        <span class="military-popup-date">📅 ${event.date}</span>
+                        ${event.source ? `<span class="military-popup-source">📰 Source: ${event.source}</span><br>` : ''}
+                        <hr class="military-popup-divider">
+                        ${event.description ? `<div class="military-popup-description">${event.description.substring(0, 200)}${event.description.length > 200 ? '...' : ''}</div>` : ''}
+                        ${event.impact ? `<div class="military-popup-impact">📊 Impact: ${event.impact}</div>` : ''}
                         ${additionalInfo}
                         ${nationsInfo}
                         ${overlapInfo}
                     </div>
                 `;
-                
-                marker.bindPopup(popupContent);
-                
-                // Add pulsing animation for high-intensity events
-                if (event.geography.intensity === 'high') {
-                    let pulsing = true;
-                    setInterval(() => {
-                        if (pulsing) {
-                            const currentSize = 20;
-                            const newSize = currentSize === 20 * 1.3 ? 20 : 20 * 1.3;
-                            
-                            // Use fallback if createEnhancedMilitaryMarker is not available
-                            if (typeof createEnhancedMilitaryMarker === 'function') {
-                                marker.setIcon(createEnhancedMilitaryMarker(event, {
-                                    showFlags: clusterState && clusterState.showFlags ? clusterState.showFlags : true,
-                                    enableClustering: false
-                                }));
-                            } else {
-                                // Basic pulsing marker fallback
-                                marker.setIcon(L.divIcon({
-                                    html: `<div class="basic-marker" style="background: #e74c3c; width: ${newSize}px; height: ${newSize}px; border-radius: 50%; border: 2px solid white;"></div>`,
-                                    className: 'basic-marker-icon',
-                                    iconSize: [newSize, newSize],
-                                    iconAnchor: [newSize/2, newSize/2]
-                                }));
-                            }
-                        }
-                    }, 1000);
-                }
-                
+
+                marker.bindPopup(popupContent, {
+                    maxWidth: 320,
+                    className: 'military-popup'
+                });
+
                 marker.addTo(mapState.markerLayer);
             }
         });

@@ -2840,6 +2840,234 @@ const content = document.querySelector('#legend-content-area');
 console.log('Legend content:', content.innerHTML.substring(0, 100));
 ```
 
+### 28.11 Event Cluster Badge Pattern
+
+**Problem**: Dense clusters (100+ events) show overlap message but individual markers aren't visible
+
+**Solution**: Use count badge for large clusters, spiral offset for small clusters
+
+**Threshold Constant:**
+```javascript
+const CLUSTER_COUNT_THRESHOLD = 10;
+```
+
+**Marker Creation Logic:**
+```javascript
+function drawAllEventMarkers(events) {
+    const eventGroups = groupEventsByCoordinates(events);
+
+    eventGroups.forEach(group => {
+        // Large clusters: use count badge marker
+        if (group.length >= CLUSTER_COUNT_THRESHOLD) {
+            const badgeMarker = createClusterCountMarker(group, coords);
+            badgeMarker.addTo(mapState.markerLayer);
+            return;
+        }
+
+        // Small clusters: use spiral offset
+        group.forEach((event, index) => {
+            const offset = getSpiralOffset(index, group.length);
+            // create marker...
+        });
+    });
+}
+```
+
+**Badge Marker Creation:**
+```javascript
+function createClusterCountMarker(group, coordinates) {
+    const count = group.length;
+    const symbolData = natoSymbolLibrary.generateSymbol('hostile', 'infantry', 'unit');
+    const badgeHtml = `<div class="cluster-count-badge">${count}</div>`;
+
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.innerHTML = symbolData.html + badgeHtml;
+
+    const icon = L.divIcon({
+        html: wrapper.innerHTML,
+        className: 'cluster-marker',
+        iconSize: [48, 48]
+    });
+
+    const marker = L.marker(coordinates, { icon });
+    marker.on('click', () => openEventSidePanel(group));
+    return marker;
+}
+```
+
+**Side Panel with Auto-scroll:**
+```javascript
+function openEventSidePanel(eventGroup) {
+    const panel = document.createElement('div');
+    panel.id = 'event-side-panel';
+    panel.innerHTML = `
+        <div class="panel-header">
+            <h3>📍 ${eventGroup.length} Events</h3>
+            <button onclick="this.closest('#event-side-panel').remove()">✕</button>
+        </div>
+        <div class="panel-content" id="panel-scroll-content">
+            ${eventGroup.map(event => `
+                <div class="panel-event">
+                    <strong>${event.title}</strong>
+                    <span class="event-date">${event.date}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    document.body.appendChild(panel);
+
+    // Auto-scroll to top
+    setTimeout(() => {
+        document.getElementById('panel-scroll-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+}
+```
+
+**CSS Requirements:**
+```scss
+.cluster-count-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background: #e74c3c;
+    color: white;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cluster-count-badge:hover {
+    background: #c0392b;
+    transform: scale(1.15);
+}
+
+#event-side-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 380px;
+    max-width: 90vw;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16162a 100%);
+    border-left: 1px solid rgba(255,255,255,0.2);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease;
+}
+```
+
+**Behavior Summary:**
+| Cluster Size | Display | Interaction |
+|-------------|---------|-------------|
+| 1 event | Single NATO symbol | Click for popup |
+| 2-9 events | Spiral offset markers | Click popup shows "X events nearby" |
+| 10+ events | Count badge | Click opens side panel |
+
+### 28.12 Event Hierarchy & Marker Spacing Pattern
+
+**Problem**: Old spiral used only 3 positions then switched to random (inconsistent), spacing too tight (0.008°), no priority system
+
+**Solution**: Hierarchical priority-based positioning with zoom-aware scaling
+
+**Priority Scoring:**
+```javascript
+function calculateEventPriority(event) {
+    let score = 0;
+
+    const casualties = event.casualties?.totalCasualties || 0;
+    score += casualties * 100;
+
+    const impact = event.impact?.toLowerCase() || '';
+    if (impact.includes('major') || impact.includes('significant')) {
+        score += 30;
+    } else if (impact.includes('moderate')) {
+        score += 20;
+    } else {
+        score += 10;
+    }
+
+    const year = parseInt(event.date?.split('-')[0]) || 2000;
+    score += ((year - 1900) / 125) * 5;
+
+    if (event.title?.toLowerCase().includes('hamas attack')) {
+        score += 25;
+    }
+
+    return score;
+}
+```
+
+**Hierarchical Spiral Offset:**
+```javascript
+function getHierarchicalOffset(index, total, zoomLevel = 7) {
+    if (total === 1) {
+        return { latOffset: 0, lngOffset: 0, priority: 0 };
+    }
+
+    const baseSpacing = 0.015;
+    const zoomScale = Math.max(0.5, Math.min(2, zoomLevel / 7));
+    const spacing = baseSpacing * zoomScale;
+
+    const angleStep = Math.PI * 2 / Math.min(total, 8);
+    const radiusIncrement = spacing;
+
+    const angle = index * angleStep;
+    const radius = spacing + (index * radiusIncrement * 0.3);
+
+    return {
+        latOffset: Math.sin(angle) * radius,
+        lngOffset: Math.cos(angle) * radius,
+        priority: total - index
+    };
+}
+```
+
+**Event Sorting:**
+```javascript
+function sortEventsByPriority(events) {
+    return [...events].sort((a, b) => {
+        const priorityA = calculateEventPriority(a);
+        const priorityB = calculateEventPriority(b);
+        return priorityB - priorityA;
+    });
+}
+```
+
+**Cluster Threshold:**
+```javascript
+const CLUSTER_COUNT_THRESHOLD = 5;
+```
+
+**Marker Sizing Based on Priority:**
+```javascript
+const priority = calculateEventPriority(event);
+const isHighPriority = priority > 50;
+const iconSize = isHighPriority ? 52 : 44;
+const flagSize = isHighPriority ? 36 : 28;
+```
+
+**Key Improvements:**
+| Aspect | Old Value | New Value |
+|--------|-----------|-----------|
+| Cluster threshold | 10 events | 5 events |
+| Base spacing | 0.008° | 0.015° |
+| Spiral positions | 3 + random | 8 consistent |
+| Zoom scaling | None | 0.5x - 2x |
+| Priority system | None | Numeric scoring |
+| High priority size | 48px | 52px |
+| Low priority size | 48px | 44px |
+
 ---
 
 *Knowledge base last updated: February 2026*

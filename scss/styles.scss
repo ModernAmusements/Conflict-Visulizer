@@ -1491,7 +1491,7 @@ footer {
     border: 2px solid white;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     cursor: pointer;
-    z-index: 100;
+    z-index: 10;
     padding: 0 6px;
     transition: all 0.2s ease;
 }
@@ -1499,6 +1499,26 @@ footer {
 .cluster-count-badge:hover {
     background: #c0392b;
     transform: scale(1.15);
+}
+
+.cluster-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 100;
+    animation: markerPulse 2s ease-in-out infinite;
+}
+
+.cluster-marker:hover {
+    animation: none;
+    transform: scale(1.1);
 }
 
 #event-side-panel {
@@ -1720,4 +1740,199 @@ footer {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
     margin-top: 10px;
+}
+
+// Enhanced Military Markers with Hierarchical Positioning
+.enhanced-military-marker-clean {
+    background: transparent;
+    border: none;
+}
+
+.enhanced-military-marker-clean .nato-symbol-wrapper {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+}
+
+.enhanced-military-marker-clean:hover .nato-symbol-wrapper {
+    transform: scale(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+}
+
+.basic-marker-icon-clean {
+    background: transparent;
+    border: none;
+}
+
+.basic-marker-clean {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.basic-marker-clean:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+// Priority-based marker sizing
+.marker-high-priority {
+    z-index: 1000 !important;
+}
+
+.marker-low-priority {
+    z-index: 500 !important;
+}
+
+// Zoom-based marker scaling
+.leaflet-zoom-anim .enhanced-military-marker-clean,
+.leaflet-zoom-anim .basic-marker-icon-clean {
+    transition: transform 0.3s ease;
+}
+
+// Marker cluster animations
+@keyframes markerPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Popup styling for military events
+.military-popup .leaflet-popup-content-wrapper {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.military-popup .leaflet-popup-tip {
+    background: #1a1a2e;
+}
+
+.military-popup .leaflet-popup-content {
+    color: #e1e8ed;
+}
+
+.military-popup-content {
+    max-width: 280px;
+}
+
+.military-popup-title {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    display: block;
+}
+
+.military-popup-title.is-hamas {
+    color: #dc2626;
+}
+
+.military-popup-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.military-popup-source {
+    font-size: 10px;
+    color: #666;
+}
+
+.military-popup-divider {
+    margin: 8px 0;
+    border-color: #374151;
+}
+
+.military-popup-description {
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.military-popup-impact {
+    font-size: 12px;
+    font-style: italic;
+    color: #f59e0b;
+    margin-bottom: 8px;
+    padding: 6px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 4px;
+}
+
+.military-popup-warning {
+    font-size: 11px;
+    color: #f39c12;
+    margin-top: 5px;
+    padding: 4px 8px;
+    background: rgba(243, 156, 18, 0.15);
+    border-radius: 4px;
+}
+
+.military-popup-casualties {
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.military-popup-nations {
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+// Flag overlay positioning
+.flag-overlay-wrapper {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+// Smooth marker appearance animation
+@keyframes markerAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean {
+    animation: markerAppear 0.3s ease-out;
+}
+
+// Marker wrapper for consistent styling
+.marker-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.marker-wrapper.marker-shadow {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.marker-wrapper.marker-border {
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.marker-wrapper.marker-hover:hover {
+    transform: scale(1.1);
+}
+
+// High contrast mode for dense areas
+.dense-marker-area .enhanced-military-marker-clean .nato-symbol-wrapper {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
