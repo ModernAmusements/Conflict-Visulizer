@@ -2858,6 +2858,146 @@ function groupEventsByCoordinates(events, threshold = 0.01) {
     return groups;
 }
 
+// Cluster count threshold - use count badge for clusters >= this size
+const CLUSTER_COUNT_THRESHOLD = 10;
+
+// Create a count badge marker for large event clusters
+function createClusterCountMarker(group, coordinates) {
+    const count = group.length;
+    const eventTypes = {};
+
+    group.forEach(e => {
+        const cat = e.category || 'unknown';
+        eventTypes[cat] = (eventTypes[cat] || 0) + 1;
+    });
+
+    const typeLabel = Object.entries(eventTypes)
+        .sort((a, b) => b[1] - a[1])
+        .map(([type, num]) => `${type}: ${num}`)
+        .join(', ');
+
+    let symbolAffiliation = 'hostile';
+    if (eventTypes.military && eventTypes.military >= count / 2) {
+        symbolAffiliation = 'hostile';
+    } else if (eventTypes.political && eventTypes.political >= count / 2) {
+        symbolAffiliation = 'neutral';
+    }
+
+    if (typeof NATOSymbolLibrary !== 'undefined') {
+        var symbolData = natoSymbolLibrary.generateSymbol(symbolAffiliation, 'infantry', 'unit');
+    } else {
+        var symbolData = { svg: `<svg viewBox="0 0 24 24"><polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="#e74c3c" stroke="white" stroke-width="1"/></svg>` };
+    }
+
+    const badgeHtml = `<div class="cluster-count-badge">${count}</div>`;
+
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.width = '48px';
+    wrapper.style.height = '48px';
+    wrapper.innerHTML = symbolData.svg + badgeHtml;
+
+    const icon = L.divIcon({
+        html: wrapper.innerHTML,
+        className: 'cluster-marker',
+        iconSize: [48, 48],
+        iconAnchor: [24, 24],
+        popupAnchor: [0, -24]
+    });
+
+    const marker = L.marker(coordinates, { icon });
+
+    marker.on('click', () => {
+        openEventSidePanel(group);
+    });
+
+    marker.bindTooltip(`${count} events (${typeLabel})`, {
+        direction: 'top',
+        offset: [0, -30]
+    });
+
+    return marker;
+}
+
+// Open side panel with all events in a cluster
+function openEventSidePanel(eventGroup) {
+    const existing = document.getElementById('event-side-panel');
+    if (existing) existing.remove();
+
+    const panel = document.createElement('div');
+    panel.id = 'event-side-panel';
+
+    const totalEvents = eventGroup.length;
+
+    panel.innerHTML = `
+        <div class="panel-header">
+            <h3>📍 ${totalEvents} Events</h3>
+            <button onclick="this.closest('#event-side-panel').remove()">✕</button>
+        </div>
+        <div class="panel-content" id="panel-scroll-content">
+            ${eventGroup.map((event, index) => {
+                const involvedNations = detectInvolvedNations(event);
+                const territory = event.territoryControl ?
+                    `<div class="event-territory">
+                        ${event.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${event.territoryControl.israeli}%</span></div>` : ''}
+                        ${event.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${event.territoryControl.palestinian}%</span></div>` : ''}
+                        ${event.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${event.territoryControl.hamas}%</span></div>` : ''}
+                    </div>` : '';
+
+                const casualties = event.casualties ?
+                    `<div class="event-territory" style="border-top: none; padding-top: 0;">
+                        <div class="territory-item">💀 Killed: <span>${event.casualties.totalKilled || 0}</span></div>
+                        <div class="territory-item">🏥 Wounded: <span>${event.casualties.totalWounded || 0}</span></div>
+                    </div>` : '';
+
+                const impact = event.impact ?
+                    `<div class="event-description" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <strong style="color: #f39c12;">Impact:</strong> ${event.impact}
+                    </div>` : '';
+
+                return `
+                    <div class="panel-event" data-index="${index}">
+                        <span class="event-title">${event.title}</span>
+                        <div class="event-meta">
+                            <span class="event-date">📅 ${event.date}</span>
+                            <span class="event-category ${event.category || 'unknown'}">${(event.category || 'unknown').toUpperCase()}</span>
+                        </div>
+                        ${event.description ? `<div class="event-description">${event.description}</div>` : ''}
+                        ${impact}
+                        ${territory}
+                        ${casualties}
+                        ${involvedNations.length > 0 ?
+                            `<div class="event-territory" style="border-top: none; padding-top: 0;">
+                                <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
+                            </div>` : ''}
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div class="panel-scroll-indicator">Scroll for more ↓</div>
+    `;
+
+    document.body.appendChild(panel);
+
+    setTimeout(() => {
+        const content = document.getElementById('panel-scroll-content');
+        if (content) {
+            content.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, 100);
+}
+
+// Close side panel when clicking outside
+document.addEventListener('click', (e) => {
+    const panel = document.getElementById('event-side-panel');
+    if (panel && !panel.contains(e.target)) {
+        const marker = e.target.closest('.cluster-marker');
+        if (!marker) {
+            panel.remove();
+        }
+    }
+});
+
 // Calculate offset positions in a spiral pattern
 function getSpiralOffset(index, total, spacing = 0.008) {
     if (total === 1) return { latOffset: 0, lngOffset: 0 };
@@ -2886,6 +3026,16 @@ function drawAllEventMarkers(events) {
     const eventGroups = groupEventsByCoordinates(events);
     
     eventGroups.forEach(group => {
+        // For large clusters (>= 10 events), use count badge marker
+        if (group.length >= CLUSTER_COUNT_THRESHOLD) {
+            const firstEvent = group[0];
+            if (firstEvent.geography && firstEvent.geography.coordinates) {
+                const badgeMarker = createClusterCountMarker(group, firstEvent.geography.coordinates);
+                badgeMarker.addTo(mapState.markerLayer);
+            }
+            return; // Skip individual marker creation for large clusters
+        }
+
         group.forEach((event, indexInGroup) => {
             if (!event.geography || !event.geography.coordinates) return;
             
@@ -2994,9 +3144,9 @@ function drawAllEventMarkers(events) {
                 const involvedNations = detectInvolvedNations(event);
                 
                 // Create enhanced popup content with overlap information
-                const overlapInfo = group.length > 1 ? 
-                    `<div style="font-size: 11px; color: #e74c3c; margin-top: 5px;">
-                        <em>⚠️ ${group.length} events at this location</em>
+                const overlapInfo = group.length > 1 ?
+                    `<div style="font-size: 11px; color: #f39c12; margin-top: 5px; padding: 4px 8px; background: rgba(243, 156, 18, 0.15); border-radius: 4px;">
+                        <em>⚠️ ${group.length} events nearby (click cluster for all)</em>
                     </div>` : '';
                 
                 // Enhanced popup content for Hamas attacks
