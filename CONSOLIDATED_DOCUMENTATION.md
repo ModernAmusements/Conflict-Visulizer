@@ -32,6 +32,62 @@
 
 ### **✅ PROJECT STATUS: PRODUCTION READY (Core Features)** 🚀
 
+### **RECENT UPDATE: Timeline Slider Tick Marks & Bug Fixes** (February 2026)
+
+#### **Timeline Slider Tick Marks:**
+
+Implemented interactive tick marks on the timeline slider for snap-to-event navigation:
+
+**Features:**
+- Dynamic tick mark generation based on event years from `timelineEvents` array
+- Snap-to-tick functionality when dragging within 3 years of an event
+- Decade labels displayed for major year markers
+- Active tick highlighting synchronized with current year
+- Responsive to window resize
+
+**Files Modified:**
+- `scss/styles.scss` - Tick mark CSS styles
+- `js/script.js` - Tick mark generation and snap logic
+
+**New JavaScript Functions:**
+- `getEventYears()` - Extracts unique years from timeline events
+- `findNearestEventYear()` - Locates nearest event year
+- `createTickMarks()` - Generates tick mark DOM elements
+- `updateActiveTickMarks()` - Highlights current year tick
+- `initializeTimelineTicks()` - Initializes on DOM ready
+
+**Usage:**
+- Tick marks appear at each event year (simplified to decades for readability)
+- User drags slider - snaps to nearest event year when close
+- Play animation advances without snapping
+- Current year tick highlighted in white
+
+#### **Bug Fixes:**
+
+1. **Legend Dropdown Default Content** ✅ FIXED
+   - **Problem**: Dropdown showed placeholder message instead of NATO symbols legend on initial load
+   - **Fix**: Changed default content from placeholder note to `generateMilitarySymbolsLegend()` function call
+   - **File**: `js/script.js` line 1918
+
+2. **UN Flag False Positives** ✅ FIXED
+   - **Problem**: `eventText.includes('un ')` matched ANY word containing "un" (run, sun, tunnel, etc.)
+   - **Fix**: Added specific UN-related terms to prevent false positives
+   - **Detection now requires**: "united nations" OR "un" combined with context words
+   - **Context words added**: "resolution", "peace", "security council", "intervention", "peacekeeping"
+   - **File**: `js/script.js` lines 234-240
+
+3. **Flag Visibility Enhanced** ✅ COMPLETED
+   - **Increased flag sizes**: 20-32px → 24-36px range
+   - **Enhanced styling**:
+     - Thicker white border (2px vs 1px)
+     - Added white glow effect (`box-shadow`)
+     - Rounded corners (3px)
+     - Darker shadow (`rgba(0,0,0,0.5)`)
+   - **Files modified**:
+     - `js/components/flags.js` - Enhanced `getFlagElement()` styling
+     - `js/script.js` - Increased `flagSize` variable
+     - `js/components/clustering-system.js` - Updated flag sizes in clustering
+
 ### **SUCCESS SUMMARY**
 
 The 2026-Conflict project successfully demonstrates a sophisticated approach to historical conflict visualization, combining accurate data representation with intuitive user interface design. The modular architecture allows for easy maintenance and enhancement while the SVG-based graphics ensure scalability across devices.
@@ -176,6 +232,28 @@ Events contain:
 - territoryControl percentages
 - impact descriptions
 - military metadata (affiliation, unit type, nation)
+
+#### **4. Timeline Slider with Tick Marks**
+- **Interactive slider** (1900-2025) with play/pause animation
+- **Tick mark system** - Dynamic tick marks generated from event years
+- **Snap-to-tick** - Slider snaps to nearest event when within 3 years
+- **Active highlighting** - Current year tick emphasized with white styling
+- **Decade labels** - Multi-decade intervals labeled for readability
+
+**JavaScript Functions:**
+```javascript
+getEventYears()           // Extract unique years from timelineEvents
+findNearestEventYear()    // Locate nearest event year
+createTickMarks()         // Generate tick mark DOM elements
+updateActiveTickMarks()   // Highlight current year tick
+initializeTimelineTicks() // Initialize on DOM ready
+```
+
+**CSS Classes:**
+- `.slider-track-container` - Container for tick marks
+- `.slider-tick-mark` - Individual tick mark styling
+- `.slider-tick-label` - Decade label styling
+- `.active` - Active state for current year tick/label
 
 ---
 
@@ -733,7 +811,7 @@ npm run legacy
 5. **Replace** hardcoded values with variables
 6. **Test** thoroughly before moving on
 
-### **Migration Status**
+### **SCSS Migration Status**
 
 | Component | Status | File |
 |----------|--------|------|
@@ -741,9 +819,9 @@ npm run legacy
 | Mixins | ✅ Complete | `_mixins.scss` |
 | Text/Typography | ✅ Complete | `components/_text.scss` |
 | Map Styles | ✅ Complete | `components/_map.scss` |
-| Legend Styles | 🔄 Partial | `styles.scss` (in progress) |
-| Timeline Styles | ⏸️ Disabled | Commented in `styles.scss` |
-| Remaining CSS | ⏳ Pending | Migration continues |
+| Legend Styles | ✅ Complete | `styles.scss` |
+| Timeline Slider | ✅ Complete | `styles.scss` (tick marks added) |
+| Remaining CSS | ⏳ Pending | Legacy styles in `styles.scss` |
 
 ### **Vite Configuration**
 

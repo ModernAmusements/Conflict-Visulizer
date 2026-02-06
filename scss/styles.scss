@@ -1433,6 +1433,45 @@ footer {
     font-size: 1.08333em;
     min-height: 1px;
     font-weight: 600;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.leaflet-popup-content-wrapper {
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.leaflet-popup-content p {
+    margin-bottom: 8px;
+}
+
+.leaflet-popup-content p:last-child {
+    margin-bottom: 0;
+}
+
+.nato-movement-marker {
+    background: transparent;
+    border: none;
+}
+
+.nato-movement-marker svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+}
+
+.nato-movement-marker:hover svg {
+    transform: scale(1.1);
+}
+
+.leaflet-popup-content-wrapper {
+    background: #1a1a2e;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-popup-tip {
+    background: #1a1a2e;
 }
 
 .legacy-map-legend {

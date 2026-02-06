@@ -14,6 +14,59 @@ Strict validation rules for all JavaScript code generation. Code must pass ALL c
 - **Enhanced Scaling**: Scale national flags larger for clear legibility at default zoom levels
 - **No Linear Patterns**: Prevent flags from creating linear repetition patterns during initialization
 - **Proper Spacing**: Ensure flags are positioned with adequate spacing to prevent visual clutter
+- **Enhanced Visibility**: Flags should have thicker borders (2px), white glow effects, and rounded corners
+- **Size Optimization**: Flag sizes should range from 24-36px depending on zoom level for better visibility
+
+### Military Movement Visualization
+- **Thin Line Rendering**: Military movement lines must be thinner and visually subordinate to terrain and unit symbols
+- **Directional Arrows**: All movement lines must include directional arrows indicating advance/withdrawal direction
+- **Visual Hierarchy**: Movement lines should not interfere with other map elements
+
+### UI Integration Requirements
+- **National Forces Integration**: Relocate National Forces panel into Legend Options panel as selectable subsection
+- **1994-Era Styling**: Apply functional, restrained design aesthetic without modern UI embellishments
+- **Coherent Hierarchy**: Maintain logical UI structure with proper panel organization
+
+### Performance Requirements
+- **No JavaScript Errors**: Critical requirement - any JS errors will result in no reward
+- **Clean Initialization**: Map must load cleanly without visual artifacts
+- **Symbol Integrity**: All symbols must render properly without duplication or tiling issues
+
+### Legend System Requirements
+- **Default Content**: Dropdown legends must show actual content on load, not placeholder messages
+- **Function Calls**: Always call the actual legend generation function (e.g., `generateMilitarySymbolsLegend()`) on initialization
+- **Never use placeholder text** like "Enhanced NATO symbols legend is displayed in main panel" - this indicates missing implementation
+
+### Timeline Slider Requirements
+- **Tick Marks**: Generate tick marks dynamically from event years in `timelineEvents` array
+- **Snap-to-Tick**: Slider should snap to nearest event year when within 3 years during user interaction
+- **Active Highlighting**: Current year tick should be visually emphasized
+- **Decade Labels**: Show labels for decade years (1900, 1910, 1920, etc.)
+- **Responsive**: Tick positions must recalculate on window resize
+
+### Detection Logic Requirements
+- **False Positive Prevention**: Pattern matching for nation detection must be specific to avoid false matches
+  - Example: `'un '` matches words like "run", "sun", "tunnel" - use `'united nations'` or specific context like `'un resolution'`
+- **Nation Detection**: Only flag nations when there's clear evidence in event text, not fuzzy matches
+
+### Dropdown Initialization Pattern
+```javascript
+// VALID: Call actual legend function on init
+dropdown.addEventListener('change', (e) => {
+    switch(e.target.value) {
+        case 'enhanced':
+            contentArea.innerHTML = generateMilitarySymbolsLegend();
+            break;
+        // ... other cases
+    }
+});
+
+// Show enhanced option by default
+contentArea.innerHTML = generateMilitarySymbolsLegend();
+
+// INVALID: Show placeholder message instead of actual content
+contentArea.innerHTML = '<div class="note">Enhanced NATO symbols legend is displayed in main panel</div>';
+```
 
 ### Military Movement Visualization
 - **Thin Line Rendering**: Military movement lines must be thinner and visually subordinate to terrain and unit symbols
@@ -2467,4 +2520,328 @@ npm run legacy   # Python server (no SCSS)
 
 *Last updated: 2026*
 *Version: 2.0*
+
+---
+
+## 28. 2026-Conflict Project Knowledge Base
+
+### 28.1 Project Structure
+
+```
+2026-Conflict/
+├── scss/                          # SCSS stylesheets
+│   ├── styles.scss               # Main entry point
+│   ├── _variables.scss           # Design tokens
+│   ├── _mixins.scss              # Reusable mixins
+│   └── components/
+│       ├── _text.scss           # Typography
+│       └── _map.scss            # Map styles
+├── js/
+│   ├── script.js                 # Main application (~3500 lines)
+│   └── components/
+│       ├── symbols.js           # NATO symbol library
+│       ├── flags.js             # Flag rendering system
+│       └── clustering-system.js # Event clustering
+├── index.html                    # Main HTML
+├── package.json                  # Vite configuration
+└── dist/                         # Production build output
+```
+
+### 28.2 Script Loading Order (CRITICAL)
+
+**Must load in this exact order:**
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" href="scss/styles.scss">
+
+<!-- JavaScript - LOAD ORDER MATTERS -->
+<script src="js/components/symbols.js"></script>        <!-- Base: NATOSymbolLibrary -->
+<script src="js/components/flags.js"></script>          <!-- Depends: FlagSystem -->
+<script src="js/components/clustering-system.js"></script> <!-- Depends: Both above -->
+<script src="js/script.js"></script>                    <!-- Main: Uses all above -->
+```
+
+**Why order matters:**
+- `symbols.js` defines `NATOSymbolLibrary` class
+- `flags.js` depends on symbol library
+- `clustering-system.js` uses both symbols and flags
+- `script.js` orchestrates everything
+
+### 28.3 Global State Objects
+
+**mapState** (in script.js):
+```javascript
+mapState = {
+    map: Leaflet map instance,
+    currentYear: 1994,
+    isPlaying: false,
+    playInterval: timer reference,
+    playSpeed: 1000,
+    showAttacks: true,
+    showPolitical: true,
+    showSocial: true,
+    showTerritory: true,
+    showSettlements: true,
+    showCities: true,
+    showMovements: true
+};
+```
+
+**clusterState** (in clustering-system.js):
+```javascript
+clusterState = {
+    enabled: true,
+    showFlags: true,
+    markerSize: 20,
+    minClusterSize: 2,
+    clusterRadius: 50
+};
+```
+
+**window.FlagSystem** (class in flags.js):
+```javascript
+class FlagSystem {
+    nations = {
+        israel, palestine, egypt, syria, jordan,
+        lebanon, usa, uk, un
+    };
+
+    getFlagElement(nation, size) // Returns SVG flag HTML
+    getNationColor(nation) // Returns hex color
+}
+```
+
+### 28.4 Event Data Structure
+
+```javascript
+{
+    date: "1994",              // Single year or "1900-1917" range
+    title: "Event Title",
+    description: "Description",
+    category: "military|political|social",
+    era: "1987-2005",
+    impact: "Impact description",
+    geography: {
+        type: "attack|territory|political",
+        coordinates: [lat, lng],
+        affectedArea: [[lat1, lng1], [lat2, lng2]],
+        intensity: "high|medium|low"
+    },
+    territoryControl: { israeli: 85, palestinian: 15 },
+    casualties: { /* detailed casualty counts */ },
+    militaryClassification: { /* NATO classification */ },
+    movementData: { /* Military movement routes */ }
+}
+```
+
+### 28.5 Key Functions and Their Locations
+
+**Timeline Slider Functions** (script.js ~line 2300):
+```javascript
+initializeTimelineTicks()  // Create tick marks on load
+getEventYears()            // Extract years from timelineEvents
+findNearestEventYear()     // Snap to nearest event
+createTickMarks()          // Generate DOM elements
+updateActiveTickMarks()    // Highlight current year
+handleSliderChange()       // User interaction handler
+```
+
+**Legend Functions** (script.js ~line 1750):
+```javascript
+createLegacyLegend()           // Creates dropdown legend
+generateMilitarySymbolsLegend() // NATO symbols reference
+generateTerritoryLegend()      // Territory control colors
+generateMilitaryFactionsLegend() // Faction icons
+generateNationalForcesLegend()  // Flag badges
+generateEventTypesLegend()      // Event type icons
+```
+
+**Flag Functions** (flags.js):
+```javascript
+getFlagElement(nation, size)  // Enhanced visibility flags
+getNationColor(nation)         // Color for UI
+createFlagLegend(nation)       // Legend entry
+generateFlagLegends()           // All nations
+```
+
+**Map Functions** (script.js ~line 2500):
+```javascript
+initializeMap()           // Setup Leaflet map
+setupMapControls()        // Event listeners
+updateMapForYear()       // Render events for year
+startMapAnimation()       // Play through years
+createFlagOverlayForEvent() // Add flags to markers
+```
+
+### 28.6 Common Patterns and Fixes
+
+#### Pattern: Legend Dropdown Default Content
+**Problem**: Showing placeholder message instead of actual content
+
+**Correct:**
+```javascript
+dropdown.addEventListener('change', (e) => {
+    switch(e.target.value) {
+        case 'enhanced':
+            contentArea.innerHTML = generateMilitarySymbolsLegend();
+            break;
+    }
+});
+
+// Show enhanced option by default
+contentArea.innerHTML = generateMilitarySymbolsLegend();
+```
+
+**Incorrect:**
+```javascript
+contentArea.innerHTML = '<div class="note">Enhanced NATO symbols legend is displayed in main panel</div>';
+```
+
+#### Pattern: Nation Detection False Positives
+**Problem**: Simple string matching catches unintended words
+
+**Correct:**
+```javascript
+// Check for UN with specific context
+if (eventText.includes('united nations') ||
+    (eventText.includes('un ') && (eventText.includes('resolution') ||
+                                    eventText.includes('peace') ||
+                                    eventText.includes('security council')))) {
+    nations.push('un');
+}
+```
+
+**Incorrect:**
+```javascript
+// Matches "run", "sun", "tunnel", etc.
+if (eventText.includes('un ')) {
+    nations.push('un');
+}
+```
+
+#### Pattern: Flag Sizing and Visibility
+**Problem**: Flags too small or hard to see
+
+**Correct:**
+```javascript
+// Larger sizes for better visibility
+let flagSize = 28; // Base size
+if (currentZoom >= 10) {
+    flagSize = 36;
+} else if (currentZoom >= 8) {
+    flagSize = 32;
+}
+
+// Enhanced styling
+return `
+    <div style="width: ${size}px; height: ${size * 0.67}px;">
+        <div style="border: 2px solid rgba(255,255,255,0.8);
+                    border-radius: 3px;
+                    box-shadow: 0 3px 8px rgba(0,0,0,0.5);">
+            ${flagSVG}
+        </div>
+    </div>
+`;
+```
+
+### 28.7 Known Issues and Workarounds
+
+1. **Timeline Slider Snap Behavior**
+   - When dragging, slider snaps to nearest event year within 3 years
+   - Animation uses `_isProgrammatic` flag to bypass snap behavior
+   - Fix: Set `slider._isProgrammatic = true` before programmatic updates
+
+2. **Flag False Positives on Load**
+   - UN flags appear on unrelated events due to "un " matching
+   - Workaround: Use specific context matching (see 28.6 Pattern above)
+   - Long-term fix: Add explicit nation flags to event data structure
+
+3. **Legend Default Content**
+   - Placeholder messages appearing instead of actual legend content
+   - Cause: Setting innerHTML to note instead of calling generation function
+   - Fix: Always call `generateXxxLegend()` functions on initialization
+
+### 28.8 CSS Classes for Dynamic Content
+
+**Timeline Slider:**
+- `.timeline-slider-container` - Main container
+- `.slider-track-container` - Tick mark container
+- `.slider-tick-mark` - Individual tick
+- `.slider-tick-label` - Decade year label
+- `.active` - Highlighted state
+
+**Flags:**
+- `.flag-icon-enhanced` - Flag container
+- `.flag-wrapper` - Flag with border/shadow
+- `.event-flag-item` - Flag on marker
+
+**Map Markers:**
+- `.enhanced-military-marker` - Main marker div
+- `.nato-symbol-wrapper` - Symbol container
+- `.flag-badge` - Flag attached to marker
+
+**Legends:**
+- `.military-map-legend` - Main legend panel
+- `.legend-dropdown` - Dropdown selector
+- `.legend-content-area` - Content display area
+- `.legacy-map-legend` - Left-side legacy legend
+
+### 28.9 Development Workflow
+
+1. **Start dev server:**
+   ```bash
+   npm run dev
+   # Opens at http://localhost:3000
+   ```
+
+2. **Test changes:**
+   - Make changes in source files
+   - Vite HMR auto-refreshes browser
+   - Check browser console for errors
+
+3. **Build for production:**
+   ```bash
+   npm run build
+   # Outputs to dist/
+   ```
+
+4. **Verify build:**
+   ```bash
+   npm run preview
+   # Preview production build
+   ```
+
+### 28.10 Debugging Tips
+
+**Check if classes exist:**
+```javascript
+typeof NATOSymbolLibrary !== 'undefined'  // Symbol library loaded
+typeof FlagSystem !== 'undefined'           // Flag system loaded
+typeof clusterState !== 'undefined'         // Clustering initialized
+mapState.map instanceof L.Map              // Map initialized
+```
+
+**Debug flag detection:**
+```javascript
+const nations = detectInvolvedNations(event);
+console.log('Detected nations:', nations, 'from text:', eventText);
+```
+
+**Debug tick marks:**
+```javascript
+const ticks = document.querySelectorAll('.slider-tick-mark');
+console.log('Tick marks found:', ticks.length);
+```
+
+**Debug legend:**
+```javascript
+const content = document.querySelector('#legend-content-area');
+console.log('Legend content:', content.innerHTML.substring(0, 100));
+```
+
+---
+
+*Knowledge base last updated: February 2026*
+*Project: 2026-Conflict Timeline Visualization*
 

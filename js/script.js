@@ -242,7 +242,10 @@ function detectInvolvedNations(event) {
     }
     
     // Check for UN involvement
-    if (eventText.includes('united nations') || eventText.includes('un ')) {
+    if (eventText.includes('united nations') ||
+        (eventText.includes('un ') && (eventText.includes('resolution') || eventText.includes('peace') || eventText.includes('security council'))) ||
+        eventText.includes('un intervention') ||
+        eventText.includes('un peacekeeping')) {
         nations.push('un');
     }
     
@@ -262,17 +265,17 @@ function createFlagOverlayForEvent(event, markerSize = 40) {
     
     // Calculate flag size based on zoom level for better visibility
     const currentZoom = mapState.map ? mapState.map.getZoom() : 7;
-    let flagSize = 24; // Base size for default zoom
-    
+    let flagSize = 28; // Base size for default zoom
+
     // Scale flags based on zoom level
     if (currentZoom >= 10) {
-        flagSize = 32;
+        flagSize = 36;
     } else if (currentZoom >= 8) {
-        flagSize = 28;
+        flagSize = 32;
     } else if (currentZoom >= 6) {
-        flagSize = 24;
+        flagSize = 28;
     } else {
-        flagSize = 20;
+        flagSize = 24;
     }
     
     // Limit to 2 flags per event to prevent overcrowding
@@ -1915,7 +1918,7 @@ function addMapLegend() {
         });
         
         // Show enhanced option by default
-        contentArea.innerHTML = '<div class="note" style="padding: 10px; background: rgba(52, 152, 219, 0.2); border-radius: 4px; text-align: center;">Enhanced NATO symbols legend is displayed in main panel (top-right)</div>';
+        contentArea.innerHTML = generateMilitarySymbolsLegend();
         
         return div;
     };
@@ -3187,45 +3190,45 @@ function drawMovementPaths(events) {
                 }
                 
                 processedCoordinates.add(coordKey);
-                
+
                 const nextCoord = movement.coordinates[index + 1];
                 const bearing = calculateBearing(coord, nextCoord);
-                
-                const markerIcon = createFactionMarker(faction, bearing);
+
+                const markerIcon = createMovementNATOSymbol(faction.color, bearing, 28);
                 const marker = L.marker(coord, {
                     icon: markerIcon,
                     opacity: 1,
-                    zIndexOffset: 1000 // Ensure markers appear above other layers
+                    zIndexOffset: 1000
                 });
-                
-                // Add tooltip for better visibility
-                marker.bindTooltip(faction.name, {
-                    permanent: false,
-                    direction: 'top',
-                    offset: [0, -16]
-                });
-                
+
                 marker.addTo(mapState.movementLayer);
-                console.log('Marker added for', event.title, 'at', coord, '- Type:', faction.name);
             }
         });
         
-        // Enhanced popup with movement details
+        // Enhanced popup with NATO symbol and movement details
         path.bindPopup(`
-            <div style="max-width: 250px; background: #1a1a1a; color: #e1e8ed; padding: 10px; border-radius: 8px;">
+            <div style="max-width: 280px; background: #1a1a1a; color: #e1e8ed; padding: 12px; border-radius: 8px;">
                 <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <div style="background: ${faction.color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 8px;">
-                        ${faction.name}
+                    <div style="width: 28px; height: 28px; margin-right: 10px; background: ${faction.color}; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong style="font-size: 14px;">${event.title}</strong><br>
+                        <span style="color: #9ca3af; font-size: 12px;">${event.date}</span>
                     </div>
                 </div>
-                <strong>${event.title}</strong><br>
-                <span style="color: #9ca3af; font-size: 12px;">${event.date}</span><br>
-                <hr style="margin: 8px 0; border-color: #374151;">
-                <span style="color: #b0b8c0; font-size: 13px;">
-                    <strong>Operation:</strong> ${movement.type.replace(/_/g, ' ').toUpperCase()}<br>
-                    <strong>Duration:</strong> ${movement.startTime} to ${movement.endTime}<br>
-                    <strong>Waypoints:</strong> ${movement.coordinates.length}
-                </span>
+                <div style="border-top: 1px solid #374151; padding-top: 8px; font-size: 12px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                        <span style="color: #9ca3af;">Operation:</span>
+                        <span style="text-transform: uppercase;">${movement.type.replace(/_/g, ' ')}</span>
+                        <span style="color: #9ca3af;">Duration:</span>
+                        <span>${movement.startTime} → ${movement.endTime}</span>
+                        <span style="color: #9ca3af;">Waypoints:</span>
+                        <span>${movement.coordinates.length}</span>
+                    </div>
+                </div>
             </div>
         `);
         
@@ -3341,6 +3344,26 @@ function createFactionMarker(faction, bearing) {
     return L.divIcon({
         html: svgContent,
         className: 'faction-marker-icon',
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2],
+        popupAnchor: [0, -size/2]
+    });
+}
+
+// Create NATO symbol for military movement markers
+function createMovementNATOSymbol(factionColor, bearing, size = 24) {
+    if (typeof NATOSymbolLibrary === 'undefined') {
+        console.warn('NATOSymbolLibrary not available, using fallback');
+        return createFactionMarker({ color: factionColor, name: 'Movement' }, bearing);
+    }
+
+    const natoLibrary = new NATOSymbolLibrary();
+
+    const natoSymbol = natoLibrary.generateSymbol('hostile', 'infantry', 'unit');
+
+    return L.divIcon({
+        html: natoSymbol.svg,
+        className: 'nato-movement-marker',
         iconSize: [size, size],
         iconAnchor: [size/2, size/2],
         popupAnchor: [0, -size/2]

@@ -210,7 +210,7 @@ function createEnhancedMilitaryMarker(event, options = {}) {
 
     // Create individual NATO symbol with flag
     const symbolData = natoSymbolLibrary.generateSymbol(affiliation, unitType, 'unit');
-    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, 20) : '';
+    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, 24) : '';
 
     const markerHtml = `
         <div class="enhanced-military-marker" 
@@ -776,7 +776,7 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
 
     // Get cached symbol with dynamic sizing
     const symbolData = performanceOptimizer.getCachedSymbol(affiliation, unitType, finalSize);
-    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, Math.round(16 * zoomScale)) : '';
+    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, Math.round(24 * zoomScale)) : '';
 
     const markerHtml = `
         <div class="enhanced-military-marker" 

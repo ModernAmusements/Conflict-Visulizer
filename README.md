@@ -10,6 +10,7 @@ An interactive web application visualizing military conflicts with 1994-era NATO
 - **Military Movement**: Thin lines with directional arrows
 - **Integrated UI**: National Forces panel within Legend Options
 - **1994-Era Styling**: Functional, restrained visualization without modern embellishments
+- **Timeline Slider**: Interactive year slider with tick marks for event navigation and snap-to-event functionality
 
 ## 📁 Project Organization
 
@@ -161,10 +162,10 @@ CSV Data → script.js (loadHamasAttacksCSV) → Event Processing
 
 ### Current Migration Status
 - ✅ Variables defined
-- ✅ Mixins created  
-- ✅ Map styles (partial)
-- ⏳ Legend styles (partial)
-- ⏳ Timeline styles (commented out)
+- ✅ Mixins created
+- ✅ Map styles (complete)
+- ✅ Legend styles (complete)
+- ✅ Timeline slider styles with tick marks (complete)
 - ⏳ Remaining components
 
 ### File Organization Rules:
@@ -219,17 +220,38 @@ Date,Location,AttackType,Weapon,TotalKilled,IsraelisKilled,PalestiniansKilled,To
 ### Main Sections (in scss/styles.scss):
 - **Base Styles** - Reset, typography, layout
 - **Header Styles** - Main header and navigation
-- **Map Styles** - Container, controls, overlays (being migrated)
-- **Legend Styles** - Military symbols, flags (being migrated)
-- **Timeline Styles** - Event cards, animations (commented out)
+- **Map Styles** - Container, controls, overlays
+- **Legend Styles** - Military symbols, flags
+- **Timeline Slider Styles** - Tick marks and snap functionality
 - **Footer Styles** - Footer content
+
+### Timeline Slider Tick Marks:
+The timeline slider includes dynamic tick marks generated from event years:
+
+**JavaScript Functions:**
+```javascript
+getEventYears()           // Extract unique years from timelineEvents
+findNearestEventYear()    // Locate nearest event year (within 3 years)
+createTickMarks()         // Generate tick mark DOM elements
+updateActiveTickMarks()   // Highlight current year tick
+initializeTimelineTicks() // Initialize on DOM ready
+```
+
+**Features:**
+- Tick marks at each event year (simplified to decades for readability)
+- Snap-to-tick when dragging within 3 years of an event
+- Decade labels displayed (1900, 1910, 1920, etc.)
+- Active tick highlighting synchronized with current year
 
 ### Key Classes:
 - `.map-container` - Map section wrapper
 - `.map-header` - Map controls header
 - `.map-controls` - Play/pause, speed, layer controls
 - `.military-map-legend` - NATO symbol legend
-- `.timeline-slider-container` - Year slider (timeline disabled)
+- `.timeline-slider-container` - Year slider container
+- `.slider-track-container` - Tick mark container
+- `.slider-tick-mark` - Individual tick mark
+- `.slider-tick-label` - Decade label
 - `.cluster-marker` - Intensity-based clustering
 
 ## 🔧 Customization

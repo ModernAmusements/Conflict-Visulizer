@@ -62,11 +62,11 @@ class FlagSystem {
     getFlagElement(nation, size = 32) {
         const flagSVG = this.getFlag(nation);
         const aspectRatio = 0.67; // Standard flag aspect ratio
-        
+
         return `
-            <div class="flag-icon-enhanced" style="width: ${size}px; height: ${size * aspectRatio}px;" 
+            <div class="flag-icon-enhanced" style="width: ${size}px; height: ${size * aspectRatio}px;"
                  data-nation="${nation}">
-                <div class="flag-wrapper" style="position: relative; width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 2px 4px rgba(0,0,0,0.3); overflow: hidden;">
+                <div class="flag-wrapper" style="position: relative; width: 100%; height: 100%; border: 2px solid rgba(255,255,255,0.8); border-radius: 3px; box-shadow: 0 3px 8px rgba(0,0,0,0.5), 0 0 12px rgba(255,255,255,0.2); overflow: hidden;">
                     ${flagSVG}
                 </div>
             </div>
