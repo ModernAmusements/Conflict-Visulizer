@@ -602,6 +602,245 @@ The system now displays **professional military-grade symbols** that are ready f
 
 ---
 
+## 🏗️ **SCSS MIGRATION & MODERNIZATION**
+
+### **Migration Overview (February 2026)**
+
+The project is being migrated from plain CSS to SCSS for better maintainability, using Vite as the build tool with hot module replacement (HMR).
+
+### **New Project Structure**
+
+```
+2026-Conflict/
+├── scss/                          # SCSS stylesheets (NEW)
+│   ├── styles.scss               # Main entry point
+│   ├── _variables.scss           # Design tokens (colors, spacing, breakpoints)
+│   ├── _mixins.scss              # Reusable mixins
+│   └── components/
+│       ├── _text.scss           # Typography & text styles
+│       └── _map.scss            # Map component styles
+│
+├── css/                          # Legacy CSS (being phased out)
+│   ├── styles.css               # Original styles
+│   └── styles.css.backup        # Backup of original
+│
+├── index.html                    # Main HTML entry point
+├── package.json                  # Project configuration
+├── .gitignore                   # Git ignore rules (NEW)
+├── README.md                     # Project documentation (UPDATED)
+├── ai_js_ruleset.md            # JS coding standards (UPDATED with SCSS section)
+└── vite.config.js               # Vite configuration (NEW)
+```
+
+### **SCSS Variables (`scss/_variables.scss`)**
+
+```scss
+// NATO Affiliation Colors
+$nato-friendly: #0066CC;
+$nato-hostile: #CC0000;
+$neutral: #00AA00;
+$unknown: #FFAA00;
+
+// Nation Colors
+$israel-color: #0038B8;
+$palestine-color: #009C48;
+
+// Theme Colors
+$bg-primary: #0a0a0a;
+$bg-secondary: #1a1a2e;
+$text-primary: #e8e8e8;
+$text-secondary: #a0a0a0;
+
+// Spacing
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+```
+
+### **SCSS Mixins (`scss/_mixins.scss`)**
+
+```scss
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin btn-primary {
+  padding: 0.5rem 1rem;
+  background: $nato-friendly;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  }
+}
+```
+
+### **Component Partials**
+
+#### `scss/components/_text.scss`
+- Body, header, main content styles
+- Intro section with accuracy badge
+- Verification panel
+- Footer styles
+
+#### `scss/components/_map.scss`
+- `.map-container`, `.map-header`, `.map-controls`
+- `.map-btn` (play/pause with states)
+- `.speed-control`, `.layer-controls`
+- `#map`, `.map-stats`
+- Timeline slider with pseudo-elements
+- Territory zones and attack markers
+- Movement paths and faction markers
+- Responsive styles at breakpoints
+
+### **Development Commands**
+
+```bash
+# Development with hot reloading
+npm run dev
+# Opens at http://localhost:3000
+
+# Build for production
+npm run build
+# Outputs to dist/ folder
+
+# Preview production build
+npm run preview
+
+# Legacy Python server (no SCSS)
+npm run legacy
+# Opens at http://localhost:8000
+```
+
+### **Migration Process**
+
+1. **Copy** original CSS to `scss/styles.scss`
+2. **Extract** variables to `_variables.scss`
+3. **Extract** mixins to `_mixins.scss`
+4. **Convert** nested rules to SCSS nesting
+5. **Replace** hardcoded values with variables
+6. **Test** thoroughly before moving on
+
+### **Migration Status**
+
+| Component | Status | File |
+|----------|--------|------|
+| Variables | ✅ Complete | `_variables.scss` |
+| Mixins | ✅ Complete | `_mixins.scss` |
+| Text/Typography | ✅ Complete | `components/_text.scss` |
+| Map Styles | ✅ Complete | `components/_map.scss` |
+| Legend Styles | 🔄 Partial | `styles.scss` (in progress) |
+| Timeline Styles | ⏸️ Disabled | Commented in `styles.scss` |
+| Remaining CSS | ⏳ Pending | Migration continues |
+
+### **Vite Configuration**
+
+```javascript
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  root: '.',
+  publicDir: 'assets',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      input: { main: 'index.html' }
+    }
+  },
+  server: {
+    port: 3000,
+    open: true
+  }
+});
+```
+
+### **Inline Styles Note**
+
+⚠️ **93 inline style occurrences in JavaScript files** require attention:
+- `script.js`: ~85 inline styles (popup content, legend panels)
+- `clustering-system.js`: 6 inline styles
+- `flags.js`: 2 inline styles
+
+**Recommendation**: Continue SCSS migration. Fix inline styles incrementally as we touch each component.
+
+### **Git Ignore Rules (`.gitignore`)**
+
+```
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+
+# Vite cache
+vite.config.js.timestamp-*
+```
+
+---
+
+## 📁 **GITIGNORE CONTENTS**
+
+```
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.cache/
+*.local
+
+# Environment files
+.env
+.env.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project-specific
+*.log
+npm-debug.log*
+*.backup
+*.bak
+
+# Vite
+vite.config.js.timestamp-*
+```
+
+---
+
 **🎯 FINAL STATUS: PRODUCTION READY** 🚀
 
 **All major implementation objectives have been successfully completed. The military map symbols system is now production-ready!**
