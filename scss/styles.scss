@@ -982,14 +982,6 @@ main {
     border-color: #3498db;
 }
 
-#map {
-    height: 500px;
-    background: #1a1a1a;
-    border: 2px solid #34495e;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
 
 
 
@@ -1105,6 +1097,15 @@ main {
     margin-top: 0.5rem;
     font-size: 0.9rem;
     color: #7f8c8d;
+}
+
+#map {
+    height: 500px;
+    background: #1a1a1a;
+    border: 2px solid #34495e;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
 #current-year {
@@ -1278,9 +1279,7 @@ main {
         justify-content: center;
     }
     
-    #map {
-        height: 350px;
-    }
+
     
     .map-stats {
         flex-direction: column;

@@ -1464,9 +1464,7 @@ main {
         justify-content: center;
     }
     
-    #map {
-        height: 350px;
-    }
+
     
     .map-stats {
         flex-direction: column;
