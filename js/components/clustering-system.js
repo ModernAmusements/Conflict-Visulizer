@@ -489,15 +489,15 @@ function determineMilitaryDetails(event) {
 function createClusterMarker(events) {
     const clusterer = new IntensityClusterer();
     const cluster = clusterer.clusterEvents(events, mapState.map.getZoom())[0];
-    
+
     if (!cluster) return null;
 
     const style = clusterer.getClusterStyle(cluster);
     const center = cluster.coordinates;
 
     const clusterHtml = `
-        <div class="cluster-marker ${style.className}" 
-             style="width: ${style.size}px; height: ${style.size}px; 
+        <div class="cluster-marker ${style.className}"
+             style="width: ${style.size}px; height: ${style.size}px;
                     background: ${style.color}; border: 2px solid ${style.borderColor};
                     box-shadow: 0 0 20px ${style.glowColor};">
             <span class="cluster-count">${cluster.events.length}</span>
@@ -514,75 +514,68 @@ function createClusterMarker(events) {
         })
     });
 
-    // Enhanced popup for cluster
-    const popupContent = createClusterPopup(cluster);
+    // Create popup showing first event in card style with button
+    const firstEvent = cluster.events[0];
+    const popupContent = createEventCardPopup(firstEvent, cluster.events, cluster.coordinates);
     marker.bindPopup(popupContent, {
-        maxWidth: 300,
-        className: 'cluster-popup'
+        maxWidth: 320,
+        className: 'military-popup'
     });
 
     return marker;
 }
 
-// Create detailed popup for cluster
-function createClusterPopup(cluster) {
-    const eventsByDate = cluster.events.sort((a, b) => {
-        const yearA = getEventYear(a.date);
-        const yearB = getEventYear(b.date);
-        return yearA - yearB;
-    });
+// Create popup content using event card style
+function createEventCardPopup(event, clusterEvents = null, coords = null) {
+    const involvedNations = typeof detectInvolvedNations === 'function' ? detectInvolvedNations(event) : [];
 
-    const totalCasualties = cluster.totalCasualties;
-    const highIntensityEvents = cluster.events.filter(e => 
-        new IntensityClusterer().calculateEventIntensity(e) === 'high'
-    ).length;
+    const territory = event.territoryControl ?
+        `<div class="event-territory">
+            ${event.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${event.territoryControl.israeli}%</span></div>` : ''}
+            ${event.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${event.territoryControl.palestinian}%</span></div>` : ''}
+            ${event.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${event.territoryControl.hamas}%</span></div>` : ''}
+        </div>` : '';
 
-    let popupHtml = `
-        <div class="cluster-popup">
-            <h6>Cluster Details (${cluster.events.length} events)</h6>
-            <div class="cluster-summary">
-                <span class="cluster-stat">
-                    Total Casualties: <strong>${totalCasualties}</strong>
-                </span>
-                <span class="cluster-stat">
-                    High Intensity: <strong>${highIntensityEvents}</strong>
-                </span>
-            </div>
-            <div class="cluster-events-list">
-    `;
+    const casualties = event.casualties ?
+        `<div class="event-territory event-territory-compact">
+            <div class="territory-item">💀 Killed: <span>${event.casualties.totalKilled || 0}</span></div>
+            <div class="territory-item">🏥 Wounded: <span>${event.casualties.totalWounded || 0}</span></div>
+        </div>` : '';
 
-    // Add individual event summaries
-    eventsByDate.slice(0, 5).forEach(event => {
-        const { affiliation, unitType, nation } = determineMilitaryDetails(event);
-        const year = getEventYear(event.date);
-        const casualties = new IntensityClusterer().getEventCasualties(event);
-        
-        popupHtml += `
-            <div class="cluster-event-item">
-                <div class="cluster-event-title">${event.title}</div>
-                <div class="cluster-event-details">
-                    <span>${year}</span>
-                    <span>${casualties} casualties</span>
-                    ${nation ? `<span class="event-flag">${flagSystem.getFlagElement(nation, 16)}</span>` : ''}
-                </div>
-            </div>
-        `;
-    });
+    const impact = event.impact ?
+        `<div class="event-impact">
+            <strong>Impact:</strong> ${event.impact}
+        </div>` : '';
 
-    if (eventsByDate.length > 5) {
-        popupHtml += `
-            <div class="cluster-more">
-                <em>... and ${eventsByDate.length - 5} more events</em>
-            </div>
-        `;
+    const showAllButton = clusterEvents && clusterEvents.length > 1 && coords ?
+        `<button class="show-all-events-btn" data-coords="${coords[0]},${coords[1]}">
+            Show all ${clusterEvents.length} events →
+        </button>` : '';
+
+    // Store current cluster events by coordinates for button click handler
+    if (clusterEvents && clusterEvents.length > 1 && coords) {
+        window.clusterEventsMap = window.clusterEventsMap || new Map();
+        window.clusterEventsMap.set(`${coords[0]},${coords[1]}`, clusterEvents);
     }
 
-    popupHtml += `
+    return `
+        <div class="popup-event-card">
+            <span class="event-title">${event.title}</span>
+            <div class="event-meta">
+                <span class="event-date">📅 ${event.date}</span>
+                <span class="event-category ${event.category || 'unknown'}">${(event.category || 'unknown').toUpperCase()}</span>
             </div>
+            ${event.description ? `<div class="event-description">${event.description}</div>` : ''}
+            ${impact}
+            ${territory}
+            ${casualties}
+            ${involvedNations.length > 0 ?
+                `<div class="event-territory event-territory-compact">
+                    <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
+                </div>` : ''}
+            ${showAllButton}
         </div>
     `;
-
-    return popupHtml;
 }
 
 // Setup enhanced legend controls with complete 1994 NATO symbology
@@ -990,9 +983,9 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
 // Optimized cluster marker creation
 function createClusterMarkerOptimized(events) {
     if (!mapState || !mapState.map) return null;
-    
+
     const currentZoom = mapState.map.getZoom();
-    
+
     // Get cached cluster
     const clusters = performanceOptimizer.getCachedCluster(events, currentZoom);
     if (!clusters || clusters.length === 0) return null;
@@ -1002,8 +995,8 @@ function createClusterMarkerOptimized(events) {
     const center = cluster.coordinates;
 
     const clusterHtml = `
-        <div class="cluster-marker ${style.className}" 
-             style="width: ${style.size}px; height: ${style.size}px; 
+        <div class="cluster-marker ${style.className}"
+             style="width: ${style.size}px; height: ${style.size}px;
                     background: ${style.color}; border: 2px solid ${style.borderColor};
                     box-shadow: 0 0 20px ${style.glowColor};">
             <span class="cluster-count">${cluster.events.length}</span>
@@ -1020,11 +1013,12 @@ function createClusterMarkerOptimized(events) {
         })
     });
 
-    // Enhanced popup for cluster
-    const popupContent = createClusterPopup(cluster);
+    // Create popup showing first event in card style
+    const firstEvent = cluster.events[0];
+    const popupContent = createEventCardPopup(firstEvent, cluster.events, cluster.coordinates);
     marker.bindPopup(popupContent, {
-        maxWidth: 300,
-        className: 'cluster-popup'
+        maxWidth: 320,
+        className: 'military-popup'
     });
 
     return marker;
@@ -1240,7 +1234,28 @@ function generateLegacyDropdownOptions() {
     `;
 }
 
+// Get all events within radius of coordinates
+function getNearbyEvents(coordinates, radius = 0.02) {
+    const allEvents = typeof getFilteredEventsForYear === 'function'
+        ? getFilteredEventsForYear(window.mapState?.currentYear || mapState?.currentYear || 2023)
+        : (typeof getAllTimelineEvents === 'function' ? getAllTimelineEvents() : []);
+    const [lat, lng] = coordinates;
+
+    return allEvents.filter(event => {
+        if (!event.geography || !event.geography.coordinates) {
+            return false;
+        }
+
+        const [eventLat, eventLng] = event.geography.coordinates;
+        const latDiff = Math.abs(eventLat - lat);
+        const lngDiff = Math.abs(eventLng - lng);
+
+        return latDiff <= radius && lngDiff <= radius;
+    });
+}
+
 // Export clustering utilities for global access
 window.IntensityClusterer = IntensityClusterer;
 window.createEnhancedMilitaryMarker = createEnhancedMilitaryMarkerOptimized;
 window.drawAllEventMarkersOptimized = drawAllEventMarkersOptimized;
+window.getNearbyEvents = getNearbyEvents;

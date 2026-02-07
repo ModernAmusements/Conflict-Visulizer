@@ -2546,10 +2546,18 @@ function getEventYear(dateString) {
     if (yearMatch) {
         return parseInt(yearMatch[0]);
     }
-    
+
     // Handle "1948" or "1967" format
     const year = parseInt(dateString.split('-')[0]);
     return isNaN(year) ? 0 : year;
+}
+
+// Get events filtered by year (events up to and including the year)
+function getFilteredEventsForYear(year) {
+    return timelineEvents.filter(event => {
+        const eventYear = getEventYear(event.date);
+        return eventYear <= year;
+    });
 }
 
 // Update map for specific year with recursion prevention
@@ -3037,8 +3045,59 @@ function createClusterCountMarker(group, coordinates) {
 
     const marker = L.marker(coordinates, { icon });
 
-    marker.on('click', () => {
-        openEventSidePanel(group);
+    // Create popup content in card style
+    const firstEvent = group[0];
+    const involvedNations = detectInvolvedNations(firstEvent);
+    const territory = firstEvent.territoryControl ?
+        `<div class="event-territory">
+            ${firstEvent.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${firstEvent.territoryControl.israeli}%</span></div>` : ''}
+            ${firstEvent.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${firstEvent.territoryControl.palestinian}%</span></div>` : ''}
+            ${firstEvent.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${firstEvent.territoryControl.hamas}%</span></div>` : ''}
+        </div>` : '';
+
+    const casualties = firstEvent.casualties ?
+        `<div class="event-territory event-territory-compact">
+            <div class="territory-item">💀 Killed: <span>${firstEvent.casualties.totalKilled || 0}</span></div>
+            <div class="territory-item">🏥 Wounded: <span>${firstEvent.casualties.totalWounded || 0}</span></div>
+        </div>` : '';
+
+    const impact = firstEvent.impact ?
+        `<div class="event-impact">
+            <strong>Impact:</strong> ${firstEvent.impact}
+        </div>` : '';
+
+    const showAllButton = group.length > 1 ?
+        `<button class="show-all-events-btn" data-coords="${coordinates[0]},${coordinates[1]}">
+            Show all ${group.length} events →
+        </button>` : '';
+
+    // Store current cluster events by coordinates for button click handler
+    if (group.length > 1) {
+        clusterEventsMap.set(`${coordinates[0]},${coordinates[1]}`, group);
+    }
+
+    const popupContent = `
+        <div class="popup-event-card">
+            <span class="event-title">${firstEvent.title}</span>
+            <div class="event-meta">
+                <span class="event-date">📅 ${firstEvent.date}</span>
+                <span class="event-category ${firstEvent.category || 'unknown'}">${(firstEvent.category || 'unknown').toUpperCase()}</span>
+            </div>
+            ${firstEvent.description ? `<div class="event-description">${firstEvent.description}</div>` : ''}
+            ${impact}
+            ${territory}
+            ${casualties}
+            ${involvedNations.length > 0 ?
+                `<div class="event-territory event-territory-compact">
+                    <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
+                </div>` : ''}
+            ${showAllButton}
+        </div>
+    `;
+
+    marker.bindPopup(popupContent, {
+        maxWidth: 320,
+        className: 'military-popup'
     });
 
     marker.on('mouseover', function() {
@@ -3060,65 +3119,146 @@ function createClusterCountMarker(group, coordinates) {
     return marker;
 }
 
-// Open side panel with all events in a cluster
+// Side panel state
+let sidePanelOpen = false;
+let sidePanelSelectedEvents = null;
+const clusterEventsMap = new Map();
+
+// Update side panel visual state
+function updateSidePanelState() {
+    const panel = document.getElementById('event-side-panel');
+    const mapContainer = document.querySelector('.map-container');
+
+    if (!panel) return;
+
+    if (sidePanelOpen) {
+        panel.classList.add('open');
+        if (mapContainer) {
+            mapContainer.classList.add('shifted');
+        }
+    } else {
+        panel.classList.remove('open');
+        if (mapContainer) {
+            mapContainer.classList.remove('shifted');
+        }
+        sidePanelSelectedEvents = null;
+    }
+}
+
+// Toggle side panel
+function toggleSidePanel() {
+    sidePanelOpen = !sidePanelOpen;
+    updateSidePanelState();
+}
+
+// Handle "Show all events" button clicks
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('show-all-events-btn')) {
+        const coords = e.target.dataset.coords;
+        // Check both local and global map
+        const eventsMap = window.clusterEventsMap || clusterEventsMap;
+        if (coords && eventsMap && eventsMap.has(coords)) {
+            const events = eventsMap.get(coords);
+            if (Array.isArray(events)) {
+                openEventSidePanel(events);
+            }
+        }
+    }
+});
+
+// Open side panel with events
 function openEventSidePanel(eventGroup) {
-    const existing = document.getElementById('event-side-panel');
-    if (existing) existing.remove();
+    let panel = document.getElementById('event-side-panel');
 
-    const panel = document.createElement('div');
-    panel.id = 'event-side-panel';
+    // Create panel if it doesn't exist
+    if (!panel) {
+        panel = document.createElement('div');
+        panel.id = 'event-side-panel';
+        document.body.appendChild(panel);
+    }
 
-    const totalEvents = eventGroup.length;
+    // Set selected events for toggle button logic
+    sidePanelSelectedEvents = eventGroup;
 
-    panel.innerHTML = `
-        <div class="panel-header">
-            <h3>📍 ${totalEvents} Events</h3>
-            <button onclick="this.closest('#event-side-panel').remove()">✕</button>
-        </div>
-        <div class="panel-content" id="panel-scroll-content">
-            ${eventGroup.map((event, index) => {
-                const involvedNations = detectInvolvedNations(event);
-                const territory = event.territoryControl ?
-                    `<div class="event-territory">
-                        ${event.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${event.territoryControl.israeli}%</span></div>` : ''}
-                        ${event.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${event.territoryControl.palestinian}%</span></div>` : ''}
-                        ${event.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${event.territoryControl.hamas}%</span></div>` : ''}
-                    </div>` : '';
+    const totalEvents = eventGroup ? eventGroup.length : 0;
 
-                const casualties = event.casualties ?
-                    `<div class="event-territory" style="border-top: none; padding-top: 0;">
-                        <div class="territory-item">💀 Killed: <span>${event.casualties.totalKilled || 0}</span></div>
-                        <div class="territory-item">🏥 Wounded: <span>${event.casualties.totalWounded || 0}</span></div>
-                    </div>` : '';
+    // Handle empty state
+    if (totalEvents === 0) {
+        panel.innerHTML = `
+            <div class="panel-header">
+                <h3>📍 No Events</h3>
+                <button id="panel-close-btn">✕</button>
+            </div>
+            <div class="panel-content" id="panel-scroll-content">
+                <div class="panel-empty">
+                    <p>No events found in current view.</p>
+                    <p>Use the timeline slider to explore historical events.</p>
+                </div>
+            </div>
+        `;
+    } else {
+        panel.innerHTML = `
+            <div class="panel-header">
+                <h3>📍 ${totalEvents} Event${totalEvents !== 1 ? 's' : ''}</h3>
+                <button id="panel-close-btn">✕</button>
+            </div>
+            <div class="panel-content" id="panel-scroll-content">
+                ${eventGroup.map((event, index) => {
+                    const involvedNations = detectInvolvedNations(event);
+                    const territory = event.territoryControl ?
+                        `<div class="event-territory">
+                            ${event.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${event.territoryControl.israeli}%</span></div>` : ''}
+                            ${event.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${event.territoryControl.palestinian}%</span></div>` : ''}
+                            ${event.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${event.territoryControl.hamas}%</span></div>` : ''}
+                        </div>` : '';
 
-                const impact = event.impact ?
-                    `<div class="event-description" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <strong style="color: #f39c12;">Impact:</strong> ${event.impact}
-                    </div>` : '';
+                    const casualties = event.casualties ?
+                        `<div class="event-territory event-territory-compact">
+                            <div class="territory-item">💀 Killed: <span>${event.casualties.totalKilled || 0}</span></div>
+                            <div class="territory-item">🏥 Wounded: <span>${event.casualties.totalWounded || 0}</span></div>
+                        </div>` : '';
 
-                return `
-                    <div class="panel-event" data-index="${index}">
-                        <span class="event-title">${event.title}</span>
-                        <div class="event-meta">
-                            <span class="event-date">📅 ${event.date}</span>
-                            <span class="event-category ${event.category || 'unknown'}">${(event.category || 'unknown').toUpperCase()}</span>
+                    const impact = event.impact ?
+                        `<div class="event-impact">
+                            <strong>Impact:</strong> ${event.impact}
+                        </div>` : '';
+
+                    return `
+                        <div class="panel-event" data-index="${index}">
+                            <span class="event-title">${event.title}</span>
+                            <div class="event-meta">
+                                <span class="event-date">📅 ${event.date}</span>
+                                <span class="event-category ${event.category || 'unknown'}">${(event.category || 'unknown').toUpperCase()}</span>
+                            </div>
+                            ${event.description ? `<div class="event-description">${event.description}</div>` : ''}
+                            ${impact}
+                            ${territory}
+                            ${casualties}
+                            ${involvedNations.length > 0 ?
+                                `<div class="event-territory event-territory-compact">
+                                    <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
+                                </div>` : ''}
                         </div>
-                        ${event.description ? `<div class="event-description">${event.description}</div>` : ''}
-                        ${impact}
-                        ${territory}
-                        ${casualties}
-                        ${involvedNations.length > 0 ?
-                            `<div class="event-territory" style="border-top: none; padding-top: 0;">
-                                <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
-                            </div>` : ''}
-                    </div>
-                `;
-            }).join('')}
-        </div>
-        <div class="panel-scroll-indicator">Scroll for more ↓</div>
-    `;
+                    `;
+                }).join('')}
+            </div>
+            ${totalEvents > 3 ? '<div class="panel-scroll-indicator">Scroll for more ↓</div>' : ''}
+        `;
+    }
 
-    document.body.appendChild(panel);
+    // Add close button handler
+    const closeBtn = document.getElementById('panel-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            toggleSidePanel();
+        });
+    }
+
+    // Auto open when populated with events
+    if (!sidePanelOpen) {
+        sidePanelOpen = true;
+        updateSidePanelState();
+    }
 
     setTimeout(() => {
         const content = document.getElementById('panel-scroll-content');
@@ -3128,16 +3268,39 @@ function openEventSidePanel(eventGroup) {
     }, 100);
 }
 
-// Close side panel when clicking outside
-document.addEventListener('click', (e) => {
-    const panel = document.getElementById('event-side-panel');
-    if (panel && !panel.contains(e.target)) {
-        const marker = e.target.closest('.cluster-marker');
-        if (!marker) {
-            panel.remove();
-        }
+// Initialize side panel (hidden by default)
+function initializeSidePanel() {
+    setupMapClickHandler();
+}
+
+// Setup map click to close sidepanel
+function setupMapClickHandler() {
+    if (mapState && mapState.map) {
+        mapState.map.on('click', function() {
+            if (sidePanelOpen) {
+                toggleSidePanel();
+            }
+        });
     }
-});
+}
+
+// Show all visible events in sidepanel
+function showAllVisibleEvents() {
+    const currentEvents = typeof getFilteredEventsForYear === 'function'
+        ? getFilteredEventsForYear(mapState.currentYear)
+        : timelineEvents;
+
+    const visibleEvents = currentEvents.filter(event => {
+        return event.geography && event.geography.coordinates;
+    });
+
+    if (visibleEvents.length === 0) {
+        openEventSidePanel([]);
+        return;
+    }
+
+    openEventSidePanel(visibleEvents);
+}
 
 // Draw all event markers with proper layer management and hierarchical positioning
 function drawAllEventMarkers(events) {
@@ -3270,45 +3433,55 @@ function drawAllEventMarkers(events) {
 
                 const involvedNations = detectInvolvedNations(event);
 
-                const isHamasAttack = event.title && event.title.includes('Hamas Attack:');
-                const additionalInfo = isHamasAttack && event.casualties ?
-                    `<div class="military-popup-casualties">
-                        <strong>Casualties:</strong><br>
-                        • Total Killed: ${event.casualties.totalKilled}<br>
-                        ${event.casualties.israelisKilled ? `• Israelis Killed: ${event.casualties.israelisKilled}<br>` : ''}
-                        ${event.casualties.palestiniansKilled ? `• Palestinians Killed: ${event.casualties.palestiniansKilled}<br>` : ''}
-                        • Total Wounded: ${event.casualties.totalWounded}<br>
-                        • Total Casualties: ${event.casualties.totalCasualties}
+                const territory = event.territoryControl ?
+                    `<div class="event-territory">
+                        ${event.territoryControl.israeli ? `<div class="territory-item">🇮🇱 Israel: <span>${event.territoryControl.israeli}%</span></div>` : ''}
+                        ${event.territoryControl.palestinian ? `<div class="territory-item">🇵🇸 Palestine: <span>${event.territoryControl.palestinian}%</span></div>` : ''}
+                        ${event.territoryControl.hamas ? `<div class="territory-item">⚡ Hamas: <span>${event.territoryControl.hamas}%</span></div>` : ''}
                     </div>` : '';
 
-                const nationsInfo = involvedNations.length > 0 ?
-                    `<div class="military-popup-nations">
-                        <strong>Nations Involved:</strong><br>
-                        ${involvedNations.map(nation => `• ${nation.charAt(0).toUpperCase() + nation.slice(1)}`).join('<br>')}
+                const casualties = event.casualties ?
+                    `<div class="event-territory event-territory-compact">
+                        <div class="territory-item">💀 Killed: <span>${event.casualties.totalKilled || 0}</span></div>
+                        <div class="territory-item">🏥 Wounded: <span>${event.casualties.totalWounded || 0}</span></div>
                     </div>` : '';
 
-                const overlapInfo = group.length > 1 ?
-                    `<div class="military-popup-warning">
-                        <em>⚠️ ${group.length} events nearby</em>
+                const impact = event.impact ?
+                    `<div class="event-impact">
+                        <strong>Impact:</strong> ${event.impact}
                     </div>` : '';
 
                 const popupContent = `
-                    <div class="military-popup-content">
-                        <span class="military-popup-title ${isHamasAttack ? 'is-hamas' : ''}">${event.title}</span>
-                        <span class="military-popup-date">📅 ${event.date}</span>
-                        ${event.source ? `<span class="military-popup-source">📰 Source: ${event.source}</span><br>` : ''}
-                        <hr class="military-popup-divider">
-                        ${event.description ? `<div class="military-popup-description">${event.description.substring(0, 200)}${event.description.length > 200 ? '...' : ''}</div>` : ''}
-                        ${event.impact ? `<div class="military-popup-impact">📊 Impact: ${event.impact}</div>` : ''}
-                        ${additionalInfo}
-                        ${nationsInfo}
-                        ${overlapInfo}
+                    <div class="popup-event-card">
+                        <span class="event-title">${event.title}</span>
+                        <div class="event-meta">
+                            <span class="event-date">📅 ${event.date}</span>
+                            <span class="event-category ${event.category || 'unknown'}">${(event.category || 'unknown').toUpperCase()}</span>
+                        </div>
+                        ${event.description ? `<div class="event-description">${event.description}</div>` : ''}
+                        ${impact}
+                        ${territory}
+                        ${casualties}
+                        ${involvedNations.length > 0 ?
+                            `<div class="event-territory event-territory-compact">
+                                <div class="territory-item">🌍 Involved: ${involvedNations.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(', ')}</div>
+                            </div>` : ''}
                     </div>
                 `;
 
                 marker.bindPopup(popupContent, {
                     maxWidth: 320,
                     className: 'military-popup'
+                });
+
+                // Handle popup open - check for nearby events and open sidepanel
+                marker.on('popupopen', function() {
+                    if (event.geography && event.geography.coordinates) {
+                        const nearbyEvents = getNearbyEvents(event.geography.coordinates, 0.02);
+                        if (nearbyEvents.length >= 2) {
+                            openEventSidePanel(nearbyEvents);
+                        }
+                    }
                 });
 
                 marker.on('mouseover', function() {
@@ -4016,6 +4189,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Then initialize map
     initializeMap();
     initializeTimelineTicks();
+    // Initialize side panel (hidden by default)
+    initializeSidePanel();
 });
 
 // Add smooth scrolling
@@ -4030,3 +4205,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Export functions globally for clustering-system.js
+window.getFilteredEventsForYear = getFilteredEventsForYear;
+

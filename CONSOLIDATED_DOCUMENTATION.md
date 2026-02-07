@@ -1009,6 +1009,201 @@ vite.config.js.timestamp-*
 
 ---
 
+## 📋 **FEBRUARY 2026 UI UPDATES**
+
+### **Side Panel & Popup Enhancements**
+
+#### **Problem Identified:**
+- Sidepanel had mixed-language scroll indicator ("Scroll indicator提示")
+- Over-reliance on inline JavaScript styles (93+ occurrences)
+- Popup text colors inconsistent
+- Legend positioned on right side instead of left
+- Sidepanel closed when clicking outside without toggle option
+
+#### **Solution Implemented:**
+
+**1. SCSS Component Migration:**
+
+| File | Purpose |
+|------|---------|
+| `scss/components/_sidepanel.scss` | Complete sidepanel styling with toggle button |
+| `scss/components/_popups.scss` | Comprehensive popup styling with white text |
+| `scss/components/_map.scss` | Map container with black background |
+
+**2. Side Panel Features:**
+
+| Feature | Implementation |
+|---------|----------------|
+| Position | Left side, slides in from left |
+| Site Shift | Map container shifts right when panel opens |
+| Animation | 0.4s cubic-bezier transition |
+| Close | Click on map to close sidepanel |
+| No Toggle Button | Sidepanel triggered by popup button only |
+
+**Popup-Sidepanel Coordination (February 2026):**
+
+| Action | Result |
+|--------|--------|
+| Click cluster marker | Popup shows card-style preview + "Show all X events →" button |
+| Click "Show all" button | Sidepanel opens with all events from that cluster |
+| Click individual marker | Popup shows event card, sidepanel stays closed |
+| Click map | Sidepanel closes |
+
+**3. "Show All Events" Button (February 2026):**
+
+Added button to cluster popups for manual sidepanel opening:
+
+```html
+<button class="show-all-events-btn" data-coords="lat,lng">
+    Show all X events →
+</button>
+```
+
+```scss
+.show-all-events-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    color: #60a5fa;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(59, 130, 246, 0.25);
+    }
+}
+```
+
+**Event Storage:**
+
+Uses coordinate-keyed Map to store cluster events:
+
+```javascript
+const clusterEventsMap = new Map();
+// Store
+clusterEventsMap.set(`${lat},${lng}`, events);
+// Retrieve
+clusterEventsMap.get(coords)
+```
+
+**4. Popup Styling Update (February 2026):**
+
+All popups now use `.popup-event-card` styling matching `.panel-event` cards exactly:
+
+| Element | Style |
+|---------|-------|
+| Title | 15px, font-weight 600, color #fff |
+| Date badge | 12px, color #9ca3af, with emoji |
+| Category badge | 10px, pill-shaped, color-coded (military/political/social) |
+| Description | 13px, line-height 1.6, color #d1d5db |
+| Impact | 12px, orange accent, with strong tag |
+| Territory | Flex row with flag emojis and percentages |
+| Nations | Compact row with involved countries |
+
+**5. Data Flow Fix (February 2026):**
+
+Fixed `getNearbyEvents()` to use year-filtered events instead of all events:
+
+```javascript
+function getFilteredEventsForYear(year) {
+    return timelineEvents.filter(event => {
+        const eventYear = getEventYear(event.date);
+        return eventYear <= year;
+    });
+}
+```
+
+**6. Popup Text Color Fix:**
+
+```scss
+.leaflet-popup-content {
+    color: #ffffff !important;
+
+    * {
+        color: #ffffff !important;
+    }
+}
+```
+
+**7. Map Container Update:**
+
+```scss
+.map-container {
+    background: #000000;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.shifted {
+        margin-left: 20px;
+    }
+}
+```
+
+**8. Legend Position Fix:**
+
+```scss
+.military-map-legend {
+    left: 10px;  // Changed from right: 10px
+}
+```
+
+#### **JavaScript Functions:**
+
+| Function | Purpose |
+|----------|---------|
+| `updateSidePanelState()` | Centralized visual state management |
+| `initializeSidePanel()` | Initializes sidepanel (hidden by default) |
+| `setupMapClickHandler()` | Closes sidepanel when clicking map |
+| `showAllVisibleEvents()` | Shows all visible events for current year |
+| `getFilteredEventsForYear()` | Filters timelineEvents by year (events <= year) |
+| `getNearbyEvents()` | Finds events within radius of coordinates |
+| `createEventCardPopup()` | Generates popup HTML matching panel-event style |
+| `openEventSidePanel()` | Opens sidepanel with event list |
+| `createClusterMarker()` | Creates cluster marker with button for sidepanel |
+| `createClusterMarkerOptimized()` | Optimized cluster marker creation |
+
+**Removed Functions:**
+
+| Function | Reason |
+|----------|--------|
+| `showDefaultSidePanel()` | Replaced - no welcome panel |
+| `createSidePanelToggle()` | Toggle button removed from UI |
+| `toggleSidePanel()` | No longer needed - sidepanel opens via button |
+| `createClusterPopup()` | Old cluster popup format removed |
+
+#### **CSS Classes Added:**
+
+| Class | Purpose |
+|-------|---------|
+| `#event-side-panel.open` | Open state for sidepanel |
+| `.map-container.shifted` | Shifted state for map |
+| `.event-impact` | Impact section styling |
+| `.popup-event-card` | Popup card style matching `.panel-event` |
+| `.show-all-events-btn` | Button in popup to show all cluster events |
+
+#### **CSS Classes Removed:**
+
+| Class | Reason |
+|-------|--------|
+| `.sidepanel-toggle` | Toggle button removed from UI |
+| `.event-territory-compact` | Compact territory display |
+
+#### **Files Modified:**
+
+| File | Changes |
+|------|---------|
+| `scss/components/_sidepanel.scss` | Complete rewrite with toggle |
+| `scss/components/_popups.scss` | All text forced white |
+| `scss/components/_map.scss` | Black background, shift support |
+| `scss/styles.scss` | Legend moved to left |
+| `js/script.js` | Toggle functionality, inline styles removed |
+
+---
+
 **🎯 FINAL STATUS: PRODUCTION READY** 🚀
 
 **All major implementation objectives have been successfully completed. The military map symbols system is now production-ready!**
