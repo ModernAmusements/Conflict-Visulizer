@@ -2781,11 +2781,17 @@ async function updateMapForYear(year) {
         } else {
             console.log('⏸️ Movement display is disabled');
         }
-        
         // Draw flags (only if enabled AND not using enhanced markers which already include flags)
         if (window.clusterState && window.clusterState.showFlags && typeof window.createEnhancedMilitaryMarker !== 'function') {
             console.log('🏁 Adding flags to map...');
             drawFlagsForEvents(relevantEvents);
+            mapState.flagLayer.addTo(mapState.map);
+        } else {
+            // Clear and remove flags if disabled
+            if (mapState.flagLayer) {
+                mapState.flagLayer.clearLayers();
+                mapState.map.removeLayer(mapState.flagLayer);
+            }
         }
         
         // Add layers to map
@@ -2799,10 +2805,6 @@ async function updateMapForYear(year) {
         if (mapState.showMovements) {
             mapState.movementLayer.addTo(mapState.map);
             console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
-        }
-        if (window.clusterState && window.clusterState.showFlags && typeof window.createEnhancedMilitaryMarker !== 'function') {
-            mapState.flagLayer.addTo(mapState.map);
-            console.log('✅ Flag layer added');
         }
         
         // Update statistics

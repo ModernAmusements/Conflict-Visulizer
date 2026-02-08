@@ -3195,5 +3195,329 @@ marker.on('mouseout', function() {
 
 ---
 
-*Ruleset section added: February 2026*
+## 30. Date Parsing Rules
+
+### 30.1 Date Range Handling
+
+**Problem**: Events use various date formats including ranges like "1900-1917", "2008-2009".
+
+**Solution**: Extract the END year for ranges:
+
+```javascript
+function getEventYear(dateString) {
+    if (!dateString) return new Date().getFullYear();
+    
+    // Handle date ranges - use END year
+    if (dateString.includes('-')) {
+        const parts = dateString.split('-');
+        const lastPart = parts[parts.length - 1];
+        const year = parseInt(lastPart.trim());
+        if (!isNaN(year)) {
+            // Handle 2-digit years
+            if (year < 100) {
+                return year >= 90 ? 1900 + year : 2000 + year;
+            }
+            return year;
+        }
+    }
+    
+    // Handle single year
+    const date = new Date(dateString);
+    if (!isNaN(date.getFullYear())) {
+        return date.getFullYear();
+    }
+    
+    // Fallback: extract first 4 digits
+    const match = dateString.match(/(\d{4})/);
+    if (match) {
+        return parseInt(match[1]);
+    }
+    
+    return new Date().getFullYear();
+}
+```
+
+---
+
+## 31. Timeline Slider Smart Snapping
+
+### 31.1 Only Snap to Events with Coordinates
+
+**Problem**: Slider snaps to years that have events but no coordinates, resulting in empty maps.
+
+**Solution**: Create separate function for years with valid coordinates:
+
+```javascript
+function getYearsWithCoordinates() {
+    const years = new Set();
+    const allEvents = getAllEventsSync();
+
+    allEvents.forEach(event => {
+        // Only add years for events with valid coordinates
+        if (event.geography && event.geography.coordinates) {
+            const dateStr = event.date.toString();
+            if (dateStr.includes('-')) {
+                const parts = dateStr.split('-');
+                const endYear = parseInt(parts[parts.length - 1]);
+                if (!isNaN(endYear) && endYear >= 1900 && endYear <= 2025) {
+                    years.add(endYear);
+                }
+            } else {
+                const year = parseInt(dateStr);
+                if (!isNaN(year) && year >= 1900 && year <= 2025) {
+                    years.add(year);
+                }
+            }
+        }
+    });
+
+    return Array.from(years).sort((a, b) => a - b);
+}
+```
+
+---
+
+## 32. Marker Overlap Prevention
+
+### 32.1 Spiral Offset Pattern
+
+**Problem**: Multiple markers at same coordinates (shared borders, clustered data) overlap.
+
+**Solution**: Use spiral pattern for offsets:
+
+```javascript
+function getSpiralOffsetForCoord(coordKey, processedCoords) {
+    const existing = processedCoords.get(coordKey);
+    const baseRadius = 0.003; // ~300 meters
+    
+    if (existing) {
+        const newIndex = existing.index + 1;
+        const angle = newIndex * (2 * Math.PI / Math.max(newIndex + 2, 4));
+        const radius = baseRadius * (1 + newIndex * 0.5);
+        const offsets = {
+            latOffset: Math.sin(angle) * radius,
+            lngOffset: Math.cos(angle) * radius,
+            index: newIndex
+        };
+        processedCoords.set(coordKey, offsets);
+        return { latOffset: offsets.latOffset, lngOffset: offsets.lngOffset };
+    }
+    
+    processedCoords.set(coordKey, { latOffset: 0, lngOffset: 0, index: 0 });
+    return { latOffset: 0, lngOffset: 0 };
+}
+```
+
+---
+
+## 33. Legend Toggle Pattern
+
+### 33.1 Toggle Button + Hide Button
+
+**Problem**: Legend takes up map space; need easy hide/show.
+
+**Solution**: Two-part toggle system:
+
+```javascript
+// Toggle button in HTML
+<div id="map">
+    <button id="toggle-legend-btn" class="control-btn" title="Toggle Legend">
+        <span style="font-size: 16px;">◫</span>
+    </button>
+</div>
+
+// Hide button in legend
+<button id="legend-hide-btn" style="...">✕</button>
+
+// JavaScript toggle
+window.toggleLegend = function() {
+    const toggleBtn = document.getElementById('toggle-legend-btn');
+    
+    if (window.legendVisible) {
+        const legendEl = document.querySelector('.legacy-map-legend');
+        if (legendEl) {
+            legendEl.remove();
+        }
+        window.legendVisible = false;
+        if (toggleBtn) {
+            toggleBtn.classList.remove('hidden');
+        }
+    } else {
+        addMapLegend();
+        window.legendVisible = true;
+        if (toggleBtn) {
+            toggleBtn.classList.add('hidden');
+        }
+    }
+};
+```
+
+**CSS Pattern**:
+```scss
+#toggle-legend-btn.hidden {
+    display: none !important;
+}
+```
+
+---
+
+## 34. Flag Layer Management
+
+### 34.1 Prevent Duplicate Flags
+
+**Problem**: Flags render both as embedded in markers AND as separate layer.
+
+**Solution**: Check if enhanced markers are being used:
+
+```javascript
+// Only draw separate flag layer if NOT using enhanced markers
+if (window.clusterState && window.clusterState.showFlags && 
+    typeof window.createEnhancedMilitaryMarker !== 'function') {
+    drawFlagsForEvents(relevantEvents);
+} else {
+    // Clear and remove flags if disabled
+    if (mapState.flagLayer) {
+        mapState.flagLayer.clearLayers();
+        mapState.map.removeLayer(mapState.flagLayer);
+    }
+}
+```
+
+---
+
+## 35. CSS Z-Index for Leaflet
+
+### 35.1 Popup Stacking
+
+**Problem**: Multiple popups may overlap.
+
+**Solution**:
+
+```scss
+.leaflet-popup {
+    z-index: 2000 !important;
+    
+    &.leaflet-popup-open {
+        z-index: 2001 !important;
+    }
+}
+```
+
+### 35.2 Movement Markers
+
+```scss
+.nato-movement-marker {
+    z-index: 1500 !important;
+    pointer-events: auto !important;
+}
+
+.intensity-cluster {
+    z-index: 1000 !important;
+}
+```
+
+---
+
+## 36. Geocoding Location Mapping
+
+### 36.1 Expand Location Dictionary
+
+**Problem**: CSV attacks only have region names, not coordinates.
+
+**Solution**: Build comprehensive location map:
+
+```javascript
+const locationMap = {
+    // Major Regions
+    'West Bank': [31.7585, 35.2433],
+    'Gaza Strip': [31.3899, 34.3428],
+    'Israel': [31.7683, 35.2137],
+    
+    // Israeli Cities
+    'Tel Aviv': [32.0853, 34.7818],
+    'Jerusalem': [31.7785, 35.2353],
+    'Haifa': [32.7940, 34.9896],
+    'Beersheba': [31.2518, 34.7915],
+    'Ashkelon': [31.6693, 34.5715],
+    'Sderot': [31.5225, 34.6070],
+    // ... more cities
+    
+    // West Bank Cities
+    'Nablus': [32.2105, 35.2844],
+    'Hebron': [31.7659, 35.1674],
+    'Ramallah': [31.9522, 35.2332],
+    
+    // Gaza Cities
+    'Khan Younis': [31.3400, 34.3083],
+    'Rafah': [31.2967, 34.2528],
+    
+    // Regional
+    'Damascus': [33.5138, 36.2765],
+    'Lebanon': [33.8547, 35.8623],
+};
+```
+
+---
+
+## 37. Visual Theme Guidelines
+
+### 37.1 Black Theme Pattern
+
+**For popups and side panels**:
+```scss
+.leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    backdrop-filter: blur(20px);
+}
+
+#event-side-panel {
+    background: rgba(0, 0, 0, 0.95);
+}
+```
+
+### 37.2 Tick Mark Color Coding
+
+```scss
+.slider-tick-mark.has-events {
+    background: #4ade80;  // Green = has events
+}
+
+.slider-tick-mark.no-events {
+    background: rgba(255, 255, 255, 0.2);  // Dim = no events
+}
+```
+
+---
+
+## 38. Event Ordering for Display
+
+### 38.1 Reverse Chronological
+
+```javascript
+// Sort events by date (newest first)
+clusterEvents.sort((a, b) => {
+    const yearA = getEventYear(a.date);
+    const yearB = getEventYear(b.date);
+    return yearB - yearA;  // Descending order
+});
+```
+
+---
+
+## 39. Known Issues Tracking
+
+### 39.1 Pending Fixes
+
+| Issue | Status | Notes |
+|-------|--------|-------|
+| Flag ghosting on zoom | Pending | May need additional clearLayers() calls |
+| Timeline snap to empty years | Fixed | Now uses `getYearsWithCoordinates()` |
+| Legend toggle persistence | Fixed | Uses `window.legendVisible` flag |
+| Marker overlap | Fixed | Spiral offset system added |
+
+---
+
+*Ruleset updated: February 8, 2026*
 

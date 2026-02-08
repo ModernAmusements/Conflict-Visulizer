@@ -1198,6 +1198,402 @@ function getFilteredEventsForYear(year) {
 |------|---------|
 | `scss/components/_sidepanel.scss` | Complete rewrite with toggle |
 | `scss/components/_popups.scss` | All text forced white |
+
+
+---
+
+## 📝 **SESSION UPDATE: February 8, 2026**
+
+### **1. Event Panel - Reverse Chronological Ordering**
+
+**Problem:** Events in the side panel appeared in chronological order (oldest first).
+
+**Solution:** 
+- Modified `getEventYear()` to handle date ranges (e.g., "1900-1917") by extracting end year
+- Added sorting in `openEventSidePanel()` function
+
+**Files Modified:**
+- `js/script.js` - Lines 2541-2569, 3216-3221
+
+**Code Changes:**
+```javascript
+// Updated getEventYear() to handle date ranges
+function getEventYear(dateString) {
+    if (!dateString) return new Date().getFullYear();
+    // Handle date ranges like "1900-1917" - use the END year
+    if (dateString.includes('-')) {
+        const parts = dateString.split('-');
+        const lastPart = parts[parts.length - 1];
+        const year = parseInt(lastPart.trim());
+        if (!isNaN(year)) {
+            if (year < 100) {
+                return year >= 90 ? 1900 + year : 2000 + year;
+            }
+            return year;
+        }
+    }
+    // Handle single year like "2008" or "1993"
+    const date = new Date(dateString);
+    if (!isNaN(date.getFullYear())) {
+        return date.getFullYear();
+    }
+    // Fallback: try to extract first 4 digits
+    const match = dateString.match(/(\d{4})/);
+    if (match) {
+        return parseInt(match[1]);
+    }
+    return new Date().getFullYear();
+}
+
+// Sort events in reverse chronological order (newest first)
+eventGroup.sort((a, b) => {
+    const yearA = getEventYear(a.date);
+    const yearB = getEventYear(b.date);
+    return yearB - yearA;
+});
+```
+
+---
+
+### **2. NATO Movement Marker Popups**
+
+**Problem:** NATO movement markers had no clickable popups - only the path had popups.
+
+**Solution:**
+- Added `bindPopup()` to movement markers at each waypoint
+- Created popup content with event details and waypoint info
+
+**Files Modified:**
+- `js/script.js` - Lines 3662-3695, 3730-3745
+
+**Code Changes:**
+```javascript
+// Bind popup to movement marker
+marker.bindPopup(`
+    <div style="max-width: 280px; background: #1a1a1a; color: #e1e8ed; padding: 12px; border-radius: 8px;">
+        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+            <div style="width: 28px; height: 28px; background: ${faction.color}; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
+                </svg>
+            </div>
+            <div>
+                <strong style="font-size: 14px;">${event.title}</strong><br>
+                <span style="color: #9ca3af; font-size: 12px;">${event.date}</span>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #374151; padding-top: 8px; font-size: 12px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                <span style="color: #9ca3af;">Operation:</span>
+                <span style="text-transform: uppercase;">${movement.type.replace(/_/g, ' ')}</span>
+                <span style="color: #9ca3af;">Waypoint:</span>
+                <span>${index + 1} of ${movement.coordinates.length}</span>
+            </div>
+        </div>
+    </div>
+`, {
+    maxWidth: 300,
+    className: 'movement-popup'
+});
+```
+
+---
+
+### **3. Flag Overlay Overlap Fix**
+
+**Problem:** Duplicate flag overlays were being created - one embedded in markers and one as separate layer.
+
+**Solution:**
+- Modified `drawFlagsForEvents()` to skip when enhanced markers are active
+- Added condition check for `typeof window.createEnhancedMilitaryMarker !== 'function'`
+
+**Files Modified:**
+- `js/script.js` - Lines 2786, 2803
+
+**Code Changes:**
+```javascript
+// Draw flags (only if enabled AND not using enhanced markers)
+if (window.clusterState && window.clusterState.showFlags && 
+    typeof window.createEnhancedMilitaryMarker !== 'function') {
+    drawFlagsForEvents(relevantEvents);
+}
+```
+
+---
+
+### **4. Popup Z-Index Fix**
+
+**Problem:** Multiple popups could overlap; unclear which was on top.
+
+**Solution:**
+- Added z-index styling to popups
+- Added CSS for proper popup stacking
+
+**Files Modified:**
+- `scss/components/_popups.scss` - Lines 4-15
+
+**Code Changes:**
+```scss
+.leaflet-popup {
+    z-index: 2000 !important;
+    
+    &.leaflet-popup-open {
+        z-index: 2001 !important;
+    }
+}
+```
+
+---
+
+### **5. Movement Marker Overlap - Spiral Offsets**
+
+**Problem:** Multiple movement markers at the same coordinates (shared borders, etc.) overlapped.
+
+**Solution:**
+- Added `getSpiralOffsetForCoord()` function for spiral marker positioning
+- Tracked all processed coordinates across ALL movements
+- Applied offsets to prevent overlapping markers
+
+**Files Modified:**
+- `js/script.js` - Lines 3680-3693, 3705-3770
+
+**Code Changes:**
+```javascript
+// Calculate spiral offset for a coordinate
+function getSpiralOffsetForCoord(coordKey, processedCoords) {
+    const existing = processedCoords.get(coordKey);
+    const baseRadius = 0.003; // ~300 meters base offset
+    
+    if (existing) {
+        const newIndex = existing.index + 1;
+        const angle = newIndex * (2 * Math.PI / Math.max(newIndex + 2, 4));
+        const radius = baseRadius * (1 + newIndex * 0.5);
+        const offsets = {
+            latOffset: Math.sin(angle) * radius,
+            lngOffset: Math.cos(angle) * radius,
+            index: newIndex
+        };
+        processedCoords.set(coordKey, offsets);
+        return { latOffset: offsets.latOffset, lngOffset: offsets.lngOffset };
+    }
+    
+    processedCoords.set(coordKey, { latOffset: 0, lngOffset: 0, index: 0 });
+    return { latOffset: 0, lngOffset: 0 };
+}
+```
+
+---
+
+### **6. Event Clustering Threshold Adjustment**
+
+**Problem:** Too many overlapping markers at year 2025 (hundreds of CSV attacks).
+
+**Solution:**
+- Lowered clustering threshold from 5 to 2 events
+- Increased coordinate grouping threshold from 0.01 to 0.05
+- Increased offset spacing from 0.035 to 0.08
+
+**Files Modified:**
+- `js/script.js` - Lines 2995, 2897, 2938
+
+**Code Changes:**
+```javascript
+const CLUSTER_COUNT_THRESHOLD = 2;  // Was 5
+
+function groupEventsByCoordinates(events, threshold = 0.05) {  // Was 0.01
+    // ... grouping logic
+}
+
+function getHierarchicalOffset(index, total, zoomLevel = 7) {
+    const baseSpacing = 0.08;  // Was 0.035
+    // ... offset logic
+}
+```
+
+---
+
+### **7. Timeline Slider - Smarter Snapping**
+
+**Problem:** Slider snapped to years with no visible events (events without coordinates).
+
+**Solution:**
+- Added `getYearsWithCoordinates()` function that only returns years with valid coordinates
+- Updated tick marks to show green (has events) vs dim (no events)
+- Added debug logging for event counts per year
+
+**Files Modified:**
+- `js/script.js` - Lines 2516-2530, 2541-2560, 2605-2645, 2750-2760
+
+**Code Changes:**
+```javascript
+// Get years that have events WITH valid coordinates
+function getYearsWithCoordinates() {
+    const years = new Set();
+    const allEvents = getAllEventsSync();
+
+    allEvents.forEach(event => {
+        if (event.geography && event.geography.coordinates) {
+            const dateStr = event.date.toString();
+            if (dateStr.includes('-')) {
+                const parts = dateStr.split('-');
+                const endYear = parseInt(parts[parts.length - 1]);
+                if (!isNaN(endYear) && endYear >= 1900 && endYear <= 2025) {
+                    years.add(endYear);
+                }
+            } else {
+                const year = parseInt(dateStr);
+                if (!isNaN(year) && year >= 1900 && year <= 2025) {
+                    years.add(year);
+                }
+            }
+        }
+    });
+
+    return Array.from(years).sort((a, b) => a - b);
+}
+```
+
+**CSS Changes:**
+```scss
+.slider-tick-mark.has-events {
+    background: #4ade80;  /* Green = has events */
+}
+
+.slider-tick-mark.no-events {
+    background: rgba(255, 255, 255, 0.2);  /* Dim = no events */
+}
+```
+
+---
+
+### **8. Visual Updates - Black Theme**
+
+**Problem:** Popups and side panel had dark blue tint.
+
+**Solution:**
+- Changed all popup backgrounds to pure black (`rgba(0, 0, 0, 0.95)`)
+- Changed side panel background to black
+- Removed map border
+
+**Files Modified:**
+- `scss/components/_popups.scss` - Lines 4-35
+- `scss/components/_sidepanel.scss` - Lines 4-20
+- `scss/components/_map.scss` - Lines 100-108
+- `scss/styles.scss` - Lines 1896-1903
+
+**Code Changes:**
+```scss
+// Popups
+.leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.95);  // Was rgba(20, 25, 40, 0.98)
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+// Side Panel
+#event-side-panel {
+    background: rgba(0, 0, 0, 0.95);  // Was gradient
+}
+
+// Map
+#map {
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    // Removed border and border-radius
+}
+```
+
+---
+
+### **9. Legend Toggle Functionality**
+
+**Problem:** Legend took up too much space; no easy way to hide/show.
+
+**Solution:**
+- Added toggle button (◫) to top-right of map
+- Added ✕ button inside legend to hide it
+- Dropdown to switch between legend types (Military Symbols, Territory Control, Factions, Events)
+
+**Files Modified:**
+- `index.html` - Lines 248-258
+- `js/script.js` - Lines 1931-2010, 4445-4465
+- `scss/styles.scss` - Lines 272-310
+
+**Code Changes:**
+```html
+<!-- Toggle Button in Map -->
+<div id="map">
+    <button id="toggle-legend-btn" class="control-btn" title="Toggle Legend">
+        <span style="font-size: 16px;">◫</span>
+    </button>
+</div>
+```
+
+```javascript
+// Toggle Legend Function
+window.toggleLegend = function() {
+    const toggleBtn = document.getElementById('toggle-legend-btn');
+    
+    if (window.legendVisible) {
+        const legendEl = document.querySelector('.legacy-map-legend');
+        if (legendEl) {
+            legendEl.remove();
+        }
+        window.legendVisible = false;
+        if (toggleBtn) {
+            toggleBtn.classList.remove('hidden');
+        }
+    } else {
+        addMapLegend();
+        window.legendVisible = true;
+        if (toggleBtn) {
+            toggleBtn.classList.add('hidden');
+        }
+    }
+};
+```
+
+---
+
+### **10. Hamas CSV Geocoding Expansion**
+
+**Problem:** Most Hamas attacks only had region names (e.g., "Israel", "West Bank") not specific coordinates.
+
+**Solution:**
+- Expanded location mapping from ~15 to 50+ locations
+- Added parsing from Description field for specific city names
+- Added cities: Ashdod, Netivot, Ofakim, Rishon LeZion, Nablus, Hebron, Khan Younis, Rafah, etc.
+- Added regional: Damascus, Lebanon, Syria, Sinai, Suez
+
+**Files Modified:**
+- `js/script.js` - Lines 76-102, 115
+
+---
+
+### **Summary of Files Modified**
+
+| File | Changes |
+|------|---------|
+| `js/script.js` | Event ordering, movement popups, flag overlap fix, spiral offsets, clustering thresholds, timeline snapping, legend toggle, geocoding |
+| `js/components/clustering-system.js` | Legend controls |
+| `scss/components/_popups.scss` | Black theme, z-index |
+| `scss/components/_sidepanel.scss` | Black theme |
+| `scss/components/_map.scss` | Removed border |
+| `scss/styles.scss` | Legend toggle CSS, tick mark colors, military popup theme |
+| `index.html` | Toggle button, map container |
+
+---
+
+### **Known Issues (Pending Fix)**
+
+1. **Flag rendering on zoom change** - Flags may ghost when toggling while zoomed in
+   - Status: Under investigation
+   - Additional `clearLayers()` and `removeLayer()` calls may be needed
+
+---
+
+*Documented: February 8, 2026*
 | `scss/components/_map.scss` | Black background, shift support |
 | `scss/styles.scss` | Legend moved to left |
 | `js/script.js` | Toggle functionality, inline styles removed |
