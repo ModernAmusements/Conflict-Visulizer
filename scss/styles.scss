@@ -30,20 +30,29 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: rgba(20, 25, 40, 0.95);
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 0;
     z-index: 1000;
     min-width: 280px;
     max-width: 350px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.left-legend-container.collapsed {
+    min-width: 0;
+    max-width: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
 }
 
 .enhanced-nato-legend {
-    background: rgba(20, 25, 40, 0.95);
+    background: rgba(0, 0, 0, 0.95);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -66,17 +75,17 @@
 }
 
 .legend-toggle {
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     color: #ffffff;
     cursor: pointer;
-    padding: 4px;
+    padding: 4px 8px;
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
 .legend-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .legend-content {
@@ -249,12 +258,40 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    color: #c9d1d9;
+}
+
+// Legend toggle button on map
+#toggle-legend-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: all 0.2s ease;
+}
+
+#toggle-legend-btn:hover {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+// Hide toggle when legend is visible (legend is added by Leaflet after our button)
+#toggle-legend-btn.hidden {
+    display: none !important;
+}
+
+// Legacy map legend
+.legacy-map-legend {
+    z-index: 1000 !important;
 }
 
 .flag-legend-item:hover {
@@ -299,21 +336,17 @@
 }
 
 .event-flag-beside {
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 8px;
+    position: relative;
     display: flex;
     align-items: center;
     gap: 4px;
     white-space: nowrap;
-    z-index: -1 !important;
+    z-index: 1 !important;
     pointer-events: none !important;
 }
 
 .event-flag-beside .flag-emoji {
-    font-size: 18px;
+    font-size: 16px;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
 
@@ -1047,9 +1080,22 @@ main {
     transition: height 0.2s ease, background 0.2s ease;
 }
 
+.slider-tick-mark.has-events {
+    background: #4ade80;
+}
+
+.slider-tick-mark.no-events {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .slider-tick-mark.active {
     height: 14px;
     background: #fff;
+}
+
+.slider-tick-mark.active.has-events {
+    background: #fff;
+    box-shadow: 0 0 8px #4ade80;
 }
 
 .slider-tick-label {
@@ -1098,14 +1144,7 @@ main {
     color: #7f8c8d;
 }
 
-#map {
-    height: 500px;
-    background: #1a1a1a;
-    border: 2px solid #34495e;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
+
 
 #current-year {
     font-weight: 700;
@@ -1454,10 +1493,29 @@ footer {
     margin-top: 4rem;
 }
 
-.flag-overlay {
+.flag-overlay,
+.event-flag-overlay {
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.event-flag-overlay .event-flag-beside {
+    display: flex !important;
+    gap: 2px !important;
+    padding: 2px 4px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 4px !important;
+    backdrop-filter: blur(4px);
+}
+
+.event-flag-overlay .flag-emoji {
+    font-size: 16px !important;
+    line-height: 1 !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
 
 .flag-overlay svg {
@@ -1566,7 +1624,33 @@ footer {
     border: none;
     cursor: pointer !important;
     pointer-events: auto !important;
-    z-index: 800 !important;
+    z-index: 1500 !important;
+}
+
+// Override any inline z-index from Leaflet
+.leaflet-marker-icon.nato-movement-marker {
+    z-index: 1500 !important;
+}
+
+// Cluster markers - lower z-index so movement markers can be clicked on top
+.intensity-cluster {
+    z-index: 1000 !important;
+}
+
+.leaflet-marker-icon.intensity-cluster {
+    z-index: 1000 !important;
+}
+
+// Ensure clusters and markers are properly layered
+.leaflet-marker-icon {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+// Cluster count markers
+.cluster-marker {
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }
 
 .nato-movement-marker svg {
@@ -1746,21 +1830,17 @@ footer {
 
 // Flag overlay should never block clicks - force behind markers
 .event-flag-beside {
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 8px;
+    position: relative;
     display: flex;
     align-items: center;
     gap: 4px;
     white-space: nowrap;
-    z-index: -1 !important;
+    z-index: 1 !important;
     pointer-events: none !important;
 }
 
 .event-flag-beside .flag-emoji {
-    font-size: 18px;
+    font-size: 16px;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
 
@@ -1844,13 +1924,13 @@ footer {
 
 // Popup styling for military events
 .military-popup .leaflet-popup-content-wrapper {
-    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
 }
 
 .military-popup .leaflet-popup-tip {
-    background: #1a1a2e;
+    background: rgba(0, 0, 0, 0.95);
 }
 
 .military-popup .leaflet-popup-content {

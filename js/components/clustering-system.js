@@ -638,8 +638,8 @@ function generateCompleteNATOLegend() {
         <div class="enhanced-nato-legend">
             <div class="legend-header">
                 <h4>1994 NATO Military Symbology</h4>
-                <button id="legend-toggle" class="legend-toggle">
-                    <i class="fas fa-chevron-down"></i>
+                <button id="legend-toggle" class="legend-toggle" title="Collapse">
+                    <span style="font-size: 12px;">▼</span>
                 </button>
             </div>
             
@@ -772,17 +772,16 @@ function generateFlagSubsection() {
 
 // Setup legend control buttons
 function setupLegendControls() {
-    // Toggle button
+    // Toggle button inside legend
     const legendToggle = document.getElementById('legend-toggle');
     const legendContent = document.getElementById('legend-content');
     
     if (legendToggle && legendContent) {
         legendToggle.addEventListener('click', () => {
             legendContent.classList.toggle('collapsed');
-            const icon = legendToggle.querySelector('i');
+            const icon = legendToggle.querySelector('span');
             if (icon) {
-                icon.className = legendContent.classList.contains('collapsed') ? 
-                    'fas fa-chevron-right' : 'fas fa-chevron-down';
+                icon.textContent = legendContent.classList.contains('collapsed') ? '▶' : '▼';
             }
         });
     }

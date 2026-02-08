@@ -2,11 +2,18 @@
 @use '../mixins' as *;
 
 .leaflet-popup {
+    z-index: 2000 !important;
+    
+    // Ensure popup closes other popups when opened
+    &.leaflet-popup-open {
+        z-index: 2001 !important;
+    }
+    
     .leaflet-popup-content-wrapper {
-        background: rgba(20, 25, 40, 0.98);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
     }
@@ -23,8 +30,8 @@
     }
 
     .leaflet-popup-tip {
-        background: rgba(20, 25, 40, 0.98);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     a.leaflet-popup-close-button {
@@ -730,5 +737,19 @@
     &:hover {
         background: rgba(59, 130, 246, 0.25);
         border-color: rgba(59, 130, 246, 0.5);
+    }
+}
+
+// Movement popup styles
+.movement-popup {
+    .leaflet-popup-content-wrapper {
+        background: #1a1a1a;
+        border-radius: 8px;
+        padding: 0;
+    }
+    
+    .leaflet-popup-content {
+        margin: 0;
+        min-width: 280px;
     }
 }

@@ -73,11 +73,17 @@ function convertCSVToEvent(row) {
     }
 
     // Helper function to get coordinates for locations
-    function getCoordinates(location) {
+    function getCoordinates(location, description = '') {
+        // Comprehensive location mapping with coordinates
         const locationMap = {
+            // Major Regions
             'West Bank': [31.7585, 35.2433],
-            'Israel': [31.7683, 35.2137],
             'Gaza Strip': [31.3899, 34.3428],
+            'Israel': [31.7683, 35.2137],
+            'Palestine': [31.7683, 35.2137],
+            'Palestinian': [31.7683, 35.2137],
+            
+            // Israeli Cities
             'Tel Aviv': [32.0853, 34.7818],
             'Jerusalem': [31.7785, 35.2353],
             'Haifa': [32.7940, 34.9896],
@@ -89,15 +95,91 @@ function convertCSVToEvent(row) {
             'Hadera': [32.4342, 34.9190],
             'Kfar Saba': [32.1760, 34.9076],
             'Lod': [31.9525, 34.8989],
+            'Ramat Efal': [32.0853, 34.8418],
             'RamatEfal': [32.0853, 34.8418],
-            'MoshadMehola': [32.0833, 35.5833]
+            'Ashdod': [31.8040, 34.6553],
+            'Netivot': [31.4200, 34.5917],
+            'Ofakim': [31.3133, 34.6233],
+            'Kiryat Malakhi': [31.7317, 34.7467],
+            'Yavne': [31.7500, 34.7370],
+            'Rehovot': [31.8928, 34.8113],
+            'Rishon LeZion': [31.9718, 34.7893],
+            'Petah Tikva': [32.0840, 34.8878],
+            'Bnei Brak': [32.0833, 34.8333],
+            'Bat Yam': [31.9738, 34.7723],
+            'Holon': [31.9719, 34.7713],
+            'Ben Gurion': [31.9913, 34.9067],
+            
+            // West Bank Cities
+            'Nablus': [32.2105, 35.2844],
+            'Hebron': [31.7659, 35.1674],
+            'Ramallah': [31.9522, 35.2332],
+            'Jenin': [32.4975, 35.3017],
+            'Tulkarm': [32.3075, 35.0078],
+            'Qalqilya': [32.1847, 34.9722],
+            'Bethlehem': [31.7059, 35.2027],
+            'Bethany': [31.7181, 35.2581],
+            'Al-Bira': [31.9514, 35.2331],
+            'Kiryat Malachi': [31.7317, 34.7467],
+            'Moshav': [31.8000, 34.7500],
+            'Moshad': [32.0833, 35.5833],
+            'Moshad Mehola': [32.0833, 35.5833],
+            
+            // Gaza Cities
+            'Gaza City': [31.3899, 34.3428],
+            'Khan Younis': [31.3400, 34.3083],
+            'Rafah': [31.2967, 34.2528],
+            'Deir al-Balah': [31.4167, 34.3500],
+            'Jabaliya': [31.4500, 34.4000],
+            'Beit Hanoun': [31.5500, 34.5333],
+            
+            // Syrian/Lebanese Locations
+            'Damascus': [33.5138, 36.2765],
+            'Lebanon': [33.8547, 35.8623],
+            'Lebanese': [33.8547, 35.8623],
+            'Syrian': [35.0, 38.0],
+            'Syria': [35.0, 38.0],
+            'Golan': [33.0, 35.7],
+            
+            // Egyptian Locations
+            'Egypt': [30.0444, 31.2357],
+            'Egyptian': [30.0444, 31.2357],
+            'Sinai': [29.5, 34.0],
+            'Suez': [29.9667, 32.5500],
         };
         
+        // Search in location field first
+        const locLower = (location || '').toLowerCase();
         for (const [key, coords] of Object.entries(locationMap)) {
-            if (location.toLowerCase().includes(key.toLowerCase())) {
+            if (locLower.includes(key.toLowerCase())) {
                 return coords;
             }
         }
+        
+        // If not found, search in description for location keywords
+        const descLower = (description || '').toLowerCase();
+        const descLocationMap = {
+            'jerusalem': [31.7785, 35.2353],
+            'tel aviv': [32.0853, 34.7818],
+            'haifa': [32.7940, 34.9896],
+            'gaza': [31.3899, 34.3428],
+            'khan younis': [31.3400, 34.3083],
+            'rafah': [31.2967, 34.2528],
+            'nablus': [32.2105, 35.2844],
+            'hebron': [31.7659, 35.1674],
+            'ramallah': [31.9522, 35.2332],
+            'jenin': [32.4975, 35.3017],
+            'bethlehem': [31.7059, 35.2027],
+            'west bank': [31.7585, 35.2433],
+            'israel': [31.7683, 35.2137],
+        };
+        
+        for (const [key, coords] of Object.entries(descLocationMap)) {
+            if (descLower.includes(key)) {
+                return coords;
+            }
+        }
+        
         return [31.7683, 35.2137]; // Default to central Israel
     }
 
@@ -112,7 +194,7 @@ function convertCSVToEvent(row) {
     }
 
     const year = extractYear(row.Date);
-    const coordinates = getCoordinates(row.Location);
+    const coordinates = getCoordinates(row.Location, row.Description || '');
     const intensity = getIntensity(row.Totalkilled, row.Totalwounded);
     
     return {
@@ -1858,81 +1940,78 @@ function addMapLegend() {
         const div = L.DomUtil.create('div', 'legacy-map-legend');
         
         const legendContent = `
-            <div style="background: rgba(0, 0, 0, 0.95); padding: 15px; border-radius: 8px; color: white; font-size: 11px; min-width: 220px;">
-                <div style="margin-bottom: 12px;">
-                    <label for="legend-dropdown" style="display: block; margin-bottom: 5px; font-weight: bold;">Legend Options:</label>
-                    <select id="legend-dropdown" style="width: 100%; padding: 5px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 4px;">
-                        <option value="enhanced">Military Symbols (NEW)</option>
+            <div style="background: rgba(0, 0, 0, 0.95); padding: 12px; border-radius: 8px; color: white; font-size: 11px; min-width: 200px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <select id="legend-dropdown" style="flex: 1; margin-right: 8px; padding: 4px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">
+                        <option value="military">Military Symbols</option>
                         <option value="territory">Territory Control</option>
-                        <option value="military">Military Factions</option>
-                        <option value="national_forces">National Forces</option>
+                        <option value="factions">Military Factions</option>
                         <option value="events">Event Types</option>
                     </select>
+                    <button id="legend-hide-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">✕</button>
                 </div>
-                
                 <div id="legend-content-area">
-                    <!-- Enhanced NATO symbols will be inserted here by default -->
                 </div>
             </div>
         `;
         
         div.innerHTML = legendContent;
         
-        // Setup dropdown listener
+        // Setup hide button
+        const hideBtn = div.querySelector('#legend-hide-btn');
+        const toggleBtn = document.getElementById('toggle-legend-btn');
+        if (hideBtn) {
+            hideBtn.addEventListener('click', () => {
+                legend.remove();
+                // Show toggle button
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('hidden');
+                }
+                window.legendVisible = false;
+            });
+        }
+        
+        // Setup dropdown
         const dropdown = div.querySelector('#legend-dropdown');
         const contentArea = div.querySelector('#legend-content-area');
-
-        // Sync dropdown with filter state
-        function syncDropdownWithFilters() {
-            if (mapState.showTerritory) {
-                dropdown.value = 'territory';
-                contentArea.innerHTML = generateTerritoryLegend();
-            } else if (mapState.showAttacks || mapState.showPolitical || mapState.showSocial) {
-                dropdown.value = 'enhanced';
-                contentArea.innerHTML = generateMilitarySymbolsLegend();
-            }
+        
+        if (dropdown && contentArea) {
+            dropdown.addEventListener('change', (e) => {
+                switch(e.target.value) {
+                    case 'military':
+                        contentArea.innerHTML = generateMilitarySymbolsLegend();
+                        break;
+                    case 'territory':
+                        contentArea.innerHTML = generateTerritoryLegend();
+                        break;
+                    case 'factions':
+                        contentArea.innerHTML = generateMilitaryFactionsLegend();
+                        break;
+                    case 'events':
+                        contentArea.innerHTML = generateEventTypesLegend();
+                        break;
+                }
+            });
+            
+            // Initialize with military symbols
+            contentArea.innerHTML = generateMilitarySymbolsLegend();
         }
 
-        dropdown.addEventListener('change', (e) => {
-            // Sync with map legend selector
-            const mapLegendSelect = document.getElementById('map-legend-select');
-            if (mapLegendSelect) {
-                const valueMap = {
-                    'enhanced': 'military',
-                    'territory': 'territory',
-                    'military': 'factions',
-                    'national_forces': 'factions',
-                    'events': 'events'
-                };
-                mapLegendSelect.value = valueMap[e.target.value] || 'auto';
-            }
-
-            switch(e.target.value) {
-                case 'enhanced':
-                    contentArea.innerHTML = generateMilitarySymbolsLegend();
-                    break;
-                case 'territory':
-                    contentArea.innerHTML = generateTerritoryLegend();
-                    break;
-                case 'military':
-                    contentArea.innerHTML = generateMilitaryFactionsLegend();
-                    break;
-                case 'national_forces':
-                    contentArea.innerHTML = generateNationalForcesLegend();
-                    break;
-                case 'events':
-                    contentArea.innerHTML = generateEventTypesLegend();
-                    break;
-            }
-        });
-
-        // Show appropriate legend based on filters
-        syncDropdownWithFilters();
+        // Mark legend as visible
+        window.legendVisible = true;
         
+        // Hide toggle button since legend is now shown
+        if (toggleBtn) {
+            toggleBtn.classList.add('hidden');
+        }
+
         return div;
     };
     
     legend.addTo(mapState.map);
+    
+    // Store legend control for re-showing
+    window.mapLegendControl = legend;
 }
     
 // Generate territory control legend content
@@ -2352,13 +2431,15 @@ async function handleSliderChange(e) {
     }
 
     const currentValue = parseInt(slider.value);
-    const eventYears = getEventYears();
+    
+    // Use years with coordinates for snapping (not all years)
+    const eventYears = getYearsWithCoordinates();
 
-    // Find the nearest event year
+    // Find the nearest event year with coordinates
     const nearestYear = findNearestEventYear(currentValue, eventYears);
 
-    // Snap to nearest event year if close enough (within 3 years)
-    if (Math.abs(currentValue - nearestYear) <= 3) {
+    // Snap to nearest event year with coordinates if close enough (within 3 years)
+    if (Math.abs(currentValue - nearestYear) <= 3 && eventYears.includes(nearestYear)) {
         slider.value = nearestYear;
         mapState.currentYear = nearestYear;
     } else {
@@ -2366,6 +2447,15 @@ async function handleSliderChange(e) {
     }
 
     if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
+    
+    // Log for debugging
+    const visibleEvents = await getAllEvents();
+    const eventsThisYear = visibleEvents.filter(ev => {
+        const evYear = getEventYear(ev.date);
+        return evYear === mapState.currentYear && ev.geography?.coordinates;
+    });
+    console.log(`📅 Year ${mapState.currentYear}: ${eventsThisYear.length} events with coordinates`);
+    
     await updateMapForYear(mapState.currentYear);
     updateActiveTickMarks(mapState.currentYear);
 }
@@ -2415,6 +2505,35 @@ function getEventYears() {
     return Array.from(years).filter(year => year >= 1900 && year <= 2025).sort((a, b) => a - b);
 }
 
+// Get years that have events WITH valid coordinates
+function getYearsWithCoordinates() {
+    const years = new Set();
+    const allEvents = getAllEventsSync();
+
+    allEvents.forEach(event => {
+        // Only add years for events with valid coordinates
+        if (event.geography && event.geography.coordinates) {
+            const dateStr = event.date.toString();
+
+            if (dateStr.includes('-')) {
+                // For date ranges, use end year
+                const parts = dateStr.split('-');
+                const endYear = parseInt(parts[parts.length - 1]);
+                if (!isNaN(endYear) && endYear >= 1900 && endYear <= 2025) {
+                    years.add(endYear);
+                }
+            } else {
+                const year = parseInt(dateStr);
+                if (!isNaN(year) && year >= 1900 && year <= 2025) {
+                    years.add(year);
+                }
+            }
+        }
+    });
+
+    return Array.from(years).sort((a, b) => a - b);
+}
+
 // Find nearest event year
 function findNearestEventYear(currentValue, eventYears) {
     if (eventYears.length === 0) return currentValue;
@@ -2451,19 +2570,30 @@ function createTickMarks() {
     trackContainer = document.createElement('div');
     trackContainer.className = 'slider-track-container';
 
-    const eventYears = getEventYears();
+    // Get years with coordinates for snapping
+    const yearsWithCoords = getYearsWithCoordinates();
+    
+    // Get all event years for display
+    const allEventYears = getEventYears();
     const minYear = 1900;
     const maxYear = 2025;
     const sliderWidth = slider.offsetWidth;
 
     // Only show ticks for major decades to avoid overcrowding
-    const decadeYears = eventYears.filter(year => year % 10 === 0 || eventYears.indexOf(year) % Math.ceil(eventYears.length / 15) === 0);
+    const decadeYears = allEventYears.filter(year => year % 10 === 0 || allEventYears.indexOf(year) % Math.ceil(allEventYears.length / 15) === 0);
 
     decadeYears.forEach(year => {
         // Create tick mark
         const tick = document.createElement('div');
         tick.className = 'slider-tick-mark';
         tick.dataset.year = year;
+        
+        // Mark years that have events with coordinates
+        if (yearsWithCoords.includes(year)) {
+            tick.classList.add('has-events');
+        } else {
+            tick.classList.add('no-events');
+        }
 
         const position = ((year - minYear) / (maxYear - minYear)) * 100;
         tick.style.left = `${position}%`;
@@ -2541,15 +2671,31 @@ function handleSpeedChange(e) {
 
 // Add helper function to prevent year parsing issues
 function getEventYear(dateString) {
-    // Handle "October 7, 2023" format
-    const yearMatch = dateString.match(/\d{4}/);
-    if (yearMatch) {
-        return parseInt(yearMatch[0]);
+    if (!dateString) return new Date().getFullYear();
+    // Handle date ranges like "1900-1917" or "2008-2009" - use the END year
+    if (dateString.includes('-')) {
+        const parts = dateString.split('-');
+        const lastPart = parts[parts.length - 1];
+        const year = parseInt(lastPart.trim());
+        if (!isNaN(year)) {
+            // Convert 2-digit years to 4-digit
+            if (year < 100) {
+                return year >= 90 ? 1900 + year : 2000 + year;
+            }
+            return year;
+        }
     }
-
-    // Handle "1948" or "1967" format
-    const year = parseInt(dateString.split('-')[0]);
-    return isNaN(year) ? 0 : year;
+    // Handle single year like "2008" or "1993"
+    const date = new Date(dateString);
+    if (!isNaN(date.getFullYear())) {
+        return date.getFullYear();
+    }
+    // Fallback: try to extract first 4 digits
+    const match = dateString.match(/(\d{4})/);
+    if (match) {
+        return parseInt(match[1]);
+    }
+    return new Date().getFullYear();
 }
 
 // Get events filtered by year (events up to and including the year)
@@ -2636,8 +2782,8 @@ async function updateMapForYear(year) {
             console.log('⏸️ Movement display is disabled');
         }
         
-        // Draw flags (only if enabled)
-        if (window.clusterState && window.clusterState.showFlags) {
+        // Draw flags (only if enabled AND not using enhanced markers which already include flags)
+        if (window.clusterState && window.clusterState.showFlags && typeof window.createEnhancedMilitaryMarker !== 'function') {
             console.log('🏁 Adding flags to map...');
             drawFlagsForEvents(relevantEvents);
         }
@@ -2654,7 +2800,7 @@ async function updateMapForYear(year) {
             mapState.movementLayer.addTo(mapState.map);
             console.log('✅ Movement layer added with', mapState.movementLayer.getLayers().length, 'unique markers');
         }
-        if (window.clusterState && window.clusterState.showFlags) {
+        if (window.clusterState && window.clusterState.showFlags && typeof window.createEnhancedMilitaryMarker !== 'function') {
             mapState.flagLayer.addTo(mapState.map);
             console.log('✅ Flag layer added');
         }
@@ -2878,7 +3024,7 @@ function createMarkerIcon(type, color, size = 20, intensity = 'medium') {
 }
 
 // Group events by coordinates to handle overlapping markers
-function groupEventsByCoordinates(events, threshold = 0.01) {
+function groupEventsByCoordinates(events, threshold = 0.05) {
     const groups = [];
     const processed = new Set();
     
@@ -2919,15 +3065,15 @@ function getHierarchicalOffset(index, total, zoomLevel = 7) {
         return { latOffset: 0, lngOffset: 0, priority: 0 };
     }
 
-    const baseSpacing = 0.035; // Base ~3.5km at zoom 7 (increased for better separation)
+    const baseSpacing = 0.08; // Base ~8km at zoom 7 (increased for better separation)
     const zoomScale = Math.max(0.5, Math.min(2, zoomLevel / 7));
     const spacing = baseSpacing * zoomScale;
 
-    const angleStep = Math.PI * 2 / Math.min(total, 6);
+    const angleStep = Math.PI * 2 / Math.min(total, 8);
     const radiusIncrement = spacing;
 
     const angle = index * angleStep;
-    const radius = spacing + (index * radiusIncrement * 0.6);
+    const radius = spacing + (index * radiusIncrement * 0.5);
 
     return {
         latOffset: Math.sin(angle) * radius,
@@ -2976,7 +3122,7 @@ function calculateEventPriority(event) {
 }
 
 // Cluster count threshold - use count badge for clusters >= this size
-const CLUSTER_COUNT_THRESHOLD = 5;
+const CLUSTER_COUNT_THRESHOLD = 2;
 
 // Create a count badge marker for large event clusters
 function createClusterCountMarker(group, coordinates) {
@@ -3197,6 +3343,13 @@ function openEventSidePanel(eventGroup) {
             </div>
         `;
     } else {
+        // Sort events in reverse chronological order (newest first)
+        eventGroup.sort((a, b) => {
+            const yearA = getEventYear(a.date);
+            const yearB = getEventYear(b.date);
+            return yearB - yearA;
+        });
+        
         panel.innerHTML = `
             <div class="panel-header">
                 <h3>📍 ${totalEvents} Event${totalEvents !== 1 ? 's' : ''}</h3>
@@ -3333,7 +3486,10 @@ function drawAllEventMarkers(events) {
 
         sortedEvents.forEach((event, indexInGroup) => {
             if (!event.geography || !event.geography.coordinates) return;
-
+            
+            // Skip events that have movementData - they'll be drawn as movement markers
+            if (event.movementData) return;
+            
             const eventKey = `${event.geography.coordinates[0]},${event.geography.coordinates[1]}_${event.date}_${event.title}`;
             if (uniqueEventKeys.has(eventKey)) {
                 return;
@@ -3568,6 +3724,30 @@ function getFactionColor(faction) {
     };
 }
 
+// Calculate spiral offset for a coordinate to prevent overlapping markers
+function getSpiralOffsetForCoord(coordKey, processedCoords) {
+    const existing = processedCoords.get(coordKey);
+    const baseRadius = 0.003; // ~300 meters base offset
+    
+    if (existing) {
+        // Already processed at this coordinate - increment offset count and spiral
+        const newIndex = existing.index + 1;
+        const angle = newIndex * (2 * Math.PI / Math.max(newIndex + 2, 4));
+        const radius = baseRadius * (1 + newIndex * 0.5);
+        const offsets = {
+            latOffset: Math.sin(angle) * radius,
+            lngOffset: Math.cos(angle) * radius,
+            index: newIndex
+        };
+        processedCoords.set(coordKey, offsets);
+        return { latOffset: offsets.latOffset, lngOffset: offsets.lngOffset };
+    }
+    
+    // First marker at this coordinate
+    processedCoords.set(coordKey, { latOffset: 0, lngOffset: 0, index: 0 });
+    return { latOffset: 0, lngOffset: 0 };
+}
+
 // Draw military movement paths with animations (fixed recursion prevention)
 function drawMovementPaths(events) {
     if (!mapState.showMovements) {
@@ -3578,8 +3758,11 @@ function drawMovementPaths(events) {
     const movementEvents = events.filter(event => event.movementData);
     console.log('🎯 Drawing movements for year - found:', movementEvents.length, 'events with movement data');
     
+    // Track all processed coordinates across ALL movements to prevent overlap
+    const allProcessedCoords = new Map(); // coordKey -> { latOffset, lngOffset }
+    
     // Process each movement event only once
-    movementEvents.forEach(event => {
+    movementEvents.forEach((event, eventIndex) => {
         const movement = event.movementData;
         
         // Get faction info (color + symbol)
@@ -3610,36 +3793,66 @@ function drawMovementPaths(events) {
             
             const arrowMarker = L.marker(midPoint, {
                 icon: arrowIcon,
-                opacity: 0.8
+                opacity: 0.8,
+                zIndexOffset: 500 + i
             });
             
             arrowMarker.addTo(mapState.movementLayer);
         }
         
-        // Add faction markers at each coordinate (without overlapping duplicates)
-        const processedCoordinates = new Set();
+        // Add faction markers at each coordinate with spiral offset to prevent overlap
         movement.coordinates.forEach((coord, index) => {
             if (index < movement.coordinates.length - 1) {
-                const coordKey = `${coord[0]},${coord[1]}`;
+                const coordKey = `${coord[0].toFixed(4)},${coord[1].toFixed(4)}`;
                 
-                // Skip duplicate coordinates for this movement
-                if (processedCoordinates.has(coordKey)) {
-                    console.log('⏭ Skipping duplicate coordinate:', coordKey);
-                    return;
-                }
+                // Calculate spiral offset for this coordinate (tracks count per coordinate)
+                const { latOffset, lngOffset } = getSpiralOffsetForCoord(coordKey, allProcessedCoords);
                 
-                processedCoordinates.add(coordKey);
+                // Apply offset to prevent overlap
+                const adjustedCoord = [
+                    coord[0] + latOffset,
+                    coord[1] + lngOffset
+                ];
 
                 const nextCoord = movement.coordinates[index + 1];
                 const bearing = calculateBearing(coord, nextCoord);
 
                 const markerIcon = createMovementNATOSymbol(faction.color, faction.affiliation, 28);
-                const marker = L.marker(coord, {
+                const marker = L.marker(adjustedCoord, {
                     icon: markerIcon,
                     opacity: 1,
-                    zIndexOffset: 1000
+                    zIndexOffset: 1000 + eventIndex * 10 + index
                 });
-
+                
+                // Bind popup to marker
+                const popupContent = `
+                    <div style="max-width: 280px; background: #1a1a1a; color: #e1e8ed; padding: 12px; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="width: 28px; height: 28px; margin-right: 10px; background: ${faction.color}; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24">
+                                    <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <strong style="font-size: 14px;">${event.title}</strong><br>
+                                <span style="color: #9ca3af; font-size: 12px;">${event.date}</span>
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid #374151; padding-top: 8px; font-size: 12px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                                <span style="color: #9ca3af;">Operation:</span>
+                                <span style="text-transform: uppercase;">${movement.type.replace(/_/g, ' ')}</span>
+                                <span style="color: #9ca3af;">Waypoint:</span>
+                                <span>${index + 1} of ${movement.coordinates.length}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                marker.bindPopup(popupContent, {
+                    maxWidth: 300,
+                    className: 'movement-popup'
+                });
+                
                 marker.addTo(mapState.movementLayer);
             }
         });
@@ -3867,20 +4080,25 @@ function addMajorCities() {
 function drawFlagsForEvents(events) {
     'use strict';
     
+    // Clear existing flags first
+    if (mapState.flagLayer) {
+        mapState.flagLayer.clearLayers();
+    }
+    
     events.forEach(event => {
         if (event.geography && event.geography.coordinates) {
             const flagOverlay = createFlagOverlayForEvent(event);
             if (flagOverlay) {
                 const flagIcon = L.divIcon({
                     html: flagOverlay,
-                    className: 'flag-overlay',
+                    className: 'event-flag-overlay',
                     iconSize: [40, 30],
                     iconAnchor: [20, 15]
                 });
                 
                 const flagMarker = L.marker(event.geography.coordinates, {
                     icon: flagIcon,
-                    zIndexOffset: 1000
+                    zIndexOffset: 500
                 });
                 
                 flagMarker.bindPopup(`
@@ -4191,6 +4409,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTimelineTicks();
     // Initialize side panel (hidden by default)
     initializeSidePanel();
+    
+    // Legend toggle button
+    const toggleLegendBtn = document.getElementById('toggle-legend-btn');
+    if (toggleLegendBtn) {
+        toggleLegendBtn.addEventListener('click', toggleLegend);
+    }
 });
 
 // Add smooth scrolling
@@ -4205,6 +4429,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Function to toggle legend visibility
+window.toggleLegend = function() {
+    const toggleBtn = document.getElementById('toggle-legend-btn');
+    
+    if (window.legendVisible) {
+        // Hide legend
+        const legendEl = document.querySelector('.legacy-map-legend');
+        if (legendEl) {
+            legendEl.remove();
+        }
+        window.legendVisible = false;
+        // Show toggle button
+        if (toggleBtn) {
+            toggleBtn.classList.remove('hidden');
+        }
+    } else {
+        // Show legend
+        addMapLegend();
+        window.legendVisible = true;
+        // Hide toggle button
+        if (toggleBtn) {
+            toggleBtn.classList.add('hidden');
+        }
+    }
+};
 
 // Export functions globally for clustering-system.js
 window.getFilteredEventsForYear = getFilteredEventsForYear;

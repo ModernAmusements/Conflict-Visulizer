@@ -101,11 +101,9 @@
 #map {
     height: 650px;
     background: #000;
-    border: 2px solid #000;
     position: relative;
     overflow: hidden;
     z-index: 1;
-    border-radius: 8px;
 }
 
 
@@ -421,6 +419,34 @@
 // NATO Symbol Container
 .nato-symbol-container {
     position: relative;
+}
+
+// NATO Marker Icon
+.nato-marker-icon {
+    pointer-events: auto !important;
+    cursor: pointer;
+    
+    .enhanced-military-marker {
+        display: block;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+    
+    .nato-symbol-wrapper {
+        display: block;
+        pointer-events: none;
+    }
+    
+    .flag-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        pointer-events: none;
+    }
 }
 
 // Hidden Utility
