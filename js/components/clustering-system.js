@@ -200,12 +200,15 @@ function createEnhancedPopup(event) {
         const age = window.layerController.getEventAgeDays(event);
         const reliability = window.layerController.getReliabilityIndicator(event);
         
+        const priorityClass = priority === 'CRITICAL' ? 'priority-critical' : priority === 'IMPORTANT' ? 'priority-important' : 'priority-info';
+        const reliabilityClass = reliability.level === 'HIGH' ? 'reliability-high' : reliability.level === 'MEDIUM' ? 'reliability-medium' : 'reliability-low';
+        
         metadataHtml = `
-            <div class="popup-metadata" style="display: flex; gap: 12px; margin: 8px 0; padding: 8px; background: rgba(0,0,0,0.2); border-radius: 4px;">
-                <span class="priority-badge" style="background: ${priority === 'CRITICAL' ? '#dc2626' : priority === 'IMPORTANT' ? '#eab308' : '#6b7280'}; color: white; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+            <div class="popup-metadata">
+                <span class="priority-badge ${priorityClass}">
                     ${priority}
                 </span>
-                <span class="age-indicator" style="color: ${reliability.color}; font-size: 11px;">
+                <span class="age-indicator ${reliabilityClass}">
                     Age: ${age} days
                 </span>
             </div>
@@ -494,10 +497,8 @@ function createClusterMarker(events) {
     const center = cluster.coordinates;
 
     const clusterHtml = `
-        <div class="cluster-marker ${style.className}"
-             style="width: ${style.size}px; height: ${style.size}px;
-                    background: ${style.color}; border: 2px solid ${style.borderColor};
-                    box-shadow: 0 0 20px ${style.glowColor};">
+        <div class="cluster-marker cluster-${style.sizeClass || 'medium'} ${style.glowClass || ''}"
+             style="--cluster-color: ${style.color}; --cluster-border: ${style.borderColor}; --cluster-glow: ${style.glowColor};">
             <span class="cluster-count">${cluster.events.length}</span>
             ${cluster.maxIntensity === 'high' ? '<div class="pulse-indicator"></div>' : ''}
         </div>
@@ -637,7 +638,7 @@ function generateCompleteNATOLegend() {
             <div class="legend-header">
                 <h4>1994 NATO Military Symbology</h4>
                 <button id="legend-toggle" class="legend-toggle" title="Collapse">
-                    <span style="font-size: 12px;">▼</span>
+                    <span class="legend-arrow-icon">▼</span>
                 </button>
             </div>
             
@@ -976,10 +977,8 @@ function createClusterMarkerOptimized(events) {
     const center = cluster.coordinates;
 
     const clusterHtml = `
-        <div class="cluster-marker ${style.className}"
-             style="width: ${style.size}px; height: ${style.size}px;
-                    background: ${style.color}; border: 2px solid ${style.borderColor};
-                    box-shadow: 0 0 20px ${style.glowColor};">
+        <div class="cluster-marker cluster-${style.sizeClass || 'medium'} ${style.glowClass || ''}"
+             style="--cluster-color: ${style.color}; --cluster-border: ${style.borderColor}; --cluster-glow: ${style.glowColor};">
             <span class="cluster-count">${cluster.events.length}</span>
             ${cluster.maxIntensity === 'high' ? '<div class="pulse-indicator"></div>' : ''}
         </div>
@@ -1199,7 +1198,7 @@ function setupLeftLegend() {
         if (flagsHTML && flagsHTML.trim() !== '') {
             leftLegendContent.innerHTML = flagsHTML;
         } else {
-            leftLegendContent.innerHTML = '<div class="error-message" style="padding: 15px; background: rgba(231, 76, 60, 0.2); border-radius: 4px; text-align: center; color: white; font-size: 12px;">⚠️ Nation flags temporarily unavailable</div>';
+            leftLegendContent.innerHTML = '<div class="error-message"><span class="error-icon">⚠️</span> Nation flags temporarily unavailable</div>';
         }
     }
 }

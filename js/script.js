@@ -1715,13 +1715,10 @@ function createTimelineEvent(event, index) {
                 </div>
             ` : ''}
             <div class="event-impact">
-                <strong style="color: #000;">Impact:</strong> <span style="color: #e74c3c;">${event.impact}</span>
+                <strong class="impact-label">Impact:</strong> <span class="impact-value">${event.impact}</span>
             </div>
         </div>
     `;
-    
-    // Add animation delay
-    eventDiv.style.animationDelay = `${index * 0.1}s`;
     
     return eventDiv;
 }
@@ -1778,7 +1775,8 @@ function observeTimelineEvents() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
+                entry.target.classList.add('running');
+                entry.target.classList.remove('paused');
             }
         });
     }, {
@@ -1787,7 +1785,7 @@ function observeTimelineEvents() {
     
     const events = document.querySelectorAll('.timeline-event');
     events.forEach(event => {
-        event.style.animationPlayState = 'paused';
+        event.classList.add('paused');
         observer.observe(event);
     });
 }
@@ -2555,7 +2553,7 @@ function createTickMarks() {
         }
 
         const position = ((year - minYear) / (maxYear - minYear)) * 100;
-        tick.style.left = `${position}%`;
+        tick.style.setProperty('--tick-position', `${position}%`);
 
         trackContainer.appendChild(tick);
 
@@ -2565,7 +2563,7 @@ function createTickMarks() {
             label.className = 'slider-tick-label';
             label.textContent = year;
             label.dataset.year = year;
-            label.style.left = `${position}%`;
+            label.style.setProperty('--tick-position', `${position}%`);
             trackContainer.appendChild(label);
         }
     });
@@ -3230,13 +3228,13 @@ function createClusterCountMarker(group, coordinates) {
     });
 
     marker.on('mouseover', function() {
-        if (this._icon) this._icon.style.zIndex = '9999';
-        if (this._shadow) this._shadow.style.zIndex = '9998';
+        if (this._icon) this._icon.classList.add('highlighted');
+        if (this._shadow) this._shadow.classList.add('highlighted');
     });
 
     marker.on('mouseout', function() {
-        if (this._icon) this._icon.style.zIndex = 'auto';
-        if (this._shadow) this._shadow.style.zIndex = 'auto';
+        if (this._icon) this._icon.classList.remove('highlighted');
+        if (this._shadow) this._shadow.classList.remove('highlighted');
     });
 
     const factionNames = { idf: 'IDF', hamas: 'Hamas', arab_forces: 'Arab Forces', egyptian_syria: 'Egypt-Syria', iran: 'Iran', hezbollah: 'Hezbollah', pij: 'PIJ', fatah: 'Fatah' };
@@ -3617,7 +3615,7 @@ function drawAllEventMarkers(events) {
                                 return baseIcon;
                             })()
                             : L.divIcon({
-                                html: `<div class="basic-marker-clean marker-wrapper marker-border marker-shadow" style="background: ${markerColor};">${flagOverlay}</div>`,
+                                html: `<div class="basic-marker-clean marker-wrapper marker-border marker-shadow marker-${event.affiliation || 'unknown'}">${flagOverlay}</div>`,
                                 className: 'basic-marker-icon-clean marker-wrapper',
                                 iconSize: [iconSize, iconSize],
                                 iconAnchor: [iconAnchor, iconAnchor]
@@ -3680,19 +3678,19 @@ function drawAllEventMarkers(events) {
 
                 marker.on('mouseover', function() {
                     if (this._icon) {
-                        this._icon.style.zIndex = '9999';
+                        this._icon.classList.add('highlighted');
                     }
                     if (this._shadow) {
-                        this._shadow.style.zIndex = '9998';
+                        this._shadow.classList.add('highlighted');
                     }
                 });
 
                 marker.on('mouseout', function() {
                     if (this._icon) {
-                        this._icon.style.zIndex = 'auto';
+                        this._icon.classList.remove('highlighted');
                     }
                     if (this._shadow) {
-                        this._shadow.style.zIndex = 'auto';
+                        this._shadow.classList.remove('highlighted');
                     }
                 });
 
@@ -3868,10 +3866,11 @@ function drawMovementPaths(events) {
                 });
                 
                 // Bind popup to marker
+                const factionClass = `faction-${movement.faction.toLowerCase().replace(/[^a-z]/g, '-')}`;
                 const popupContent = `
                     <div class="movement-popup-content">
                         <div class="movement-popup-header">
-                            <div class="movement-popup-icon" style="background: ${faction.color};">
+                            <div class="movement-popup-icon ${factionClass}">
                                 <svg width="20" height="20" viewBox="0 0 24 24">
                                     <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
                                 </svg>
@@ -3903,10 +3902,11 @@ function drawMovementPaths(events) {
         });
         
         // Enhanced popup with NATO symbol and movement details
+        const pathFactionClass = `faction-${movement.faction.toLowerCase().replace(/[^a-z]/g, '-')}`;
         path.bindPopup(`
             <div class="movement-popup-content">
                 <div class="movement-popup-header">
-                    <div class="movement-popup-icon" style="background: ${faction.color};">
+                    <div class="movement-popup-icon ${pathFactionClass}">
                         <svg width="20" height="20" viewBox="0 0 24 24">
                             <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
                         </svg>
@@ -3945,24 +3945,8 @@ function createDirectionalArrow(color, bearing) {
     
     return L.divIcon({
         html: `
-            <div style="
-                width: ${arrowSize}px; 
-                height: ${arrowSize}px; 
-                position: relative;
-                transform: rotate(${bearing}deg);
-            ">
-                <div style="
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 0;
-                    height: 0;
-                    border-left: ${arrowSize/2}px solid transparent;
-                    border-right: ${arrowSize/2}px solid transparent;
-                    border-bottom: ${arrowSize}px solid ${color};
-                    transform: translate(-50%, -100%);
-                    opacity: 0.8;
-                "></div>
+            <div class="movement-arrow-container" style="--arrow-size: ${arrowSize}px; --arrow-color: ${color}; --bearing: ${bearing}deg;">
+                <div class="movement-arrow-pointer"></div>
             </div>
         `,
         className: 'directional-arrow',

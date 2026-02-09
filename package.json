@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "legacy": "python -m http.server 8000"
+    "legacy": "python -m http.server 8000",
+    "docs:update": "node scripts/generate-architecture.js"
   },
   "keywords": [
     "conflict",

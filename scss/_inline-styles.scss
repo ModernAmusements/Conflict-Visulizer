@@ -1,0 +1,589 @@
+// ============================================
+// INLINE STYLES MIGRATION
+// Migrating from inline JS styles to SCSS
+// ============================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================
+// 1. TIMELINE EVENT STYLES
+// Formerly inline in script.js:1718
+// ============================================
+
+.event-impact {
+    .impact-label {
+        color: #000;
+        font-weight: $font-bold;
+    }
+
+    .impact-value {
+        color: #e74c3c;
+        font-weight: $font-regular;
+    }
+}
+
+// Animation delay helper (script.js:1724)
+.timeline-event {
+    animation-delay: 0s;
+
+    @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.1}s;
+        }
+    }
+}
+
+// Animation states (script.js:1781, 1790)
+.timeline-event {
+    &.paused {
+        animation-play-state: paused;
+    }
+
+    &.running {
+        animation-play-state: running;
+    }
+}
+
+// ============================================
+// 2. SLIDER TICK MARKERS
+// Formerly inline in script.js:2558, 2568
+// ============================================
+
+.slider-tick-mark {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: $map-border;
+    top: 0;
+    left: var(--tick-position, 0%);
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition: height $transition-fast, background $transition-fast;
+
+    &.has-events {
+        background: $nato-friendly;
+        height: 12px;
+    }
+
+    &.no-events {
+        background: $timeline-line;
+    }
+
+    &.active {
+        height: 16px;
+        background: $text-primary;
+    }
+}
+
+.slider-tick-label {
+    position: absolute;
+    font-size: 11px;
+    color: $text-muted;
+    left: var(--tick-position, 0%);
+    transform: translateX(-50%);
+    top: 20px;
+    pointer-events: none;
+    white-space: nowrap;
+
+    &.active {
+        color: $text-primary;
+        font-weight: $font-bold;
+    }
+}
+
+// ============================================
+// 3. MARKER Z-INDEX MANAGEMENT
+// Formerly inline in script.js:3233-3239, 3683-3695
+// ============================================
+
+.leaflet-marker-icon {
+    transition: z-index 0.15s ease;
+
+    &.highlighted {
+        z-index: 9999 !important;
+    }
+}
+
+.leaflet-marker-shadow {
+    transition: z-index 0.15s ease;
+
+    &.highlighted {
+        z-index: 9998 !important;
+    }
+}
+
+.basic-marker-clean {
+    transition: z-index 0.15s ease;
+
+    &.highlighted {
+        z-index: 9999;
+    }
+}
+
+// ============================================
+// 4. MARKER BACKGROUND COLORS
+// Formerly inline in script.js:3620
+// ============================================
+
+.basic-marker-clean {
+    &.marker-hostile {
+        background: $nato-hostile;
+    }
+
+    &.marker-friendly {
+        background: $nato-friendly;
+    }
+
+    &.marker-neutral {
+        background: $nato-neutral;
+    }
+
+    &.marker-unknown {
+        background: $nato-unknown;
+    }
+}
+
+// ============================================
+// 5. MOVEMENT POPUP ICONS
+// Formerly inline in script.js:3874, 3909
+// ============================================
+
+.movement-popup-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &.faction-idf {
+        background: $nato-friendly;
+    }
+
+    &.faction-egyptian {
+        background: $egypt-color;
+    }
+
+    &.faction-syrian {
+        background: $syria-color;
+    }
+
+    &.faction-jordanian {
+        background: $jordan-color;
+    }
+
+    &.faction-iraqi {
+        background: #000000;
+    }
+
+    &.faction-palestine {
+        background: $palestine-color;
+    }
+
+    &.faction-hamas {
+        background: $nato-hostile;
+    }
+
+    &.faction-hezbollah {
+        background: #7c3aed;
+    }
+
+    &.faction-iran {
+        background: #8b0000;
+    }
+}
+
+// ============================================
+// 6. MOVEMENT ARROWS & DISPLAY
+// Formerly inline in script.js:3948, 3954, 4040, 4078
+// ============================================
+
+.movement-arrow-container {
+    width: var(--arrow-size, 12px);
+    height: var(--arrow-size, 12px);
+    position: relative;
+    transform: rotate(var(--bearing, 0deg));
+}
+
+.movement-arrow-pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: calc(var(--arrow-size, 12px) / 2) solid transparent;
+    border-right: calc(var(--arrow-size, 12px) / 2) solid transparent;
+    border-bottom: var(--arrow-size, 12px) solid var(--arrow-color, $nato-hostile);
+    transform: translate(-50%, -100%);
+    opacity: 0.8;
+}
+
+.directional-arrow {
+    background: transparent;
+    border: none;
+}
+
+// ============================================
+// 6. MOVEMENT ARROWS & DISPLAY
+// Formerly inline in script.js:3948, 3954, 4040, 4078
+// ============================================
+
+.movement-arrow-container {
+    display: block;
+}
+
+.movement-arrow {
+    display: block;
+    transform-origin: center;
+    transition: transform $transition-normal;
+}
+
+.movement-arrow-rotated {
+    transform: rotate(var(--bearing, 0deg));
+    transform-origin: center;
+}
+
+// ============================================
+// CLUSTER MARKER CUSTOM PROPERTIES
+// ============================================
+
+.cluster-marker {
+    background: var(--cluster-color, rgba($nato-neutral, 0.8));
+    border: 2px solid var(--cluster-border, rgba($nato-neutral, 0.8));
+    box-shadow: 0 0 20px var(--cluster-glow, rgba($nato-neutral, 0.4));
+}
+
+// ============================================
+// 7. POPUP METADATA (clustering-system.js:204-208)
+// ============================================
+
+.popup-metadata {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.priority-badge {
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: $font-bold;
+    color: white;
+
+    &.priority-critical {
+        background: #dc2626;
+    }
+
+    &.priority-important {
+        background: #eab308;
+    }
+
+    &.priority-info {
+        background: #6b7280;
+    }
+}
+
+.age-indicator {
+    font-size: 11px;
+    color: $text-muted;
+
+    &.reliability-high {
+        color: #22c55e;
+    }
+
+    &.reliability-medium {
+        color: #eab308;
+    }
+
+    &.reliability-low {
+        color: #ef4444;
+    }
+}
+
+// ============================================
+// 8. CLUSTER MARKER SIZING (clustering-system.js:498, 980)
+// ============================================
+
+.cluster-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-md;
+    font-weight: $font-bold;
+    font-size: 12px;
+    color: white;
+    box-shadow: $shadow-sm;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &.cluster-small {
+        width: 28px;
+        height: 28px;
+        background: rgba($nato-neutral, 0.8);
+    }
+
+    &.cluster-medium {
+        width: 36px;
+        height: 36px;
+        background: rgba(241, 196, 15, 0.8);
+    }
+
+    &.cluster-large {
+        width: 44px;
+        height: 44px;
+        background: rgba($nato-hostile, 0.8);
+    }
+
+    &.cluster-xlarge {
+        width: 56px;
+        height: 56px;
+        background: rgba($nato-hostile, 0.9);
+        font-size: 14px;
+    }
+}
+
+.cluster-marker-scaled {
+    transform: scale(var(--zoom-scale, 1));
+    transform-origin: center;
+    transition: transform $transition-fast;
+}
+
+// ============================================
+// 9. LEGEND ARROW (clustering-system.js:640)
+// ============================================
+
+.legend-arrow-icon {
+    font-size: 12px;
+    display: inline-block;
+}
+
+// ============================================
+// 10. LEGEND ERROR MESSAGE (clustering-system.js:1202)
+// ============================================
+
+.error-message {
+    padding: 15px;
+    background: rgba(231, 76, 60, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+
+    .error-icon {
+        margin-right: 8px;
+    }
+}
+
+// ============================================
+// 11. FLAG ICONS (flags.js:67, 69)
+// ============================================
+
+.flag-icon-enhanced {
+    position: relative;
+    width: var(--flag-width, 32px);
+    height: var(--flag-height, 22px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+
+    .flag-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.flag-icon-small {
+    width: 24px;
+    height: 16px;
+}
+
+.flag-icon-medium {
+    width: 32px;
+    height: 22px;
+}
+
+.flag-icon-large {
+    width: 48px;
+    height: 32px;
+}
+
+// ============================================
+// 12. MARKER WRAPPER BASE
+// ============================================
+
+.marker-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-border {
+    border: 2px solid white;
+    border-radius: $radius-sm;
+}
+
+.marker-shadow {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+// ============================================
+// 13. CLUSTER COUNT BADGE
+// ============================================
+
+.cluster-count-badge {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    background: $nato-hostile;
+    color: white;
+    font-size: 10px;
+    font-weight: $font-bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    box-shadow: $shadow-sm;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0 5px;
+    transition: all $transition-fast;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+// ============================================
+// 14. PRIORITY BADGES
+// ============================================
+
+.event-priority-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: $radius-sm;
+    font-weight: $font-bold;
+    letter-spacing: 0.5px;
+
+    &.priority-critical {
+        background: rgba(#dc2626, 0.1);
+        color: #dc2626;
+        border: 1px solid rgba(#dc2626, 0.3);
+    }
+
+    &.priority-important {
+        background: rgba(#eab308, 0.1);
+        color: #ca8a04;
+        border: 1px solid rgba(#eab308, 0.3);
+    }
+
+    &.priority-info {
+        background: rgba($text-muted, 0.1);
+        color: $text-muted;
+        border: 1px solid rgba($text-muted, 0.3);
+    }
+}
+
+// ============================================
+// 15. ANIMATION CLASSES
+// ============================================
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+// ============================================
+// UTILITY CLASSES
+// ============================================
+
+.text-hostile {
+    color: $nato-hostile;
+}
+
+.text-friendly {
+    color: $nato-friendly;
+}
+
+.text-neutral {
+    color: $nato-neutral;
+}
+
+.bg-hostile {
+    background-color: $nato-hostile;
+}
+
+.bg-friendly {
+    background-color: $nato-friendly;
+}
+
+.bg-neutral {
+    background-color: $nato-neutral;
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+    .movement-popup-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .cluster-marker {
+        &.cluster-small {
+            width: 24px;
+            height: 24px;
+            font-size: 10px;
+        }
+
+        &.cluster-medium {
+            width: 32px;
+            height: 32px;
+            font-size: 11px;
+        }
+
+        &.cluster-large {
+            width: 40px;
+            height: 40px;
+            font-size: 12px;
+        }
+    }
+}

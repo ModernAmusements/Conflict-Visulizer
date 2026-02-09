@@ -1,6 +1,7 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 @use 'grid' as *;
+@use 'inline-styles' as *; // Inline styles migration
 @use 'components/text';
 @use 'components/map';
 @use 'components/sidepanel';
