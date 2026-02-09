@@ -9,8 +9,8 @@
 // Map Container
 .map-container {
     background: $bg-primary;
-    border: 1px solid $map-border;
-    border-radius: $radius-lg;
+    border: 0;
+    border-radius: none;
     padding: $space-4;
     margin-bottom: $space-6;
     transition: margin-left $transition-normal;
@@ -143,8 +143,8 @@
     position: relative;
     overflow: hidden;
     z-index: 1;
-    border: 1px solid $map-border;
-    border-radius: $radius-md;
+    border: 0;
+    border-radius: 0;
 }
 
 // White Map Overrides - Force clean white background
@@ -614,6 +614,7 @@
 
 .nato-legend-container {
     padding: $space-3;
+    overflow: hidden;
 }
 
 .nato-legend-title {

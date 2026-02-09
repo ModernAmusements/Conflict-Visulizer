@@ -35,12 +35,7 @@
 │   ├── 📄 _grid.scss
 │   ├── 📄 _mixins.scss
 │   ├── 📄 _variables.scss
-│   ├── 📄 _map.scss
-│   ├── 📄 _mixins.scss
-│   ├── 📄 _popups.scss
-│   ├── 📄 _sidepanel.scss
-│   ├── 📄 _text.scss
-│   ├── 📄 _variables.scss
+│   ├── 📄 _inline-styles.scss
 │   ├── 📄 _map.scss
 │   ├── 📄 _popups.scss
 │   ├── 📄 _sidepanel.scss
@@ -482,6 +477,83 @@ This script:
 3. Updates the File Structure section
 4. Updates the Dependency Graph section
 5. Rebuilds Mermaid diagrams
+
+---
+
+---
+
+## Lessons Learned & Recent Changes (2026-02-09)
+
+### Timeline Slider Redesign
+
+**Changes Made:**
+
+1. **SCSS** (`scss/components/_map.scss:173-285`)
+   - Slider: 4px height, no border-radius, solid line
+   - Thumb: 4px × 24px vertical line (no border/box-shadow)
+   - Ticks: Positioned absolutely, aligned with track
+   - Tick container: `top: 10px` to align with slider
+   - Labels: `top: 14px` (4px below tick container)
+
+2. **JavaScript** (`js/script.js:2513-2597, 2378-2420`)
+   - `createTickMarks()`: Now creates ticks for every year (1900-2025)
+   - `handleSliderChange()`: Snaps to nearest year using `Math.round()`
+   - Tick container: Positioned before slider for proper alignment
+
+3. **Legend Toggle Fix** (`js/script.js:4441-4464`)
+   - Changed from `querySelector(...).remove()` to using stored `window.mapLegendControl.remove()`
+   - Fixed SCSS nesting issue where `#toggle-legend-btn` was incorrectly nested inside `.map-controls`
+
+### Mistakes Made & Fixes Applied
+
+| Mistake | Root Cause | Fix |
+|---------|------------|-----|
+| Ticks not aligned with slider line | `slider-track-container` had `top: 0` | Changed to `top: 10px` |
+| Ticks not centered vertically | Conflicting `top` values on ticks | Removed variable heights, kept `top: -2px` |
+| Ticks above dates (visually) | Labels had wrong `top` value | Changed from `top: 6px` to `top: 14px` |
+| Legend toggle not working | Used `querySelector('.legacy-map-legend')` instead of stored control reference | Use `window.mapLegendControl.remove()` |
+| SCSS compilation error | `#toggle-legend-btn` incorrectly nested in `.map-controls` | Moved styles outside nesting |
+
+### Key Lessons
+
+1. **SCSS Nesting**: When using nested SCSS, ensure child selectors are properly closed before sibling rules. The `#toggle-legend-btn` styles were inside `.map-controls` without proper closing braces.
+
+2. **Leaflet Control Removal**: Leaflet controls require using their `.remove()` method, not DOM removal. Store the control reference (`window.mapLegendControl`) when creating it.
+
+3. **Absolute Positioning Alignment**: When aligning elements with `position: absolute`:
+   - Parent container needs correct `top` positioning
+   - Child elements need `transform: translateX(-50%)` for horizontal centering
+   - Vertical alignment requires matching `top` values or offsets
+
+4. **Timeline Ticks**: Creating ticks for every year vs. only event years:
+   - Every year provides smoother UX with consistent feedback
+   - Snap to nearest year using `Math.round()` for predictable behavior
+   - Decade labels only (every 10 years) prevents overcrowding
+
+### Functions Updated Today
+
+| Function | File | Line | Change |
+|----------|------|------|--------|
+| `toggleLegend()` | js/script.js | 4441 | Fixed legend removal logic |
+| `createTickMarks()` | js/script.js | 2513 | Create ticks for all years |
+| `handleSliderChange()` | js/script.js | 2378 | Snap to nearest year |
+
+---
+
+## 🤖 AI Assistant Reminder
+
+**Always read ARCHITECTURE.md before making changes!**
+
+This file contains:
+- Current project state and recent changes
+- Lessons learned from past mistakes
+- Function locations and purposes
+- SCSS structure and patterns
+
+Reading this first prevents:
+- Repeating fixes already applied
+- Making the same mistakes
+- Breaking working functionality
 
 ---
 

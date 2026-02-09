@@ -506,9 +506,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
     font-weight: 700;
     font-size: 12px;
+    border-radius: 99px!important;
     color: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     cursor: pointer;
@@ -1718,7 +1718,6 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
     font-weight: 700;
     font-size: 12px;
     color: #fff;

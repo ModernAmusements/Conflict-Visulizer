@@ -5,20 +5,7 @@
 // Map Styles
 // ============================================
 
-// Map Container
-.map-container {
-    background: #000000;
-    padding: 2rem;
-    margin-bottom: 3rem;
-    border-radius: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
-    &.shifted {
-        margin-left: 20px;
-    }
-
-}
 
 // Map Header
 .map-header {
@@ -97,14 +84,6 @@
     }
 }
 
-// Main Map Element
-#map {
-    height: 650px;
-    background: #000;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-}
 
 
 
@@ -484,9 +463,6 @@
         justify-content: center;
     }
 
-    #map {
-        height: 350px;
-    }
 
     .map-stats {
         flex-direction: column;
