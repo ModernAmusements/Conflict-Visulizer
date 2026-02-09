@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <main>
         <section class="intro">
@@ -18,15 +20,17 @@
                 <h1>Understanding the Historical Tension</h1>
                 <h2>A Timeline of the Israel-Hamas Conflict (1900-2025)</h2>
                 <p>An educational resource exploring the complex historical events that shaped this ongoing conflict</p>
-              
+
                 <!-- <div class="accuracy-badge">
                     <div class="badge-text">
                         <strong>Scientifically Verified</strong>
                         <small>Peer-reviewed sources • Multiple verification • Academic standards</small>
                     </div>
                 </div> -->
-                <p>This timeline aims to provide a comprehensive overview of the key historical events that have contributed to the ongoing tension between Israel and Hamas. Understanding this complex history requires examining multiple perspectives and acknowledging the deep-rooted issues on both sides.</p>
-               <button id="scroll-to-map-btn" class="scroll-to-map-btn">
+                <p>This timeline aims to provide a comprehensive overview of the key historical events that have
+                    contributed to the ongoing tension between Israel and Hamas. Understanding this complex history
+                    requires examining multiple perspectives and acknowledging the deep-rooted issues on both sides.</p>
+                <button id="scroll-to-map-btn" class="scroll-to-map-btn">
                     <span class="btn-text">View Interactive Map</span>
                     <span class="btn-arrow">↓</span>
                 </button>
@@ -219,8 +223,8 @@
                         </div>
                     </div> -->
 
-                    <!-- Legend Selector -->
-                    <!-- <div class="control-group legend-selector">
+                <!-- Legend Selector -->
+                <!-- <div class="control-group legend-selector">
                         <select id="map-legend-select" class="legend-select">
                             <option value="auto">Auto Legend</option>
                             <option value="military">Military Symbols</option>
@@ -229,25 +233,26 @@
                             <option value="events">Event Types</option>
                         </select>
                     </div> -->
-                </div>
             </div>
-            
+            </div>
+
             <div id="map">
                 <!-- Legend Toggle Button -->
                 <button id="toggle-legend-btn" class="control-btn" title="Toggle Legend">
                     <span style="font-size: 16px;">◫</span>
                 </button>
             </div>
-        
+
             <div class="timeline-slider-container">
-                <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1" class="timeline-slider">
+                <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1"
+                    class="timeline-slider">
                 <div class="slider-labels">
-                   
+
                     <span id="current-year">Current Year: 1994</span>
-               
+
                 </div>
             </div>
-         
+
             <!-- <div class="map-stats">
                 <div class="stat-item">
                     <span class="stat-label">Israeli Control:</span>
@@ -263,7 +268,7 @@
                 </div>
             </div> -->
         </section>
-                <!-- <section class="perspectives">
+        <!-- <section class="perspectives">
             <h3>Understanding Different Perspectives</h3>
             <div class="perspective-grid">
                 <div class="perspective-card">
@@ -357,38 +362,41 @@
         </section>
         -->
 
-        <div class="swiss-divider"></div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Educational Resource</h4>
-                <p>This interactive timeline is designed to promote understanding of complex historical events through multiple perspectives and verified data.</p>
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Educational Resource</h4>
+                    <p>This interactive timeline is designed to promote understanding of complex historical events
+                        through multiple perspectives and verified data.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Academic Standards</h4>
+                    <p>All data cross-referenced with peer-reviewed sources, international organizations, and official
+                        documentation.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Neutrality Protocol</h4>
+                    <p>Presents facts objectively while acknowledging the suffering and perspectives of all peoples
+                        involved.</p>
+                </div>
             </div>
-            <div class="footer-section">
-                <h4>Academic Standards</h4>
-                <p>All data cross-referenced with peer-reviewed sources, international organizations, and official documentation.</p>
+            <div class="footer-bottom">
+                <p>© Shady Tawfik all rights reserved</p>
+                <p>Last updated: 2025 | Educational Use Only | Version 1.0</p>
             </div>
-            <div class="footer-section">
-                <h4>Neutrality Protocol</h4>
-                <p>Presents facts objectively while acknowledging the suffering and perspectives of all peoples involved.</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-              <p>© Shady Tawfik all rights reserved</p>
-            <p>Last updated: 2025 | Educational Use Only | Version 1.0</p>
-        </div>
-    </footer>
+        </footer>
     </main>
 
-    
+
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
+
     <!-- Military Symbol Systems - Load in correct order -->
     <script src="js/components/symbols.js"></script>
     <script src="js/components/flags.js"></script>
     <script src="js/components/clustering-system.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
