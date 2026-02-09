@@ -43,6 +43,34 @@
     flex-wrap: wrap;
 }
 
+// Legend toggle button on map
+#toggle-legend-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(30, 30, 30, 0.95);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &.hidden {
+        display: none !important;
+    }
+}
+
 // Map Buttons
 .map-btn {
     padding: $space-1 $space-3;
@@ -146,12 +174,13 @@
 
 .timeline-slider-container {
     margin-top: $space-4;
+    position: relative;
 }
 
 .timeline-slider {
     width: 100%;
-    height: 6px;
-    border-radius: 3px;
+    height: 4px;
+    border-radius: 0;
     background: $timeline-line;
     outline: none;
     -webkit-appearance: none;
@@ -162,57 +191,57 @@
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
+        width: 4px;
+        height: 24px;
+        border-radius: 0;
         background: $nato-hostile;
-        border: 3px solid white;
         cursor: pointer;
-        box-shadow: $shadow-sm;
+        box-shadow: none;
         transition: transform $transition-fast;
 
         &:hover {
-            transform: scale(1.1);
+            transform: scaleY(1.1);
         }
     }
 
     &::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
+        width: 4px;
+        height: 24px;
+        border-radius: 0;
         background: $nato-hostile;
-        border: 3px solid white;
         cursor: pointer;
-        box-shadow: $shadow-sm;
+        box-shadow: none;
+        border: none;
         transition: transform $transition-fast;
 
         &:hover {
-            transform: scale(1.1);
+            transform: scaleY(1.1);
         }
     }
 }
 
 .slider-track-container {
-    position: relative;
+    position: absolute;
+    top: 10px;
+    left: 0;
     width: 100%;
-    height: 30px;
-    margin-top: -$space-2;
-    margin-bottom: $space-1;
+    height: 4px;
+    pointer-events: none;
+    z-index: 3;
 }
 
 .slider-tick-mark {
     position: absolute;
     width: 2px;
-    height: 10px;
+    height: 8px;
     background: $map-border;
-    top: 0;
+    top: -2px;
     transform: translateX(-50%);
     pointer-events: none;
-    transition: height $transition-fast, background $transition-fast;
+    transition: background $transition-fast;
 
     &.has-events {
         background: $nato-friendly;
-        height: 12px;
     }
 
     &.no-events {
@@ -220,11 +249,6 @@
     }
 
     &.active {
-        height: 16px;
-        background: $text-primary;
-    }
-
-    &.active.has-events {
         background: $text-primary;
     }
 }
@@ -234,7 +258,7 @@
     font-size: 11px;
     color: $text-muted;
     transform: translateX(-50%);
-    top: 20px;
+    top: 14px;
     pointer-events: none;
     white-space: nowrap;
 

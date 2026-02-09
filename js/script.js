@@ -2388,23 +2388,16 @@ async function handleSliderChange(e) {
     }
 
     const currentValue = parseInt(slider.value);
-    
-    // Use years with coordinates for snapping (not all years)
-    const eventYears = getYearsWithCoordinates();
+    const minYear = 1900;
+    const maxYear = 2025;
 
-    // Find the nearest event year with coordinates
-    const nearestYear = findNearestEventYear(currentValue, eventYears);
-
-    // Snap to nearest event year with coordinates if close enough (within 3 years)
-    if (Math.abs(currentValue - nearestYear) <= 3 && eventYears.includes(nearestYear)) {
-        slider.value = nearestYear;
-        mapState.currentYear = nearestYear;
-    } else {
-        mapState.currentYear = currentValue;
-    }
+    // Snap to nearest year (always snap to a year)
+    const nearestYear = Math.round(currentValue);
+    slider.value = nearestYear;
+    mapState.currentYear = nearestYear;
 
     if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
-    
+
     // Log for debugging
     const visibleEvents = await getAllEvents();
     const eventsThisYear = visibleEvents.filter(ev => {
@@ -2412,7 +2405,7 @@ async function handleSliderChange(e) {
         return evYear === mapState.currentYear && ev.geography?.coordinates;
     });
     console.log(`📅 Year ${mapState.currentYear}: ${eventsThisYear.length} events with coordinates`);
-    
+
     await updateMapForYear(mapState.currentYear);
     updateActiveTickMarks(mapState.currentYear);
 }
@@ -2509,7 +2502,7 @@ function findNearestEventYear(currentValue, eventYears) {
     return nearest;
 }
 
-// Create tick marks for event years
+// Create tick marks for all years in timeline
 function createTickMarks() {
     const container = document.querySelector('.timeline-slider-container');
     if (!container) return;
@@ -2529,22 +2522,15 @@ function createTickMarks() {
 
     // Get years with coordinates for snapping
     const yearsWithCoords = getYearsWithCoordinates();
-    
-    // Get all event years for display
-    const allEventYears = getEventYears();
     const minYear = 1900;
     const maxYear = 2025;
-    const sliderWidth = slider.offsetWidth;
 
-    // Only show ticks for major decades to avoid overcrowding
-    const decadeYears = allEventYears.filter(year => year % 10 === 0 || allEventYears.indexOf(year) % Math.ceil(allEventYears.length / 15) === 0);
-
-    decadeYears.forEach(year => {
-        // Create tick mark
+    // Create tick for every year
+    for (let year = minYear; year <= maxYear; year++) {
         const tick = document.createElement('div');
         tick.className = 'slider-tick-mark';
         tick.dataset.year = year;
-        
+
         // Mark years that have events with coordinates
         if (yearsWithCoords.includes(year)) {
             tick.classList.add('has-events');
@@ -2553,23 +2539,24 @@ function createTickMarks() {
         }
 
         const position = ((year - minYear) / (maxYear - minYear)) * 100;
-        tick.style.setProperty('--tick-position', `${position}%`);
+        tick.style.left = `${position}%`;
 
         trackContainer.appendChild(tick);
 
-        // Create label for decade years
+        // Create label for decade years only (every 10 years)
         if (year % 10 === 0) {
             const label = document.createElement('span');
             label.className = 'slider-tick-label';
             label.textContent = year;
             label.dataset.year = year;
-            label.style.setProperty('--tick-position', `${position}%`);
+            label.style.left = `${position}%`;
             trackContainer.appendChild(label);
         }
-    });
+    }
 
-    // Insert after slider
-    slider.parentNode.insertBefore(trackContainer, slider.nextSibling);
+    // Insert track container at the beginning of the container (it's absolutely positioned)
+    const sliderElement = container.querySelector('.timeline-slider');
+    container.insertBefore(trackContainer, sliderElement);
 }
 
 // Update active tick marks based on current year
@@ -4440,12 +4427,12 @@ initializeScrollToMapButton();
 // Function to toggle legend visibility
 window.toggleLegend = function() {
     const toggleBtn = document.getElementById('toggle-legend-btn');
-    
+
     if (window.legendVisible) {
-        // Hide legend
-        const legendEl = document.querySelector('.legacy-map-legend');
-        if (legendEl) {
-            legendEl.remove();
+        // Hide legend using stored control reference
+        if (window.mapLegendControl) {
+            window.mapLegendControl.remove();
+            window.mapLegendControl = null;
         }
         window.legendVisible = false;
         // Show toggle button
