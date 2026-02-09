@@ -105,30 +105,6 @@ flowchart TD
 
 ## Component Lifecycle
 
-### Map Initialization
-
-```mermaid
-stateDiagram-v2
-    [*] --> loadPage: User opens page
-    
-    loadPage --> initMap: DOM ready
-    initMap --> setTileLayer: CARTO Light All
-    setTileLayer --> setCenter: [31.5, 35.0]
-    setCenter --> setDefaultZoom: Level 7
-    
-    setDefaultZoom --> initLayers: Create layer groups
-    initLayers --> initClustering: Setup clustering system
-    
-    initClustering --> loadInitialEvents: Load events for 1994
-    loadInitialEvents --> [*]: Map ready
-    
-    state initLayers {
-        markerLayer
-        flagLayer
-        movementLayer
-        territoryLayer
-    end
-```
 
 ### Event Rendering Pipeline
 
