@@ -1,0 +1,155 @@
+// ============================================
+// Swiss Grid System
+// 12-column modular grid
+// ============================================
+
+@use 'variables' as *;
+
+// Container
+.swiss-container {
+    width: 100%;
+    max-width: $grid-max-width;
+    margin: 0 auto;
+    padding: 0 $grid-gutter;
+}
+
+// Main Grid Layout
+.swiss-grid {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, 1fr);
+    gap: $grid-gutter;
+}
+
+// Grid Columns
+@for $i from 1 through $grid-columns {
+    .col-#{$i} {
+        grid-column: span $i;
+    }
+}
+
+// Responsive Grid
+.swiss-grid-mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-3;
+}
+
+.swiss-grid-tablet {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: $space-2;
+}
+
+.swiss-grid-desktop {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, 1fr);
+    gap: $grid-gutter;
+}
+
+// Grid Gap Utilities
+.gap-1 { gap: $space-1; }
+.gap-2 { gap: $space-2; }
+.gap-3 { gap: $space-3; }
+.gap-4 { gap: $space-4; }
+.gap-6 { gap: $space-6; }
+.gap-8 { gap: $space-8; }
+
+// Negative Space Zones
+.section-padding {
+    padding: $space-8 0;
+}
+
+.section-padding-md {
+    padding: $space-6 0;
+}
+
+.section-padding-sm {
+    padding: $space-4 0;
+}
+
+// Asymmetric Layout Helpers
+.asymmetric-left {
+    grid-column: span 4;
+
+    @media (max-width: $breakpoint-lg) {
+        grid-column: span 12;
+    }
+}
+
+.asymmetric-right {
+    grid-column: span 8;
+
+    @media (max-width: $breakpoint-lg) {
+        grid-column: span 12;
+    }
+}
+
+// Equal Columns
+.cols-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $grid-gutter;
+
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cols-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $grid-gutter;
+
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cols-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $grid-gutter;
+
+    @media (max-width: $breakpoint-md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Flex Grid Fallback
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(#{$grid-gutter} * -0.5);
+
+    > * {
+        flex: 1 1 calc(100% / 3 - #{$grid-gutter});
+        margin: calc(#{$grid-gutter} * 0.5);
+        min-width: 280px;
+    }
+}
+
+// Center alignment
+.justify-center {
+    justify-items: center;
+}
+
+.justify-end {
+    justify-items: end;
+}
+
+// Vertical alignment
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: start;
+}
+
+.items-end {
+    align-items: end;
+}

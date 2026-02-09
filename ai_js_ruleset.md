@@ -4,84 +4,226 @@ Strict validation rules for all JavaScript code generation. Code must pass ALL c
 
 ## 2026-Conflict Project Specific Requirements
 
-### Map Loading and Symbol Rendering
-- **No Symbol Repetition**: Prevent blue dots and national flags from repeating in linear patterns during load/initialization
-- **Clean Map Loading**: Ensure map loads cleanly without tiling artifacts or symbol repetition
-- **1994 NATO Standards**: Display standard 1994 NATO symbology correctly on both map and legend
-- **Complete Symbol Reference**: All enhanced/advanced NATO symbols must be fully visible and properly referenced in legend
+### Swiss Design Theme
+- **White Background**: `$bg-primary: #FFFFFF` for all containers
+- **Black Text**: `$text-primary: #000000` for all text
+- **Clean Borders**: `$map-border: #E0E0E0` for subtle separation
+- **No Shadows/Gradients**: Flat design only
+- **Consistent Typography**: Use Inter/Helvetica font stack
 
-### Flag System Requirements
-- **Enhanced Scaling**: Scale national flags larger for clear legibility at default zoom levels
-- **No Linear Patterns**: Prevent flags from creating linear repetition patterns during initialization
-- **Proper Spacing**: Ensure flags are positioned with adequate spacing to prevent visual clutter
-- **Enhanced Visibility**: Flags should have thicker borders (2px), white glow effects, and rounded corners
-- **Size Optimization**: Flag sizes should range from 24-36px depending on zoom level for better visibility
+### Map Configuration
+- **Tiles**: Use CARTO Light All (`light_all`) for white map
+- **No Dark Overrides**: Remove all dark tile filters
+- **Black Grid Lines**: Use `rgba(0,0,0,0.1)` for grid
 
-### Military Movement Visualization
-- **Thin Line Rendering**: Military movement lines must be thinner and visually subordinate to terrain and unit symbols
-- **Directional Arrows**: All movement lines must include directional arrows indicating advance/withdrawal direction
-- **Visual Hierarchy**: Movement lines should not interfere with other map elements
+### Side Panel
+- **Open on Load**: `sidePanelOpen = true`
+- **Latest Events**: Display 15 most recent events
+- **Date Header**: Show "Latest Events (YYYY-MM-DD)"
+- **Width**: 360px, slides in from left
+- **Content Shift**: Header/intro/map-container/footer shift 360px right
 
-### UI Integration Requirements
-- **National Forces Integration**: Relocate National Forces panel into Legend Options panel as selectable subsection
-- **1994-Era Styling**: Apply functional, restrained design aesthetic without modern UI embellishments
-- **Coherent Hierarchy**: Maintain logical UI structure with proper panel organization
+### Flag System (DISABLED)
+- `window.clusterState.showFlags = false`
+- No flag elements in marker HTML
+- No embedded flags in symbols
 
-### Performance Requirements
-- **No JavaScript Errors**: Critical requirement - any JS errors will result in no reward
-- **Clean Initialization**: Map must load cleanly without visual artifacts
-- **Symbol Integrity**: All symbols must render properly without duplication or tiling issues
+### Popups & Legends
+- **White Background**: `$bg-primary` only
+- **Black Text**: `$text-primary`
+- **CSS Classes**: No inline dark styles (#1a1a1a, #e1e8ed)
+- **Leaflet Overrides**: Force white theme on all map elements
 
-### Legend System Requirements
-- **Default Content**: Dropdown legends must show actual content on load, not placeholder messages
-- **Function Calls**: Always call the actual legend generation function (e.g., `generateMilitarySymbolsLegend()`) on initialization
-- **Never use placeholder text** like "Enhanced NATO symbols legend is displayed in main panel" - this indicates missing implementation
+### Ghosting Prevention
+- Clear all layers on zoomend before redraw
+- Debounce zoom events (150ms)
+- Clear: markerLayer, flagLayer, movementLayer, territoryLayer
+- Clear performanceOptimizer.clusterCache
 
-### Timeline Slider Requirements
-- **Tick Marks**: Generate tick marks dynamically from event years in `timelineEvents` array
-- **Snap-to-Tick**: Slider should snap to nearest event year when within 3 years during user interaction
-- **Active Highlighting**: Current year tick should be visually emphasized
-- **Decade Labels**: Show labels for decade years (1900, 1910, 1920, etc.)
-- **Responsive**: Tick positions must recalculate on window resize
-
-### Detection Logic Requirements
-- **False Positive Prevention**: Pattern matching for nation detection must be specific to avoid false matches
-  - Example: `'un '` matches words like "run", "sun", "tunnel" - use `'united nations'` or specific context like `'un resolution'`
-- **Nation Detection**: Only flag nations when there's clear evidence in event text, not fuzzy matches
-
-### Dropdown Initialization Pattern
+### Layer Management Pattern
 ```javascript
-// VALID: Call actual legend function on init
-dropdown.addEventListener('change', (e) => {
-    switch(e.target.value) {
-        case 'enhanced':
-            contentArea.innerHTML = generateMilitarySymbolsLegend();
-            break;
-        // ... other cases
-    }
-});
-
-// Show enhanced option by default
-contentArea.innerHTML = generateMilitarySymbolsLegend();
-
-// INVALID: Show placeholder message instead of actual content
-contentArea.innerHTML = '<div class="note">Enhanced NATO symbols legend is displayed in main panel</div>';
+// Clear before redraw
+if (mapState.markerLayer) mapState.markerLayer.clearLayers();
+if (mapState.flagLayer) mapState.flagLayer.clearLayers();
+if (mapState.movementLayer) mapState.movementLayer.clearLayers();
+if (window.performanceOptimizer) {
+    window.performanceOptimizer.clusterCache.clear();
+}
 ```
 
-### Military Movement Visualization
-- **Thin Line Rendering**: Military movement lines must be thinner and visually subordinate to terrain and unit symbols
-- **Directional Arrows**: All movement lines must include directional arrows indicating advance/withdrawal direction
-- **Visual Hierarchy**: Movement lines should not interfere with other map elements
+### Legend Functions (White Theme)
+```javascript
+generateMilitarySymbolsLegend()   // CSS classes only
+generateTerritoryLegend()       // No inline dark styles
+generateMilitaryFactionsLegend() // White backgrounds
+generateEventTypesLegend()       // Clean color swatches
+```
 
-### UI Integration Requirements
-- **National Forces Integration**: Relocate National Forces panel into Legend Options panel as selectable subsection
-- **1994-Era Styling**: Apply functional, restrained design aesthetic without modern UI embellishments
-- **Coherent Hierarchy**: Maintain logical UI structure with proper panel organization
+### Timeline Slider
+- Tick marks from event years
+- Snap-to-tick within 3 years
+- Active tick highlighting
+- Decade labels
 
-### Performance Requirements
-- **No JavaScript Errors**: Critical requirement - any JS errors will result in no reward
-- **Clean Initialization**: Map must load cleanly without visual artifacts
-- **Symbol Integrity**: All symbols must render properly without duplication or tiling issues
+---
+
+## 1. File Structure Requirements
+
+| Requirement | Valid | Invalid |
+|------------|-------|---------|
+| First line | `'use strict';` | Anything else |
+| Statement endings | Semicolons `;` | ASI reliance |
+| File type | Pure JS only | HTML outside template literals |
+
+---
+
+## 2. Forbidden Constructs
+
+**REJECT immediately if any appear (outside comments):**
+
+| Token | Reason |
+|-------|--------|
+| `var` | Use `const` or `let` |
+| `==` or `!=` | Use `===` or `!==` |
+| `this` | Avoid context binding |
+| `async` / `await` | Not permitted |
+| `.then(` | No promise chains |
+| `import` / `export` | Not permitted |
+| `require(` | Not permitted |
+
+---
+
+## 3. Variable Rules
+
+**MUST follow all:**
+
+- [ ] Declared with `const` or `let`
+- [ ] Declared before first use
+- [ ] Never redeclared in same scope
+- [ ] No implicit globals
+
+---
+
+## 4. Function Rules
+
+**MUST follow all:**
+
+- [ ] Uses braces `{}` (no implicit returns)
+- [ ] Has explicit `return` statement
+- [ ] Not called before declaration
+- [ ] No reliance on hoisting
+
+---
+
+## 5. Control Flow Rules
+
+**MUST follow all:**
+
+- [ ] All `if`/`else` blocks use braces `{}`
+- [ ] Conditions use explicit comparisons (`===`, `!==`)
+- [ ] No truthy/falsy reliance
+
+---
+
+## 6. Template Literal Rules
+
+**When string contains `<` or `>`:**
+
+- [ ] Must be a template literal (backticks)
+- [ ] Must be assigned to a variable
+- [ ] Must be properly closed
+
+---
+
+## 7. Object & Array Rules
+
+**MUST follow all:**
+
+- [ ] No mutation during iteration
+- [ ] No sparse arrays
+- [ ] No prototype access
+- [ ] Dynamic keys documented if used
+
+---
+
+## 8. Runtime Safety Rules
+
+**MUST follow all:**
+
+- [ ] No silent failures
+- [ ] No empty catch blocks
+- [ ] Errors logged or rethrown
+
+---
+
+## 9. Pre-Output Checklist
+
+**Before emitting ANY JavaScript, answer YES to each:**
+
+### Syntax
+- [ ] File starts with `'use strict';`
+- [ ] Every statement ends with `;`
+- [ ] Zero syntax errors in strict mode
+
+### Variables
+- [ ] All variables use `const` or `let`
+- [ ] All variables declared before use
+- [ ] No redeclarations in same scope
+- [ ] No implicit globals
+
+### Functions
+- [ ] All functions defined before called
+- [ ] Arrow functions use braces `{}`
+- [ ] All returns are explicit
+- [ ] No reliance on hoisting
+
+### Control Flow
+- [ ] All `if`/`else` use `{}`
+- [ ] All comparisons use `===` or `!==`
+- [ ] No truthy/falsy shorthand
+
+### HTML/SVG
+- [ ] All HTML in template literals
+- [ ] Template literals properly closed
+- [ ] No stray tags or backticks
+
+### Forbidden
+- [ ] No `var`
+- [ ] No `==` or `!=`
+- [ ] No `this`
+- [ ] No `async`/`await`
+- [ ] No `.then()`
+- [ ] No `import`/`export`
+
+### Swiss Design
+- [ ] No `#1a1a1a` or dark hex codes
+- [ ] No `rgba(255,255,255,` for backgrounds
+- [ ] Use `$bg-primary` for white backgrounds
+- [ ] Use `$text-primary` for black text
+
+---
+
+## 10. Final Validation Gate
+
+Code is VALID only if it can be:
+1. Pasted directly into browser console
+2. Executed without warnings
+3. Understood without guessing intent
+4. Contains no dark inline styles
+
+---
+
+## Quick Reference
+
+```
+FORBIDDEN: var, ==, !=, this, async, await, .then(, import, export, require(
+
+REQUIRED: 'use strict';, semicolons, const/let, braces {}, explicit returns
+
+SWISS DESIGN: #FFFFFF backgrounds, #000000 text, no dark inline styles
+
+VALIDATION: Browser console execution, no warnings, human readable
+```
 
 ---
 

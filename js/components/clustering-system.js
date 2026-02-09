@@ -172,7 +172,7 @@ window.layerController = new MilitaryLayerController();
 // Backward-compatible cluster state (used by script.js)
 window.clusterState = {
     enabled: true,
-    showFlags: true,
+    showFlags: false, // Disabled - flags embedded in markers are redundant
     clusters: [],
     minClusterSize: 30,
     currentZoom: 7
@@ -390,9 +390,8 @@ function createEnhancedMilitaryMarker(event, options = {}) {
         return createClusterMarker([event]);
     }
 
-    // Create individual NATO symbol with flag
+    // Create individual NATO symbol (flags removed - redundant)
     const symbolData = natoSymbolLibrary.generateSymbol(affiliation, unitType, 'unit');
-    const flagElement = showFlags && nation ? flagSystem.getFlagElement(nation, 24) : '';
 
     const markerHtml = `
         <div class="enhanced-military-marker" 
@@ -402,7 +401,6 @@ function createEnhancedMilitaryMarker(event, options = {}) {
             <div class="nato-symbol-wrapper">
                 ${symbolData.svg}
             </div>
-            ${flagElement ? `<div class="flag-badge">${flagElement}</div>` : ''}
         </div>
     `;
 
@@ -726,9 +724,6 @@ function generateCompleteNATOLegend() {
                 <!-- Control Panel -->
                 <div class="legend-controls">
                     <div class="control-row">
-                        <button id="toggle-flags" class="control-btn">
-                            <i class="fas fa-flag"></i> National Flags
-                        </button>
                         <button id="toggle-clustering" class="control-btn">
                             <i class="fas fa-object-group"></i> Clustering
                         </button>
@@ -790,17 +785,6 @@ function setupLegendControls() {
     const toggleFlagsBtn = document.getElementById('toggle-flags');
     const toggleClusteringBtn = document.getElementById('toggle-clustering');
     const resetViewBtn = document.getElementById('reset-view');
-    
-    if (toggleFlagsBtn) {
-        toggleFlagsBtn.addEventListener('click', () => {
-            window.clusterState.showFlags = !window.clusterState.showFlags;
-            toggleFlagsBtn.classList.toggle('active', window.clusterState.showFlags);
-            if (typeof updateMapForYear === 'function') {
-                updateMapForYear(mapState.currentYear);
-            }
-        });
-        toggleFlagsBtn.classList.toggle('active', window.clusterState.showFlags);
-    }
     
     if (toggleClusteringBtn) {
         toggleClusteringBtn.addEventListener('click', () => {
@@ -941,7 +925,7 @@ const performanceOptimizer = new PerformanceOptimizer();
 
 // Enhanced marker creation with performance optimization and zoom-based sizing
 function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
-    const showFlags = options.showFlags !== undefined ? options.showFlags : (window.clusterState?.showFlags ?? true);
+    const showFlags = options.showFlags !== undefined ? options.showFlags : (window.clusterState?.showFlags ?? false);
     const enableClustering = options.enableClustering !== undefined ? options.enableClustering : (window.clusterState?.enabled ?? true);
 
     // Determine affiliation and unit type
@@ -953,9 +937,8 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
     const zoomScale = Math.max(0.5, Math.min(1.5, currentZoom / 7));
     const finalSize = Math.round(baseSize * zoomScale);
 
-    // Get cached symbol with dynamic sizing
+    // Get cached symbol with dynamic sizing (flags removed - redundant)
     const symbolData = performanceOptimizer.getCachedSymbol(affiliation, unitType, finalSize);
-    const flagElement = (showFlags && nation && flagSystem) ? flagSystem.getFlagElement(nation, Math.round(24 * zoomScale)) : '';
 
     const markerHtml = `
         <div class="enhanced-military-marker" 
@@ -966,7 +949,6 @@ function createEnhancedMilitaryMarkerOptimized(event, options = {}) {
             <div class="nato-symbol-wrapper">
                 ${symbolData.svg}
             </div>
-            ${flagElement ? `<div class="flag-badge" style="transform: scale(${zoomScale});">${flagElement}</div>` : ''}
         </div>
     `;
 
@@ -1258,3 +1240,4 @@ window.IntensityClusterer = IntensityClusterer;
 window.createEnhancedMilitaryMarker = createEnhancedMilitaryMarkerOptimized;
 window.drawAllEventMarkersOptimized = drawAllEventMarkersOptimized;
 window.getNearbyEvents = getNearbyEvents;
+window.performanceOptimizer = performanceOptimizer;

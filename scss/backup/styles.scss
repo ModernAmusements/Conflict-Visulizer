@@ -1,0 +1,2060 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'components/text';
+@use 'components/map';
+@use 'components/sidepanel';
+@use 'components/popups';
+
+// Copy of original CSS - legacy styles being phased out
+
+/* Enhanced Military Map Legend */
+
+/* Enhanced Military Map Legend */
+.military-map-legend {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(20, 25, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 0;
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.left-legend-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0;
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.left-legend-container.collapsed {
+    min-width: 0;
+    max-width: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.enhanced-nato-legend {
+    background: rgba(0, 0, 0, 0.95);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px 12px 0 0;
+}
+
+.legend-header h4 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.legend-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.legend-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.legend-content {
+    padding: 16px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.legend-content.collapsed {
+    display: none;
+}
+
+.legend-section {
+    margin-bottom: 20px;
+}
+
+.legend-section:last-child {
+    margin-bottom: 0;
+}
+
+.legend-section h5 {
+    margin: 0 0 12px 0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.legend-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.legend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+
+.legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.legend-symbol {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.legend-label {
+    font-size: 12px;
+    color: #c9d1d9;
+}
+
+.affiliation-legend,
+.unit-type-legend,
+.intensity-legend {
+    display: grid;
+    gap: 8px;
+}
+
+.symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.symbol-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.symbol-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.symbol-display {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.symbol-label {
+    color: #e1e8ed;
+    font-size: 10px;
+    text-align: center;
+}
+
+.symbol-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.legend-item span {
+    color: #e1e8ed;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.friendly-frame svg,
+.hostile-frame svg,
+.neutral-frame svg,
+.unknown-frame svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Flags Legend */
+.flags-legend {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.flag-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.flag-legend-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.flag-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+.flag-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+// Legend toggle button on map
+#toggle-legend-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#toggle-legend-btn:hover {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+// Hide toggle when legend is visible (legend is added by Leaflet after our button)
+#toggle-legend-btn.hidden {
+    display: none !important;
+}
+
+// Legacy map legend
+.legacy-map-legend {
+    z-index: 1000 !important;
+}
+
+.flag-legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.legend-flag-icon {
+    width: 32px;
+    height: 20px;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.legend-flag-label {
+    color: #e1e8ed;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Clean Marker Rendering */
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean {
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.basic-marker-clean {
+    background: #666;
+    border: 2px solid white;
+}
+
+/* Flag Overlays */
+.event-flag-overlay {
+    pointer-events: none;
+}
+
+.event-flag-item {
+    background: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.event-flag-beside {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+.event-flag-beside .flag-emoji {
+    font-size: 16px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.directional-arrow {
+    background: transparent;
+    border: none;
+}
+
+/* Enhanced Flag Icons */
+.flag-icon-enhanced {
+    display: block;
+}
+
+.flag-wrapper {
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Legend Control Panel */
+.legend-controls {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.control-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.control-row:last-child {
+    margin-bottom: 0;
+}
+
+.control-btn {
+    flex: 1;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn.active {
+    background: rgba(52, 152, 219, 0.3);
+    border-color: rgba(52, 152, 219, 0.5);
+}
+
+.legend-controls-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.legend-switch {
+    display: flex;
+    gap: 4px;
+}
+
+.legend-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.legend-switch-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.legend-switch-btn.active {
+    background: rgba(52, 152, 219, 0.6);
+    border-color: rgba(52, 152, 219, 0.8);
+}
+
+.legend-switch-btn i {
+    font-size: 12px;
+}
+
+#combined-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.legacy-dropdown {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 11px;
+    margin-bottom: 12px;
+}
+
+.flag-icon {
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.flag-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.flagged-military-marker {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.nato-symbol-container {
+    position: relative;
+}
+
+.flag-overlay {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cluster-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cluster-marker:hover {
+    transform: scale(1.1);
+}
+
+.cluster-marker.low-intensity-cluster {
+    background: rgba(46, 204, 113, 0.8);
+    width: 30px;
+    height: 30px;
+}
+
+.cluster-marker.medium-intensity-cluster {
+    background: rgba(241, 196, 15, 0.8);
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+}
+
+.cluster-marker.high-intensity-cluster {
+    background: rgba(231, 76, 60, 0.8);
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+    animation: cluster-pulse-red 2s infinite;
+}
+
+@keyframes cluster-pulse-red {
+    0% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(231, 76, 60, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+}
+
+.cluster-popup {
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cluster-popup h6 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #2c3e50;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 4px;
+}
+
+.cluster-event-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.cluster-event-item:last-child {
+    border-bottom: none;
+}
+
+.cluster-event-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+.cluster-event-details {
+    font-size: 11px;
+    color: #7f8c8d;
+}
+
+.cluster-event-casualties {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #e74c3c;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.legend-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.legend-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .military-map-legend {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 20px 0;
+        max-width: 100%;
+    }
+    
+    .flags-legend {
+        grid-template-columns: 1fr;
+    }
+    
+    .legend-controls {
+        flex-direction: column;
+    }
+}
+
+.custom-marker svg {
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.2s ease;
+}
+
+.custom-marker:hover svg {
+    transform: scale(1.1);
+}
+
+.movement-path {
+    animation: dash 20s linear infinite;
+}
+
+.movement-arrow {
+    background: transparent !important;
+    border: none !important;
+}
+
+.faction-marker-icon {
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.faction-marker-icon svg {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.movement-path {
+    stroke-dasharray: 20, 10;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -100;
+    }
+}
+
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker svg {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.faction-marker:hover {
+    transform: scale(1.2);
+}
+
+.faction-marker svg {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.leaflet-marker-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+.movement-path {
+    stroke-dashoffset: 0;
+    animation: dashMove 20s linear infinite;
+}
+
+@keyframes dashMove {
+    to {
+        stroke-dashoffset: -30;
+    }
+}
+
+.movement-star {
+    stroke-dasharray: 20, 8;
+}
+
+.movement-triangle {
+    stroke-dasharray: 16, 10;
+}
+
+.movement-diamond {
+    stroke-dasharray: 18, 12;
+}
+
+.movement-circle {
+    stroke-dasharray: 25, 10;
+}
+
+.movement-hexagon {
+    stroke-dasharray: 14, 12;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #e1e8ed;
+    background-color: #000;
+}
+
+header {
+    background: linear-gradient(135deg, #1a1f2e, #2c3445);
+    color: #e1e8ed;
+    padding: 3rem 1rem;
+    text-align: start;
+    font-weight: 400;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+
+header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    font-weight: 400;
+}
+
+header p {
+    font-size: 1.1rem;
+    max-width: 800px;
+    color: #fff;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+
+
+.accuracy-badge {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #1e7e34, #28a745);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+    border-radius: 8px;
+}
+
+.badge-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+.badge-text strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.badge-text small {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.verification-panel {
+    padding: 1.5rem ;
+    margin: 1.5rem 0;
+    border-left: 4px solid #28a745;
+}
+
+.verification-panel h4 {
+    margin-bottom: 1rem;
+    color: #e1e8ed;
+}
+
+.verification-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+
+
+.check-mark {
+    color: #27ae60;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.map-header h3 {
+    color: #e1e8ed;
+    margin: 0;
+}
+
+.map-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    background: rgba(26, 26, 46, 0.9);
+    border-radius: 8px;
+}
+
+.map-btn {
+    padding: 0.5rem 1rem;
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.map-btn:hover {
+    background: #2ecc71;
+}
+
+.map-btn.pause {
+    background: #e74c3c;
+}
+
+.map-btn.pause:hover {
+    background: #c0392b;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.speed-control select {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e1e8ed;
+    font-size: 0.85rem;
+}
+
+.speed-control select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Control Groups */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-group-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* Event Filters */
+.event-filters {
+    flex-wrap: wrap;
+}
+
+/* Layer Controls */
+.layer-controls {
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #e1e8ed;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.filter-label:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #3498db;
+}
+
+.filter-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+}
+
+.filter-icon svg {
+    display: block;
+}
+
+/* Hide default checkbox appearance */
+.filter-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.filter-label input[type="checkbox"]:checked {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.filter-label input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.filter-label input[type="checkbox"]:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Legend Selector */
+.legend-selector {
+    padding: 0.4rem 0.75rem;
+}
+
+.legend-select {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e1e8ed;
+    font-size: 0.85rem;
+    cursor: pointer;
+    min-width: 130px;
+}
+
+.legend-select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+
+
+
+.timeline-slider {
+    width: 100%;
+    height: 8px;
+    background: #fff;
+    outline: none;
+    -webkit-appearance: none;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1f2e;
+    border: 3px solid #fff;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.timeline-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.timeline-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1f2e;
+     border: 3px solid #fff;
+    cursor: pointer;
+
+}
+
+.timeline-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+}
+
+.slider-track-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin-top: -12px;
+    margin-bottom: 5px;
+}
+
+.slider-tick-mark {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 1px;
+    pointer-events: none;
+    transition: height 0.2s ease, background 0.2s ease;
+}
+
+.slider-tick-mark.has-events {
+    background: #4ade80;
+}
+
+.slider-tick-mark.no-events {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.slider-tick-mark.active {
+    height: 14px;
+    background: #fff;
+}
+
+.slider-tick-mark.active.has-events {
+    background: #fff;
+    box-shadow: 0 0 8px #4ade80;
+}
+
+.slider-tick-label {
+    position: absolute;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    transform: translateX(-50%);
+    top: 18px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.slider-tick-label.active {
+    color: #fff;
+    font-weight: 600;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ff5e00;
+   border: 3px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.timeline-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1f2e;
+   border: 3px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+
+
+#current-year {
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.map-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #ecf0f1;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.3rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.map-overlay {
+    position: absolute;
+    background: rgba(44, 62, 80, 0.9);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.map-grid {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(0deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: #000;
+    border-radius: 8px;
+}
+
+.map-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(44, 62, 80, 0.95);
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 500;
+}
+
+.map-legend .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.map-legend .legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.israeli-legend {
+    background: rgba(52, 152, 219, 0.7);
+}
+
+.palestinian-legend {
+    background: rgba(155, 89, 182, 0.7);
+}
+
+.hamas-legend {
+    background: rgba(231, 76, 60, 0.7);
+}
+
+.contested-legend {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.2) 3px,
+        rgba(255, 255, 255, 0.4) 3px 6px
+    );
+}
+
+.attack-marker {
+    width: 20px;
+    height: 20px;
+    background: #e74c3c;
+    border: 2px solid white;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 100;
+    animation: pulse 2s infinite;
+}
+
+.territory-zone {
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.israeli-control {
+    background: rgba(52, 152, 219, 0.3);
+    border-color: rgba(52, 152, 219, 0.6);
+}
+
+.palestinian-control {
+    background: rgba(155, 89, 182, 0.3);
+    border-color: rgba(155, 89, 182, 0.6);
+}
+
+.hamas-control {
+    background: rgba(231, 76, 60, 0.3);
+    border-color: rgba(231, 76, 60, 0.6);
+}
+
+.contested-area {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(255, 255, 255, 0.2) 10px 20px
+    );
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .map-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .map-controls {
+        justify-content: center;
+    }
+    
+
+    
+    .map-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .layer-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Perspectives Section */
+.perspectives {
+    margin-top: 4rem;
+    background: #1a1f2e;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.perspectives h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.perspective-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.perspective-card {
+    padding: 1.5rem;
+    border-left: 4px solid #3498db;
+    background: #f8f9fa;
+}
+
+.perspective-card:nth-child(2) {
+    border-left-color: #e74c3c;
+}
+
+.perspective-card:nth-child(3) {
+    border-left-color: #f39c12;
+}
+
+.perspective-card h4 {
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.perspective-card p {
+    color: #000;
+}
+
+/* Sources Section */
+.sources {
+    background: #1a1f2e;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 3rem;
+}
+
+.sources h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.source-category {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-left: 4px solid #3498db;
+}
+
+.source-category:nth-child(2) {
+    border-left-color: #9b59b6;
+}
+
+.source-category:nth-child(3) {
+    border-left-color: #e74c3c;
+}
+
+.source-category:nth-child(4) {
+    border-left-color: #f39c12;
+}
+
+.source-category h4 {
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.source-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.source-category li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.2rem;
+    position: relative;
+    font-size: 0.9rem;
+    color: #34495e;
+}
+
+.source-category li:before {
+    content: "•";
+    color: #3498db;
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+}
+
+.source-category:nth-child(2) li:before {
+    color: #9b59b6;
+}
+
+.source-category:nth-child(3) li:before {
+    color: #e74c3c;
+}
+
+.source-category:nth-child(4) li:before {
+    color: #f39c12;
+}
+
+.methodology-note {
+    background: #ecf0f1;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.methodology-note h4 {
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.methodology-note p {
+    line-height: 1.6;
+    color: #34495e;
+}
+
+.source-link {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.source-link a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border: 2px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.source-link a:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+/* Footer */
+footer {
+    background: #000;
+    color: #fff;
+    padding: 2rem 1rem;
+    margin-top: 4rem;
+}
+
+.flag-overlay,
+.event-flag-overlay {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.event-flag-overlay .event-flag-beside {
+    display: flex !important;
+    gap: 2px !important;
+    padding: 2px 4px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 4px !important;
+    backdrop-filter: blur(4px);
+}
+
+.event-flag-overlay .flag-emoji {
+    font-size: 16px !important;
+    line-height: 1 !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.flag-overlay svg {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.2s ease;
+}
+
+.flag-overlay:hover svg {
+    transform: scale(1.1);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    color: #ecf0f1;
+}
+
+.footer-section p {
+    line-height: 1.5;
+    color: #bdc3c7;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #95a5a6;
+}
+
+@media (max-width: 768px) {
+    /* Timeline styles commented out
+    
+    .timeline:before {
+        left: 30px;
+    }
+    
+    .timeline-event:nth-child(odd) .event-content,
+    .timeline-event:nth-child(2n) .event-content {
+        margin-left: 60px;
+        margin-right: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        text-align: left;
+    }
+    
+    .event-marker {
+        left: 30px;
+    }
+    
+    .timeline-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .era-selector {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    */
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.leaflet-popup-content {
+    margin: 13px 24px 13px 20px;
+    line-height: 1.3;
+    font-size: 13px;
+    font-size: 1.08333em;
+    min-height: 1px;
+    font-weight: 600;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.leaflet-popup-content-wrapper {
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.leaflet-popup-content p {
+    margin-bottom: 8px;
+}
+
+.leaflet-popup-content p:last-child {
+    margin-bottom: 0;
+}
+
+.nato-movement-marker {
+    background: transparent;
+    border: none;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    z-index: 1500 !important;
+}
+
+// Override any inline z-index from Leaflet
+.leaflet-marker-icon.nato-movement-marker {
+    z-index: 1500 !important;
+}
+
+// Cluster markers - lower z-index so movement markers can be clicked on top
+.intensity-cluster {
+    z-index: 1000 !important;
+}
+
+.leaflet-marker-icon.intensity-cluster {
+    z-index: 1000 !important;
+}
+
+// Ensure clusters and markers are properly layered
+.leaflet-marker-icon {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+// Cluster count markers
+.cluster-marker {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.nato-movement-marker svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+}
+
+.nato-movement-marker:hover {
+    z-index: 9999 !important;
+}
+
+.nato-movement-marker:hover svg {
+    transform: scale(1.15);
+}
+
+// Leaflet marker focus styles
+.leaflet-marker-icon:focus {
+    outline: 2px solid #fff !important;
+    outline-offset: 2px !important;
+}
+
+// Ensure all markers are clickable
+.leaflet-marker-icon {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #1a1a2e;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-popup-tip {
+    background: #1a1a2e;
+}
+
+.cluster-count-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background: #e74c3c;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 10;
+    padding: 0 6px;
+    transition: all 0.2s ease;
+}
+
+.cluster-count-badge:hover {
+    background: #c0392b;
+    transform: scale(1.15);
+}
+
+.cluster-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 100;
+    animation: markerPulse 2s ease-in-out infinite;
+}
+
+
+
+.legacy-map-legend {
+    background: rgba(20, 25, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.legacy-map-legend label {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.legacy-map-legend select {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.legacy-map-legend .note {
+    padding: 15px;
+    background: rgba(52, 152, 219, 0.2);
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+}
+
+#legend-content-area {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+// Enhanced Military Markers with Hierarchical Positioning
+.enhanced-military-marker-clean {
+    background: transparent;
+    border: none;
+}
+
+.enhanced-military-marker-clean .nato-symbol-wrapper {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+}
+
+.enhanced-military-marker-clean:hover .nato-symbol-wrapper {
+    transform: scale(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+}
+
+.basic-marker-icon-clean {
+    background: transparent;
+    border: none;
+}
+
+.basic-marker-clean {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.basic-marker-clean:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+// Priority-based marker sizing
+.marker-high-priority {
+    z-index: 1000 !important;
+}
+
+.marker-low-priority {
+    z-index: 500 !important;
+}
+
+// Marker clickability fix - Leaflet inline styles need JavaScript override
+.leaflet-marker-icon.cluster-marker,
+.leaflet-marker-icon.enhanced-military-marker-clean,
+.leaflet-marker-icon.basic-marker-icon-clean {
+    pointer-events: auto !important;
+}
+
+// Ensure markers are always on top when hovered
+.leaflet-marker-icon:hover {
+    z-index: 9999 !important;
+}
+
+// Flag overlay should never block clicks - force behind markers
+.event-flag-beside {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+.event-flag-beside .flag-emoji {
+    font-size: 16px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+// Add visual feedback for clickable markers
+.enhanced-military-marker-clean::after,
+.basic-marker-icon-clean::after,
+.cluster-marker::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: transparent;
+    z-index: -1;
+}
+
+.marker-low-priority {
+    z-index: 500 !important;
+}
+
+// Marker clickability fix - ensure markers are clickable
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean,
+.cluster-marker {
+    cursor: pointer !important;
+}
+
+.enhanced-military-marker-clean:hover,
+.basic-marker-icon-clean:hover,
+.cluster-marker:hover {
+    z-index: 2000 !important;
+    transform: scale(1.15);
+}
+
+// Flag overlay should never block clicks
+.event-flag-beside {
+    pointer-events: none !important;
+}
+
+// Ensure Leaflet marker icons are clickable
+.leaflet-marker-icon {
+    pointer-events: auto;
+}
+
+// Add visual feedback for clickable markers
+.enhanced-military-marker-clean::after,
+.basic-marker-icon-clean::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    z-index: -1;
+}
+
+// Zoom-based marker scaling
+.leaflet-zoom-anim .enhanced-military-marker-clean,
+.leaflet-zoom-anim .basic-marker-icon-clean {
+    transition: transform 0.3s ease;
+}
+
+// Marker cluster animations
+@keyframes markerPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Popup styling for military events
+.military-popup .leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+.military-popup .leaflet-popup-tip {
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.military-popup .leaflet-popup-content {
+    color: #e1e8ed;
+}
+
+.military-popup-content {
+    max-width: 280px;
+}
+
+.military-popup-title {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    display: block;
+}
+
+.military-popup-title.is-hamas {
+    color: #dc2626;
+}
+
+.military-popup-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.military-popup-source {
+    font-size: 10px;
+    color: #666;
+}
+
+.military-popup-divider {
+    margin: 8px 0;
+    border-color: #374151;
+}
+
+.military-popup-description {
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.military-popup-impact {
+    font-size: 12px;
+    font-style: italic;
+    color: #f59e0b;
+    margin-bottom: 8px;
+    padding: 6px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 4px;
+}
+
+.military-popup-warning {
+    font-size: 11px;
+    color: #f39c12;
+    margin-top: 5px;
+    padding: 4px 8px;
+    background: rgba(243, 156, 18, 0.15);
+    border-radius: 4px;
+}
+
+.military-popup-casualties {
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.military-popup-nations {
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+// Flag overlay positioning
+.flag-overlay-wrapper {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+// Smooth marker appearance animation
+@keyframes markerAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.enhanced-military-marker-clean,
+.basic-marker-icon-clean {
+    animation: markerAppear 0.3s ease-out;
+}
+
+// Marker wrapper for consistent styling
+.marker-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.marker-wrapper.marker-shadow {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.marker-wrapper.marker-border {
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.marker-wrapper.marker-hover:hover {
+    transform: scale(1.1);
+}
+
+// High contrast mode for dense areas
+.dense-marker-area .enhanced-military-marker-clean .nato-symbol-wrapper {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}

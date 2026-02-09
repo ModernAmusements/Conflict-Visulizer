@@ -1,23 +1,23 @@
-@use '../variables' as *;
-@use '../mixins' as *;
-
 // ============================================
 // Map Styles
+// Swiss Design System
 // ============================================
+
+@use 'sass:color';
+@use '../variables' as *;
 
 // Map Container
 .map-container {
-    background: #000000;
-    padding: 2rem;
-    margin-bottom: 3rem;
-    border-radius: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: $bg-primary;
+    border: 1px solid $map-border;
+    border-radius: $radius-lg;
+    padding: $space-4;
+    margin-bottom: $space-6;
+    transition: margin-left $transition-normal;
 
     &.shifted {
-        margin-left: 20px;
+        margin-left: $grid-gutter;
     }
-
 }
 
 // Map Header
@@ -25,12 +25,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: $space-3;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: $space-2;
 
     h3 {
-        color: $text-primary;
+        font-size: $text-lg;
         margin: 0;
     }
 }
@@ -39,29 +39,34 @@
 .map-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: $space-3;
     flex-wrap: wrap;
 }
 
 // Map Buttons
 .map-btn {
-    padding: 0.5rem 1rem;
-    background: #27ae60;
-    color: white;
-    border: none;
+    padding: $space-1 $space-3;
+    background: $bg-secondary;
+    color: $text-primary;
+    border: 1px solid $map-border;
+    border-radius: $radius-sm;
     cursor: pointer;
-    font-weight: 700;
-    transition: background 0.3s ease;
+    font-weight: $font-bold;
+    font-size: $text-sm;
+    transition: all $transition-fast;
 
     &:hover {
-        background: #2ecc71;
+        background: $bg-tertiary;
+        border-color: $text-muted;
     }
 
     &.pause {
-        background: #e74c3c;
+        background: $nato-hostile;
+        border-color: $nato-hostile;
+        color: white;
 
         &:hover {
-            background: #c0392b;
+            background: #B30000;
         }
     }
 }
@@ -70,56 +75,89 @@
 .speed-control {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: $space-2;
+
+    label {
+        font-size: $text-sm;
+        color: $text-secondary;
+    }
 
     select {
-        padding: 0.3rem;
-        border: 1px solid #4a5568;
-        border-radius: 3px;
-        background: #2a3441;
+        padding: $space-1 $space-2;
+        border: 1px solid $map-border;
+        border-radius: $radius-sm;
+        background: $bg-secondary;
         color: $text-primary;
+        font-size: $text-sm;
     }
 }
 
 // Layer Controls
 .layer-controls {
     display: flex;
-    gap: 1rem;
+    gap: $space-3;
     align-items: center;
 
     label {
         display: flex;
         align-items: center;
-        gap: 0.3rem;
-        font-size: 0.9rem;
-        color: $text-primary;
+        gap: $space-1;
+        font-size: $text-sm;
+        color: $text-secondary;
         cursor: pointer;
     }
 }
 
 // Main Map Element
 #map {
-    height: 650px;
-    background: #000;
+    height: 600px;
+    background: $bg-map;
     position: relative;
     overflow: hidden;
     z-index: 1;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
 }
 
+// White Map Overrides - Force clean white background
+.leaflet-tile {
+    filter: grayscale(100%) brightness(105%) contrast(95%);
+}
 
+.leaflet-tile-container {
+    background: #FFFFFF !important;
+}
 
-// Timeline Slider Container
+.leaflet-layer {
+    background: #FFFFFF !important;
+}
+
+.leaflet-container {
+    background: #FFFFFF !important;
+}
+
+.leaflet-tile-loaded {
+    background-color: #FFFFFF !important;
+}
+
+// ============================================
+// Timeline Slider
+// ============================================
+
 .timeline-slider-container {
-    margin-top: 1.5rem;
+    margin-top: $space-4;
 }
 
 .timeline-slider {
     width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: linear-gradient(to right, #3498db, #e74c3c);
+    height: 6px;
+    border-radius: 3px;
+    background: $timeline-line;
     outline: none;
     -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
 
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
@@ -127,45 +165,127 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-         
-        border: 3px solid #fff;
+        background: $nato-hostile;
+        border: 3px solid white;
         cursor: pointer;
-     
+        box-shadow: $shadow-sm;
+        transition: transform $transition-fast;
+
+        &:hover {
+            transform: scale(1.1);
+        }
     }
 
     &::-moz-range-thumb {
         width: 20px;
         height: 20px;
         border-radius: 50%;
-         
-        border: 3px solid #000;
+        background: $nato-hostile;
+        border: 3px solid white;
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: $shadow-sm;
+        transition: transform $transition-fast;
+
+        &:hover {
+            transform: scale(1.1);
+        }
     }
+}
+
+.slider-track-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin-top: -$space-2;
+    margin-bottom: $space-1;
+}
+
+.slider-tick-mark {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: $map-border;
+    top: 0;
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition: height $transition-fast, background $transition-fast;
+
+    &.has-events {
+        background: $nato-friendly;
+        height: 12px;
+    }
+
+    &.no-events {
+        background: $timeline-line;
+    }
+
+    &.active {
+        height: 16px;
+        background: $text-primary;
+    }
+
+    &.active.has-events {
+        background: $text-primary;
+    }
+}
+
+.slider-tick-label {
+    position: absolute;
+    font-size: 11px;
+    color: $text-muted;
+    transform: translateX(-50%);
+    top: 20px;
+    pointer-events: none;
+    white-space: nowrap;
+
+    &.active {
+        color: $text-primary;
+        font-weight: $font-bold;
+    }
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: $space-2;
+    font-size: $text-sm;
+    color: $text-muted;
+}
+
+#current-year {
+    font-weight: $font-bold;
+    color: $text-primary;
+    font-size: $text-lg;
 }
 
 .slider-labels {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #7f8c8d;
+    margin-top: $space-2;
+    font-size: $text-sm;
+    color: $text-muted;
+
+    #current-year {
+        font-weight: $font-bold;
+        color: $text-primary;
+        font-size: $text-base;
+    }
 }
 
-#current-year {
-    font-weight: 700;
-    color: #fff;
-    font-size: 1.1rem;
-}
-
+// ============================================
 // Map Stats
+// ============================================
+
 .map-stats {
     display: flex;
     justify-content: space-around;
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: #ecf0f1;
+    margin-top: $space-4;
+    padding: $space-3;
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
 }
 
 .stat-item {
@@ -174,60 +294,41 @@
 
 .stat-label {
     display: block;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-    margin-bottom: 0.3rem;
+    font-size: $text-sm;
+    color: $text-muted;
+    margin-bottom: $space-1;
 }
 
 .stat-value {
     display: block;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #000;
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    color: $text-primary;
 }
 
-// Map Overlay
-.map-overlay {
-    position: absolute;
-    background: rgba(44, 62, 80, 0.9);
-    color: white;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    pointer-events: none;
-    z-index: 1000;
-    max-width: 300px;
-}
-
-// Map Grid
-.map-grid {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: 
-        linear-gradient(0deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-color: #000;
-    border-radius: 8px;
-}
-
+// ============================================
 // Map Legend
+// ============================================
+
 .map-legend {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(44, 62, 80, 0.95);
-    padding: 1rem;
-    border-radius: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    top: $space-2;
+    right: $space-2;
+    background: $bg-primary;
+    padding: $space-3;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
     z-index: 500;
+    box-shadow: $shadow-sm;
+    font-family: $font-primary;
+    color: $text-primary;
 
     .legend-item {
         display: flex;
         align-items: center;
-        margin-bottom: 0.5rem;
-        font-size: 0.8rem;
-        color: white;
+        margin-bottom: $space-2;
+        font-size: $text-xs;
+        color: $text-primary;
 
         &:last-child {
             margin-bottom: 0;
@@ -235,239 +336,619 @@
     }
 
     .legend-color {
-        width: 12px;
-        height: 12px;
-        border-radius: 2px;
-        margin-right: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        width: 16px;
+        height: 16px;
+        border-radius: $radius-sm;
+        margin-right: $space-2;
+        border: 1px solid $map-border;
+    }
+
+    h4 {
+        font-size: $text-sm;
+        font-weight: $font-bold;
+        color: $text-primary;
+        margin: 0 0 $space-2 0;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $map-border;
     }
 }
 
-// Territory Legend Colors
+// Legend Colors - Visible on white
 .israeli-legend {
-    background: rgba(52, 152, 219, 0.7);
+    background: rgba(0, 102, 204, 0.15);
 }
 
 .palestinian-legend {
-    background: rgba(155, 89, 182, 0.7);
+    background: rgba(155, 89, 182, 0.15);
 }
 
 .hamas-legend {
-    background: rgba(231, 76, 60, 0.7);
+    background: rgba(204, 0, 0, 0.15);
 }
 
 .contested-legend {
     background: repeating-linear-gradient(
         45deg,
-        rgba(255, 255, 255, 0.3),
-        rgba(255, 255, 255, 0.3) 3px,
-        rgba(255, 255, 255, 0.5) 3px 6px
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0.08) 4px,
+        rgba(0, 0, 0, 0.15) 4px 8px
     );
 }
 
-// Attack Marker
-.attack-marker {
+// Military Map Legend
+.military-map-legend {
+    position: absolute;
+    top: $space-2;
+    left: $space-2;
+    background: $bg-primary;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
+    padding: $space-3;
+    z-index: 1000;
+    min-width: 260px;
+    max-width: 320px;
+    box-shadow: $shadow-sm;
+    font-family: $font-primary;
+    color: $text-primary;
+
+    h4 {
+        font-size: $text-sm;
+        font-weight: $font-bold;
+        color: $text-primary;
+        margin: 0 0 $space-2 0;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $map-border;
+    }
+}
+
+.left-legend-container {
+    position: absolute;
+    top: $space-2;
+    left: $space-2;
+    background: $bg-primary;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
+    padding: 0;
+    z-index: 1000;
+    min-width: 260px;
+    max-width: 320px;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    font-family: $font-primary;
+    color: $text-primary;
+
+    &.collapsed {
+        min-width: 0;
+        max-width: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+.legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-2 $space-3;
+    background: $bg-secondary;
+    border-bottom: 1px solid $map-border;
+
+    h4 {
+        margin: 0;
+        font-size: $text-sm;
+        font-weight: $font-bold;
+        color: $text-primary;
+    }
+}
+
+.legend-toggle {
+    background: transparent;
+    border: 1px solid $map-border;
+    color: $text-primary;
+    cursor: pointer;
+    padding: $space-1 $space-2;
+    border-radius: $radius-sm;
+    font-size: $text-xs;
+
+    &:hover {
+        background: $bg-tertiary;
+    }
+}
+
+.legend-content {
+    padding: $space-3;
+    max-height: 500px;
+    overflow-y: auto;
+    color: $text-primary;
+
+    &.collapsed {
+        display: none;
+    }
+
+    h5 {
+        font-size: $text-xs;
+        font-weight: $font-bold;
+        color: $text-primary;
+        margin: $space-3 0 $space-2 0;
+        padding-bottom: $space-1;
+        border-bottom: 1px solid $map-border;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+    }
+}
+
+// Legend section styles
+.legend-section {
+    margin-bottom: $space-4;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: $space-2;
+}
+
+.symbol-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $space-2;
+    border: 1px solid $map-border;
+    border-radius: $radius-sm;
+    background: $bg-secondary;
+
+    &:hover {
+        background: $bg-tertiary;
+    }
+}
+
+.symbol-display {
+    margin-bottom: $space-1;
+}
+
+.symbol-label {
+    font-size: 10px;
+    color: $text-muted;
+    text-align: center;
+    line-height: $leading-tight;
+}
+
+.flag-legend-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1;
+    border-bottom: 1px solid $map-border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.legend-flag-icon {
+    width: 24px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legend-flag-label {
+    font-size: $text-xs;
+    color: $text-primary;
+}
+
+.legend-controls {
+    margin-top: $space-3;
+    padding-top: $space-3;
+    border-top: 1px solid $map-border;
+}
+
+.control-row {
+    display: flex;
+    gap: $space-2;
+    margin-bottom: $space-2;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.control-btn {
+    flex: 1;
+    padding: $space-2 $space-3;
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    border-radius: $radius-sm;
+    color: $text-primary;
+    font-family: $font-primary;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $bg-tertiary;
+        border-color: $text-muted;
+    }
+
+    &.active {
+        background: rgba($nato-friendly, 0.1);
+        border-color: $nato-friendly;
+        color: $nato-friendly;
+    }
+}
+
+// ============================================
+// NATO Legend Styles
+// ============================================
+
+.nato-legend-container {
+    padding: $space-3;
+}
+
+.nato-legend-title {
+    font-weight: $font-bold;
+    font-size: $text-sm;
+    text-align: center;
+    border-bottom: 1px solid $map-border;
+    padding-bottom: $space-2;
+    margin-bottom: $space-3;
+}
+
+.nato-legend-section {
+    margin-bottom: $space-4;
+
+    h5 {
+        font-size: $text-xs;
+        font-weight: $font-bold;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+        margin-bottom: $space-2;
+        text-align: center;
+    }
+}
+
+.nato-legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.nato-legend-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2;
+    background: $bg-secondary;
+    border-radius: $radius-sm;
+    border: 1px solid $map-border;
+}
+
+.nato-frame-svg {
+    flex-shrink: 0;
+}
+
+.nato-legend-frames {
+    margin-top: $space-3;
+    padding-top: $space-2;
+    border-top: 1px solid $map-border;
+    font-size: 10px;
+    color: $text-muted;
+
+    strong {
+        display: block;
+        margin-bottom: $space-1;
+    }
+}
+
+// Affiliation grid for legend
+.affiliation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-2;
+}
+
+.affiliation-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2;
+    background: $bg-secondary;
+    border-radius: $radius-sm;
+    border: 1px solid $map-border;
+    font-size: $text-xs;
+}
+
+.affiliation-icon {
     width: 20px;
     height: 20px;
-    background: #e74c3c;
-    border: 2px solid white;
-    border-radius: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    z-index: 100;
-    animation: pulse 2s infinite;
-}
+    border-radius: 2px;
+    flex-shrink: 0;
 
-// Territory Zone
-.territory-zone {
-    position: absolute;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    pointer-events: none;
-    z-index: 50;
-}
-
-.israeli-control {
-    background: rgba(52, 152, 219, 0.3);
-    border-color: rgba(52, 152, 219, 0.6);
-}
-
-.palestinian-control {
-    background: rgba(155, 89, 182, 0.3);
-    border-color: rgba(155, 89, 182, 0.6);
-}
-
-.hamas-control {
-    background: rgba(231, 76, 60, 0.3);
-    border-color: rgba(231, 76, 60, 0.6);
-}
-
-.contested-area {
-    background: repeating-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.1) 10px,
-        rgba(255, 255, 255, 0.2) 10px 20px
-    );
-}
-
-// Custom Markers
-.custom-marker {
-    svg {
-        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
-        transition: transform 0.2s ease;
+    &.friendly {
+        background: $nato-friendly;
     }
 
-    &:hover svg {
-        transform: scale(1.1);
+    &.hostile {
+        background: $nato-hostile;
+    }
+
+    &.neutral {
+        background: $nato-neutral;
+    }
+
+    &.unknown {
+        background: $nato-unknown;
     }
 }
 
-// Movement Paths
-.movement-path {
-    animation: dashMove 20s linear infinite;
+// Unit types grid
+.unit-types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-2;
 }
 
-.movement-arrow {
-    background: transparent !important;
-    border: none !important;
+.unit-type-item {
+    padding: $space-2;
+    background: $bg-secondary;
+    border-radius: $radius-sm;
+    border: 1px solid $map-border;
+    font-size: 10px;
+    text-align: center;
 }
 
-@keyframes dashMove {
-    to {
-        stroke-dashoffset: -30;
+// National forces legend
+.national-forces-legend {
+    h5 {
+        font-size: $text-xs;
+        font-weight: $font-bold;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+        margin-bottom: $space-3;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $map-border;
     }
 }
 
-@keyframes dash {
-    to {
-        stroke-dashoffset: -100;
+.nations-grid {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+}
+
+.nation-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2;
+    background: $bg-secondary;
+    border-radius: $radius-sm;
+    border: 1px solid $map-border;
+    font-size: $text-xs;
+}
+
+// Event types legend
+.event-types-legend {
+    h5 {
+        font-size: $text-xs;
+        font-weight: $font-bold;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+        margin-bottom: $space-3;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $map-border;
     }
 }
 
-// Movement Patterns
-.movement-star {
-    stroke-dasharray: 20, 8;
+.event-types-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    justify-content: center;
 }
 
-.movement-triangle {
-    stroke-dasharray: 16, 10;
+.event-type-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-2;
+    font-size: $text-xs;
 }
 
-.movement-diamond {
-    stroke-dasharray: 18, 12;
-}
+.event-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
 
-.movement-circle {
-    stroke-dasharray: 25, 10;
-}
+    &.attacks {
+        background: $nato-hostile;
+    }
 
-.movement-hexagon {
-    stroke-dasharray: 14, 12;
-}
+    &.settlements {
+        background: #3498db;
+    }
 
-// Faction Markers
-.faction-marker-icon {
-    background: transparent !important;
-    border: none !important;
-    display: block !important;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    &.political {
+        background: $nato-friendly;
+    }
 
-    svg {
-        display: block !important;
-        visibility: visible !important;
-        width: 100% !important;
-        height: 100% !important;
+    &.social {
+        background: $nato-neutral;
+    }
+
+    &.territory {
+        background: #27ae60;
     }
 }
 
-.faction-marker {
-    &:hover {
-        transform: scale(1.2);
-    }
-
-    svg {
-        display: block !important;
-        visibility: visible !important;
-        width: 100% !important;
-        height: 100% !important;
-    }
-}
-
-// Leaflet Marker Override
-.leaflet-marker-icon {
-    background: transparent !important;
-    border: none !important;
-}
-
-// Flag Overlay
-.flag-overlay {
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-
-    svg {
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        transition: transform 0.2s ease;
-    }
-
-    &:hover svg {
-        transform: scale(1.1);
+// Territory legend
+.territory-legend {
+    h5 {
+        font-size: $text-xs;
+        font-weight: $font-bold;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+        margin-bottom: $space-3;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $map-border;
     }
 }
 
-// NATO Symbol Container
-.nato-symbol-container {
-    position: relative;
+.territory-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    justify-content: center;
 }
 
-// NATO Marker Icon
-.nato-marker-icon {
-    pointer-events: auto !important;
-    cursor: pointer;
-    
-    .enhanced-military-marker {
-        display: block;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-        
-        &:hover {
-            transform: scale(1.1);
+.territory-item {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-2;
+    font-size: $text-xs;
+}
+
+.territory-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+
+    &.israeli {
+        background: rgba(52, 152, 219, 0.3);
+        border: 2px solid rgba(52, 152, 219, 0.7);
+    }
+
+    &.palestinian {
+        background: rgba(155, 89, 182, 0.3);
+        border: 2px solid rgba(155, 89, 182, 0.7);
+    }
+
+    &.hamas {
+        background: rgba(231, 76, 60, 0.4);
+        border: 2px solid rgba(231, 76, 60, 0.8);
+    }
+
+    &.occupied {
+        background: rgba(255, 165, 0, 0.3);
+        border: 2px dashed rgba(255, 165, 0, 0.7);
+    }
+}
+
+// NATO symbols legend container
+.nato-symbols-legend {
+    .nato-legend-section {
+        margin-bottom: $space-4;
+
+        h5 {
+            font-size: $text-xs;
+            font-weight: $font-bold;
+            color: $text-muted;
+            text-transform: uppercase;
+            letter-spacing: $tracking-wide;
+            margin-bottom: $space-2;
+            text-align: center;
         }
     }
-    
-    .nato-symbol-wrapper {
-        display: block;
-        pointer-events: none;
-    }
-    
-    .flag-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        pointer-events: none;
+}
+
+// Legacy map legend panel
+.legend-panel-content {
+    background: $bg-primary;
+    padding: $space-3;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $text-xs;
+    min-width: 220px;
+    border: 1px solid $map-border;
+    box-shadow: $shadow-sm;
+}
+
+.legend-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-3;
+}
+
+.legend-dropdown {
+    flex: 1;
+    margin-right: $space-2;
+    padding: $space-1 $space-2;
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    border-radius: $radius-sm;
+    color: $text-primary;
+    font-family: $font-primary;
+    font-size: $text-xs;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+        border-color: $nato-friendly;
     }
 }
 
-// Hidden Utility
+.legend-hide-btn {
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    color: $text-primary;
+    padding: $space-1 $space-2;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-size: $text-xs;
+
+    &:hover {
+        background: $bg-tertiary;
+    }
+}
+
+#legend-content-area {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.legend-event-counts {
+    margin-top: $space-2;
+    font-weight: $font-bold;
+    text-align: center;
+    border-top: 1px solid $map-border;
+    padding-top: $space-2;
+    font-size: 10px;
+    font-size: $text-xs;
+
+    .count-military {
+        color: $nato-hostile;
+    }
+
+    .count-political {
+        color: #9b59b6;
+    }
+
+    .count-social {
+        color: #f39c12;
+    }
+}
+
+// ============================================
+// Utility Classes
+// ============================================
+
 .hidden {
     display: none !important;
-}
-
-// Pulse Animation
-@keyframes pulse {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 0.8;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
 }
 
 // ============================================
@@ -485,16 +966,188 @@
     }
 
     #map {
-        height: 350px;
+        height: 450px;
     }
 
     .map-stats {
         flex-direction: column;
-        gap: 1rem;
+        gap: $space-2;
     }
 
     .layer-controls {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    #map {
+        height: 350px;
+    }
+}
+
+// ============================================
+// COMPREHENSIVE LEAFLET OVERRIDES - WHITE THEME
+// ============================================
+
+// Force all Leaflet elements to use white theme
+.leaflet-container {
+    background: $bg-map !important;
+    font-family: $font-primary !important;
+    color: $text-primary !important;
+}
+
+// Tile layer background
+.leaflet-tile-container {
+    background: $bg-map !important;
+}
+
+.leaflet-tile {
+    background: $bg-map !important;
+    filter: none !important;
+}
+
+// All popup elements
+.leaflet-popup {
+    background: $bg-primary !important;
+    color: $text-primary !important;
+    font-family: $font-primary !important;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper {
+    background: $bg-primary !important;
+    color: $text-primary !important;
+    border: 1px solid $map-border !important;
+    border-radius: $radius-md !important;
+    box-shadow: $shadow-md !important;
+}
+
+.leaflet-popup .leaflet-popup-content {
+    background: $bg-primary !important;
+    color: $text-primary !important;
+    font-family: $font-primary !important;
+    margin: $space-3 !important;
+    min-width: 260px !important;
+}
+
+.leaflet-popup-tip {
+    background: $bg-primary !important;
+    border: 1px solid $map-border !important;
+}
+
+.leaflet-popup-close-button {
+    background: transparent !important;
+    color: $text-muted !important;
+    font-size: 20px !important;
+    padding: 4px 8px !important;
+    right: 4px !important;
+    top: 4px !important;
+
+    &:hover {
+        color: $text-primary !important;
+        background: $bg-secondary !important;
+    }
+}
+
+// Leaflet controls
+.leaflet-control-container {
+    font-family: $font-primary !important;
+}
+
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: $shadow-sm !important;
+
+    a {
+        background: $bg-primary !important;
+        color: $text-primary !important;
+        border: 1px solid $map-border !important;
+        width: 32px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+
+        &:hover {
+            background: $bg-secondary !important;
+        }
+    }
+}
+
+.leaflet-control-attribution {
+    background: rgba($bg-primary, 0.9) !important;
+    color: $text-muted !important;
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    border-radius: $radius-sm !important;
+    border: 1px solid $map-border !important;
+
+    a {
+        color: $text-muted !important;
+
+        &:hover {
+            color: $text-primary !important;
+        }
+    }
+}
+
+// Leaflet layer control
+.leaflet-control-layers {
+    background: $bg-primary !important;
+    border: 1px solid $map-border !important;
+    border-radius: $radius-md !important;
+    box-shadow: $shadow-sm !important;
+
+    .leaflet-control-layers-toggle {
+        background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Crect%20fill%3D%22%23FFFFFF%22%20width%3D%2224%22%20height%3D%2224%22%20stroke%3D%22%23E0E0E0%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E) !important;
+    }
+}
+
+.leaflet-control-layers-expanded {
+    background: $bg-primary !important;
+    color: $text-primary !important;
+    padding: $space-3 !important;
+}
+
+.leaflet-control-layers-separator {
+    border-top: 1px solid $map-border !important;
+}
+
+.leaflet-control-layers label {
+    font-family: $font-primary !important;
+    font-size: $text-sm !important;
+    color: $text-primary !important;
+
+    .leaflet-control-layers-selector {
+        accent-color: $nato-friendly;
+    }
+}
+
+// Leaflet marker overrides
+.leaflet-marker-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+.leaflet-marker-shadow {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+// Override any remaining dark elements
+.leaflet-popup-content table,
+.leaflet-popup-content tr,
+.leaflet-popup-content td,
+.leaflet-popup-content th {
+    background: $bg-primary !important;
+    color: $text-primary !important;
+    border-color: $map-border !important;
+}
+
+// Animation overrides for movement paths
+.movement-path {
+    animation: dashMoveWhite 20s linear infinite;
+}
+
+@keyframes dashMoveWhite {
+    to {
+        stroke-dashoffset: -30;
     }
 }

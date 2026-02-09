@@ -1,14 +1,15 @@
 // ============================================
 // SCSS Variables - Conflict Timeline
+// Swiss Design System
 // ============================================
 
-// NATO Affiliation Colors
+// NATO Affiliation Colors (PRESERVED)
 $nato-friendly: #0066CC;
 $nato-hostile: #CC0000;
 $nato-neutral: #00AA00;
 $nato-unknown: #FFAA00;
 
-// Nation Colors
+// Nation Colors (PRESERVED)
 $israel-color: #0038B8;
 $palestine-color: #009C48;
 $egypt-color: #CE1126;
@@ -28,53 +29,107 @@ $border-high: #e74c3c;
 $border-medium: #f1c40f;
 $border-low: #2ecc71;
 
-// Theme Colors
-$bg-primary: #0a0a0a;
-$bg-secondary: #1a1a2e;
-$bg-tertiary: #16213e;
-$text-primary: #e8e8e8;
-$text-secondary: #a0a0a0;
-$text-muted: #6c757d;
+// ============================================
+// Swiss Design System
+// ============================================
+
+// Typography - Strict Swiss Scale
+$font-primary: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-mono: 'Courier New', monospace;
+
+// Type Scale (Mathematical progression)
+$text-xs: 12px;
+$text-sm: 14px;
+$text-base: 16px;
+$text-lg: 18px;
+$text-xl: 24px;
+$text-2xl: 32px;
+$text-3xl: 48px;
+
+// Font Weights - Swiss simplicity
+$font-regular: 400;
+$font-bold: 700;
+
+// Line Heights
+$leading-tight: 1.2;
+$leading-normal: 1.5;
+$leading-relaxed: 1.7;
+
+// Letter Spacing
+$tracking-tight: -0.02em;
+$tracking-normal: 0;
+$tracking-wide: 0.02em;
+
+// ============================================
+// Colors - White Background with Black Text
+// ============================================
+
+$bg-primary: #FFFFFF;
+$bg-secondary: #F5F5F5;
+$bg-tertiary: #EEEEEE;
+$bg-map: #FFFFFF;
+
+$text-primary: #000000;
+$text-secondary: #333333;
+$text-muted: #666666;
 
 // Map Colors
-$map-water: #1a1a2e;
-$map-land: #1e2a3a;
-$map-border: #2a3f5f;
+$map-water: #FFFFFF;
+$map-land: #F0F0F0;
+$map-border: #E0E0E0;
 
 // Timeline Colors
-$timeline-line: #3a3a5a;
-$timeline-marker: #4a4a6a;
+$timeline-line: #CCCCCC;
+$timeline-marker: #999999;
 $timeline-active: #0066CC;
 
-// Typography
-$font-primary: 'Segoe UI', system-ui, -apple-system, sans-serif;
-$font-mono: 'Courier New', monospace;
-$font-awesome: 'Font Awesome 6 Free';
+// ============================================
+// Spacing Scale - 8px Unit (Swiss precision)
+// ============================================
 
-// Spacing
-$spacing-xs: 0.25rem;
-$spacing-sm: 0.5rem;
-$spacing-md: 1rem;
-$spacing-lg: 1.5rem;
-$spacing-xl: 2rem;
-$spacing-xxl: 3rem;
+$space-1: 8px;
+$space-2: 16px;
+$space-3: 24px;
+$space-4: 32px;
+$space-5: 40px;
+$space-6: 48px;
+$space-8: 64px;
+$space-10: 80px;
+$space-12: 96px;
+$space-16: 128px;
 
-// Border Radius
-$radius-sm: 4px;
-$radius-md: 8px;
-$radius-lg: 12px;
-$radius-xl: 16px;
-$radius-full: 50%;
+// ============================================
+// Border Radius - Slight rounding
+// ============================================
 
-// Shadows
-$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+$radius-sm: 2px;
+$radius-md: 4px;
+$radius-lg: 6px;
+$radius-xl: 8px;
 
+// ============================================
+// Shadows - Minimal flat design
+// ============================================
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+
+// ============================================
 // Transitions
+// ============================================
+
 $transition-fast: 0.15s ease;
-$transition-normal: 0.3s ease;
-$transition-slow: 0.5s ease;
+$transition-normal: 0.25s ease;
+$transition-slow: 0.4s ease;
+
+// ============================================
+// Grid System
+// ============================================
+
+$grid-columns: 12;
+$grid-gutter: 24px;
+$grid-max-width: 1440px;
 
 // Breakpoints
 $breakpoint-sm: 576px;

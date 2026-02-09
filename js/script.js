@@ -334,36 +334,6 @@ function detectInvolvedNations(event) {
     return [...new Set(nations)]; // Remove duplicates
 }
 
-function createFlagOverlayForEvent(event, markerSize = 40) {
-    const involvedNations = detectInvolvedNations(event);
-    if (involvedNations.length === 0) return '';
-
-    const flagEmojis = {
-        israel: '🇮🇱',
-        palestine: '🇵🇸',
-        hamas: '⚡',
-        egypt: '🇪🇬',
-        syria: '🇸🇾',
-        jordan: '🇯🇴',
-        lebanon: '🇱🇧',
-        usa: '🇺🇸',
-        uk: '🇬🇧',
-        un: '🇺🇳'
-    };
-
-    const flagElement = involvedNations.slice(0, 2).map(nation => {
-        const emoji = flagEmojis[nation.toLowerCase()] || '🏳️';
-        return `<span class="flag-emoji">${emoji}</span>`;
-    }).join('');
-
-    return `
-        <div class="event-flag-beside">
-            ${flagElement}
-        </div>
-    `;
-}
-
-
 // Enhanced event data processor with military classifications
 function enhanceEventWithMilitaryData(event) {
     if (!event) return event;
@@ -1665,7 +1635,8 @@ let mapState = {
     cityLayer: null,
     movementLayer: null,
     flagLayer: null,
-    isUpdating: false // Add this important flag
+    isUpdating: false,
+    updateDebounceTimer: null
 };
 
 // Initialize the timeline
@@ -1834,13 +1805,58 @@ async function initializeMap() {
     // Create actual Leaflet map
     mapState.map = L.map('map').setView([31.5, 35.0], 7);
     
-    // Add dark military-style tile layer
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Add clean white/light tile layer
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap contributors © CARTO',
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(mapState.map);
-    
+
+    // Clear markers on zoom to prevent ghosting - comprehensive clearing
+    let zoomDebounceTimer = null;
+    mapState.map.on('zoomend', function() {
+        // Debounce zoom events to prevent rapid redraws
+        if (zoomDebounceTimer) {
+            clearTimeout(zoomDebounceTimer);
+        }
+        zoomDebounceTimer = setTimeout(() => {
+            // Clear ALL layers to prevent ghosting
+            if (mapState.markerLayer) {
+                mapState.markerLayer.clearLayers();
+            }
+            if (mapState.flagLayer) {
+                mapState.flagLayer.clearLayers();
+            }
+            if (mapState.movementLayer) {
+                mapState.movementLayer.clearLayers();
+            }
+            if (mapState.territoryLayer) {
+                mapState.territoryLayer.clearLayers();
+            }
+            
+            // Clear military layer controller layers
+            if (window.layerController && window.layerController.layerGroups) {
+                Object.keys(window.layerController.layerGroups).forEach(layerKey => {
+                    const layerGroup = window.layerController.layerGroups[layerKey];
+                    if (layerGroup) {
+                        layerGroup.clearLayers();
+                    }
+                });
+            }
+            
+            // Clear clustering cache on zoom
+            if (window.performanceOptimizer) {
+                window.performanceOptimizer.clusterCache.clear();
+                window.performanceOptimizer.symbolCache.clear();
+            }
+            
+            // Redraw markers for new zoom level
+            if (typeof updateMapForYear === 'function') {
+                updateMapForYear(mapState.currentYear);
+            }
+        }, 150);
+    });
+
     // Add military grid overlay
     addMilitaryGrid();
     
@@ -1856,10 +1872,10 @@ async function initializeMap() {
 function addMilitaryGrid() {
     const gridLayer = L.layerGroup();
     
-    // Create grid lines
+    // Create grid lines - visible on white map
     for (let lat = 29; lat <= 33; lat += 0.5) {
         L.polyline([[lat, 34], [lat, 36]], {
-            color: 'rgba(255,255,255,0.1)',
+            color: 'rgba(0,0,0,0.1)',
             weight: 1,
             dashArray: '5, 5'
         }).addTo(gridLayer);
@@ -1867,7 +1883,7 @@ function addMilitaryGrid() {
     
     for (let lng = 34; lng <= 36; lng += 0.5) {
         L.polyline([[29, lng], [33, lng]], {
-            color: 'rgba(255,255,255,0.1)',
+            color: 'rgba(0,0,0,0.1)',
             weight: 1,
             dashArray: '5, 5'
         }).addTo(gridLayer);
@@ -1940,15 +1956,15 @@ function addMapLegend() {
         const div = L.DomUtil.create('div', 'legacy-map-legend');
         
         const legendContent = `
-            <div style="background: rgba(0, 0, 0, 0.95); padding: 12px; border-radius: 8px; color: white; font-size: 11px; min-width: 200px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <select id="legend-dropdown" style="flex: 1; margin-right: 8px; padding: 4px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">
+            <div class="legend-panel-content">
+                <div class="legend-panel-header">
+                    <select id="legend-dropdown" class="legend-dropdown">
                         <option value="military">Military Symbols</option>
                         <option value="territory">Territory Control</option>
                         <option value="factions">Military Factions</option>
                         <option value="events">Event Types</option>
                     </select>
-                    <button id="legend-hide-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">✕</button>
+                    <button id="legend-hide-btn" class="legend-hide-btn">✕</button>
                 </div>
                 <div id="legend-content-area">
                 </div>
@@ -2017,23 +2033,23 @@ function addMapLegend() {
 // Generate territory control legend content
 function generateTerritoryLegend() {
     return `
-        <div>
-            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">TERRITORY CONTROL</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: rgba(52, 152, 219, 0.3); border: 2px solid rgba(52, 152, 219, 0.7); margin-right: 8px;"></div>
+        <div class="territory-legend">
+            <h5>Territory Control</h5>
+            <div class="territory-items">
+                <div class="territory-item">
+                    <span class="territory-color israeli"></span>
                     <span>Israeli Control</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: rgba(155, 89, 182, 0.3); border: 2px solid rgba(155, 89, 182, 0.7); margin-right: 8px;"></div>
+                <div class="territory-item">
+                    <span class="territory-color palestinian"></span>
                     <span>Palestinian Control</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: rgba(231, 76, 60, 0.4); border: 2px solid rgba(231, 76, 60, 0.8); margin-right: 8px;"></div>
+                <div class="territory-item">
+                    <span class="territory-color hamas"></span>
                     <span>Hamas Control</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: rgba(255, 165, 0, 0.3); border: 2px dashed rgba(255, 165, 0, 0.7); margin-right: 8px;"></div>
+                <div class="territory-item">
+                    <span class="territory-color occupied"></span>
                     <span>Occupied Areas</span>
                 </div>
             </div>
@@ -2062,24 +2078,24 @@ function generateMilitaryFactionsLegend() {
     };
 
     return `
-        <div>
-            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px;">MILITARY FACTIONS</div>
-            <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
+        <div class="nato-legend-container">
+            <div class="nato-legend-title">MILITARY FACTIONS</div>
+            <div class="nato-legend-items">
                 ${factions.map(faction => {
                     const shape = frameShapes[faction.affiliation];
                     const frameSVG = getFrameSVG(shape, faction.color);
                     return `
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" style="flex-shrink: 0;">${frameSVG}</svg>
+                        <div class="nato-legend-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" class="nato-frame-svg">${frameSVG}</svg>
                             <span>${faction.name}</span>
                         </div>
                     `;
                 }).join('')}
             </div>
-            <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 10px; color: #9ca3af;">
-                <strong>NATO Frames:</strong><br>
-                ■ Rectangle = Friendly<br>
-                ◆ Diamond = Hostile<br>
+            <div class="nato-legend-frames">
+                <strong>NATO Frames:</strong>
+                ■ Rectangle = Friendly
+                ◆ Diamond = Hostile
                 □ Square = Neutral
             </div>
         </div>
@@ -2102,152 +2118,59 @@ function getFrameSVG(shape, color) {
 
 // Generate military symbols legend content
 function generateMilitarySymbolsLegend() {
-    const affiliations = [
-        { key: 'friendly', name: 'Friendly Forces', color: '#0066CC' },
-        { key: 'hostile', name: 'Hostile Forces', color: '#CC0000' },
-        { key: 'neutral', name: 'Neutral Forces', color: '#00AA00' },
-        { key: 'unknown', name: 'Unknown Forces', color: '#FFAA00' }
-    ];
-    
-    const unitTypes = [
-        { key: 'infantry', name: 'Infantry' },
-        { key: 'armor', name: 'Armor' },
-        { key: 'artillery', name: 'Artillery' },
-        { key: 'headquarters', name: 'Headquarters' },
-        { key: 'checkpoint', name: 'Checkpoint' },
-        { key: 'settlement', name: 'Settlement' }
-    ];
-    
-    let legendHTML = `
-        <div>
-            <div style="font-weight: bold; margin-bottom: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">MILITARY SYMBOLS (1994 NATO)</div>
-            
-            <div style="margin-bottom: 16px;">
-                <div style="font-weight: bold; margin-bottom: 8px; color: #fff; font-size: 12px; text-align: center;">Affiliation Frames</div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
-    `;
-    
-    // Add affiliation symbols - using direct SVG creation like working functions
-    affiliations.forEach(affiliation => {
-        let frameIcon = '';
-        if (affiliation.key === 'friendly') {
-            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
-        } else if (affiliation.key === 'hostile') {
-            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2" transform="rotate(45 20 20)"/>`;
-        } else if (affiliation.key === 'neutral') {
-            frameIcon = `<rect x="10" y="10" width="20" height="20" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
-        } else {
-            frameIcon = `<rect x="8" y="8" width="24" height="24" fill="${affiliation.color}" fill-opacity="0.7" stroke="${affiliation.color}" stroke-width="2"/>`;
-        }
-        
-        legendHTML += `
-            <div style="display: flex; align-items: center; gap: 8px; padding: 6px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            ${frameIcon}
-                            <g stroke="white" stroke-width="2" fill="none">
-                                <line x1="14" y1="14" x2="26" y2="26"/>
-                                <line x1="26" y1="14" x2="14" y2="26"/>
-                            </g>
-                        </svg>
+    return `
+        <div class="nato-symbols-legend">
+            <div class="nato-legend-section">
+                <h5>Affiliation Frames</h5>
+                <div class="affiliation-grid">
+                    <div class="affiliation-item">
+                        <div class="affiliation-icon friendly"></div>
+                        <span>Friendly Forces</span>
                     </div>
-                    <span style="color: #e1e8ed; font-size: 11px;">${affiliation.name}</span>
-                </div>
-        `;
-    });
-    
-    legendHTML += `
+                    <div class="affiliation-item">
+                        <div class="affiliation-icon hostile"></div>
+                        <span>Hostile Forces</span>
+                    </div>
+                    <div class="affiliation-item">
+                        <div class="affiliation-icon neutral"></div>
+                        <span>Neutral Forces</span>
+                    </div>
+                    <div class="affiliation-item">
+                        <div class="affiliation-icon unknown"></div>
+                        <span>Unknown Forces</span>
+                    </div>
                 </div>
             </div>
-            
-            <div style="margin-bottom: 16px;">
-                <div style="font-weight: bold; margin-bottom: 8px; color: #fff; font-size: 12px; text-align: center;">Unit Types (Example)</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-    `;
-    
-    // Add unit type examples - simple icons like working functions
-    unitTypes.slice(0, 6).forEach(unitType => {
-        let unitIcon = '';
-        if (unitType.key === 'infantry') {
-            unitIcon = `<g stroke="white" stroke-width="2" fill="none">
-                            <line x1="14" y1="14" x2="26" y2="26"/>
-                            <line x1="26" y1="14" x2="14" y2="26"/>
-                        </g>`;
-        } else if (unitType.key === 'armor') {
-            unitIcon = `<ellipse cx="20" cy="20" rx="10" ry="7" fill="none" stroke="white" stroke-width="2"/>`;
-        } else if (unitType.key === 'artillery') {
-            unitIcon = `<circle cx="20" cy="20" r="8" fill="none" stroke="white" stroke-width="2"/>`;
-        } else if (unitType.key === 'headquarters') {
-            unitIcon = `<rect x="14" y="18" width="12" height="4" fill="white" stroke="none"/>`;
-        } else if (unitType.key === 'checkpoint') {
-            unitIcon = `<rect x="14" y="16" width="12" height="8" fill="none" stroke="white" stroke-width="2"/>`;
-        } else if (unitType.key === 'settlement') {
-            unitIcon = `<g stroke="white" stroke-width="1.5" fill="white">
-                            <circle cx="20" cy="8" r="3"/>
-                            <path d="M 12 24 L 20 16 L 28 24 L 28 32 L 12 32 Z"/>
-                        </g>`;
-        } else {
-            unitIcon = `<g stroke="white" stroke-width="2" fill="none">
-                            <line x1="14" y1="14" x2="26" y2="26"/>
-                            <line x1="26" y1="14" x2="14" y2="26"/>
-                        </g>`;
-        }
-        
-        legendHTML += `
-            <div style="display: flex; flex-direction: column; align-items: center; padding: 6px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="8" y="8" width="24" height="24" fill="${affiliations[0].color}" fill-opacity="0.7" stroke="${affiliations[0].color}" stroke-width="2"/>
-                            ${unitIcon}
-                        </svg>
-                    </div>
-                    <span style="color: #e1e8ed; font-size: 10px; text-align: center;">${unitType.name}</span>
-                </div>
-        `;
-    });
-    
-    legendHTML += `
+            <div class="nato-legend-section">
+                <h5>Unit Types</h5>
+                <div class="unit-types-grid">
+                    <div class="unit-type-item">Infantry</div>
+                    <div class="unit-type-item">Armor</div>
+                    <div class="unit-type-item">Artillery</div>
+                    <div class="unit-type-item">Headquarters</div>
+                    <div class="unit-type-item">Checkpoint</div>
+                    <div class="unit-type-item">Settlement</div>
                 </div>
             </div>
         </div>
     `;
-    
-    return legendHTML;
 }
 
 // Generate national forces legend content
 function generateNationalForcesLegend() {
-    if (typeof window.FlagSystem === 'undefined') {
-        return '<div style="padding: 10px; text-align: center;">Flag system not available</div>';
-    }
-    
-    const flagSystem = new window.FlagSystem();
-    const nations = [
-        { key: 'israel', name: 'Israel' },
-        { key: 'palestine', name: 'Palestine' },
-        { key: 'egypt', name: 'Egypt' },
-        { key: 'syria', name: 'Syria' },
-        { key: 'jordan', name: 'Jordan' },
-        { key: 'lebanon', name: 'Lebanon' },
-        { key: 'usa', name: 'United States' },
-        { key: 'uk', name: 'United Kingdom' },
-        { key: 'un', name: 'United Nations' }
-    ];
-    
-    const flagsHTML = nations.map(nation => `
-        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 4px;">
-            <div style="width: 32px; height: 20px; border-radius: 2px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
-                ${flagSystem.getFlagElement(nation.key, 24)}
-            </div>
-            <span style="color: #e1e8ed; font-size: 11px; font-weight: 500;">${nation.name}</span>
-        </div>
-    `).join('');
-    
     return `
-        <div>
-            <div style="font-weight: bold; margin-bottom: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">NATIONAL FORCES</div>
-            <div style="max-height: 400px; overflow-y: auto;">
-                ${flagsHTML}
+        <div class="national-forces-legend">
+            <h5>National Forces</h5>
+            <div class="nations-grid">
+                <div class="nation-item">🇮🇱 Israel</div>
+                <div class="nation-item">🇵🇸 Palestine</div>
+                <div class="nation-item">🇪🇬 Egypt</div>
+                <div class="nation-item">🇸🇾 Syria</div>
+                <div class="nation-item">🇯🇴 Jordan</div>
+                <div class="nation-item">🇱🇧 Lebanon</div>
+                <div class="nation-item">🇺🇸 United States</div>
+                <div class="nation-item">🇬🇧 United Kingdom</div>
+                <div class="nation-item">🇺🇳 United Nations</div>
             </div>
         </div>
     `;
@@ -2256,27 +2179,78 @@ function generateNationalForcesLegend() {
 // Generate event types legend content
 function generateEventTypesLegend() {
     return `
-        <div>
-            <div style="font-weight: bold; margin-bottom: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom:5px;">EVENT TYPES</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: #e74c3c; border-radius: 2px; margin-right: 8px;"></div>
+        <div class="event-types-legend">
+            <h5>Event Types</h5>
+            <div class="event-types-grid">
+                <div class="event-type-item">
+                    <span class="event-color attacks"></span>
                     <span>Attacks</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: #3498db; border-radius: 2px; margin-right: 8px;"></div>
+                <div class="event-type-item">
+                    <span class="event-color settlements"></span>
                     <span>Settlements</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: #9b59b6; border-radius: 2px; margin-right: 8px;"></div>
+                <div class="event-type-item">
+                    <span class="event-color political"></span>
                     <span>Political</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: #f39c12; border-radius: 2px; margin-right: 8px;"></div>
+                <div class="event-type-item">
+                    <span class="event-color social"></span>
                     <span>Social</span>
                 </div>
-                <div style="display: flex; align-items: center; margin-bottom:6px;">
-                    <div style="width: 12px; height: 12px; background: #27ae60; border-radius: 2px; margin-right: 8px;"></div>
+                <div class="event-type-item">
+                    <span class="event-color territory"></span>
+                    <span>Territory</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Generate national forces legend content
+function generateNationalForcesLegend() {
+    return `
+        <div class="national-forces-legend">
+            <h5>National Forces</h5>
+            <div class="nations-grid">
+                <div class="nation-item">Israel</div>
+                <div class="nation-item">Palestine</div>
+                <div class="nation-item">Egypt</div>
+                <div class="nation-item">Syria</div>
+                <div class="nation-item">Jordan</div>
+                <div class="nation-item">Lebanon</div>
+                <div class="nation-item">United States</div>
+                <div class="nation-item">United Kingdom</div>
+                <div class="nation-item">United Nations</div>
+            </div>
+        </div>
+    `;
+}
+
+// Generate event types legend content
+function generateEventTypesLegend() {
+    return `
+        <div class="event-types-legend">
+            <h5>Event Types</h5>
+            <div class="event-types-grid">
+                <div class="event-type-item">
+                    <span class="event-color attacks"></span>
+                    <span>Attacks</span>
+                </div>
+                <div class="event-type-item">
+                    <span class="event-color settlements"></span>
+                    <span>Settlements</span>
+                </div>
+                <div class="event-type-item">
+                    <span class="event-color political"></span>
+                    <span>Political</span>
+                </div>
+                <div class="event-type-item">
+                    <span class="event-color social"></span>
+                    <span>Social</span>
+                </div>
+                <div class="event-type-item">
+                    <span class="event-color territory"></span>
                     <span>Territory</span>
                 </div>
             </div>
@@ -2350,21 +2324,6 @@ function setupMapControls() {
     if (showMovements) {
         showMovements.addEventListener('change', async (e) => {
             mapState.showMovements = e.target.checked;
-            await updateMapForYear(mapState.currentYear);
-        });
-    }
-    
-    // Flag toggle control
-    const showFlags = document.getElementById('show-flags');
-    if (showFlags) {
-        // Use existing clusterState from clustering system
-        if (typeof clusterState !== 'undefined') {
-            clusterState.showFlags = showFlags.checked;
-        }
-        
-        showFlags.addEventListener('change', async (e) => {
-            window.clusterState.showFlags = e.target.checked;
-            console.log('🏳 Flag toggle:', e.target.checked);
             await updateMapForYear(mapState.currentYear);
         });
     }
@@ -2719,7 +2678,34 @@ async function updateMapForYear(year) {
     mapState.isUpdating = true;
     
     try {
-        // Clear previous layers
+        // Clear ALL layers BEFORE removing from map to prevent ghosting
+        if (mapState.markerLayer) {
+            mapState.markerLayer.clearLayers();
+        }
+        if (mapState.flagLayer) {
+            mapState.flagLayer.clearLayers();
+        }
+        if (mapState.movementLayer) {
+            mapState.movementLayer.clearLayers();
+        }
+        if (mapState.territoryLayer) {
+            mapState.territoryLayer.clearLayers();
+        }
+        if (mapState.cityLayer) {
+            mapState.cityLayer.clearLayers();
+        }
+
+        // Clear military layer controller layers
+        if (window.layerController && window.layerController.layerGroups) {
+            Object.keys(window.layerController.layerGroups).forEach(layerKey => {
+                const layerGroup = window.layerController.layerGroups[layerKey];
+                if (layerGroup) {
+                    layerGroup.clearLayers();
+                }
+            });
+        }
+
+        // Remove layers from map
         if (mapState.territoryLayer) {
             mapState.map.removeLayer(mapState.territoryLayer);
         }
@@ -2735,13 +2721,20 @@ async function updateMapForYear(year) {
         if (mapState.flagLayer) {
             mapState.map.removeLayer(mapState.flagLayer);
         }
-        
+
         // Create new layers
         mapState.territoryLayer = L.layerGroup();
         mapState.markerLayer = L.layerGroup();
         mapState.cityLayer = L.layerGroup();
         mapState.movementLayer = L.layerGroup();
         mapState.flagLayer = L.layerGroup();
+        
+        // Update military layer controller to use new layer groups
+        if (window.layerController && window.layerController.layerGroups) {
+            Object.keys(window.layerController.layerGroups).forEach(layer => {
+                window.layerController.layerGroups[layer] = L.layerGroup().addTo(mapState.map);
+            });
+        }
         
         // Get events for this year and earlier (now async)
         const allEvents = await getAllEvents();
@@ -2780,18 +2773,6 @@ async function updateMapForYear(year) {
             drawMovementPaths(relevantEvents);
         } else {
             console.log('⏸️ Movement display is disabled');
-        }
-        // Draw flags (only if enabled AND not using enhanced markers which already include flags)
-        if (window.clusterState && window.clusterState.showFlags && typeof window.createEnhancedMilitaryMarker !== 'function') {
-            console.log('🏁 Adding flags to map...');
-            drawFlagsForEvents(relevantEvents);
-            mapState.flagLayer.addTo(mapState.map);
-        } else {
-            // Clear and remove flags if disabled
-            if (mapState.flagLayer) {
-                mapState.flagLayer.clearLayers();
-                mapState.map.removeLayer(mapState.flagLayer);
-            }
         }
         
         // Add layers to map
@@ -3268,26 +3249,47 @@ function createClusterCountMarker(group, coordinates) {
 }
 
 // Side panel state
-let sidePanelOpen = false;
+let sidePanelOpen = true; // Open by default
 let sidePanelSelectedEvents = null;
 const clusterEventsMap = new Map();
 
 // Update side panel visual state
 function updateSidePanelState() {
     const panel = document.getElementById('event-side-panel');
+    const headerElement = document.querySelector('header');
+    const introElement = document.querySelector('.intro');
     const mapContainer = document.querySelector('.map-container');
+    const footerElement = document.querySelector('footer');
 
     if (!panel) return;
 
     if (sidePanelOpen) {
         panel.classList.add('open');
+        if (headerElement) {
+            headerElement.classList.add('shifted');
+        }
+        if (introElement) {
+            introElement.classList.add('shifted');
+        }
         if (mapContainer) {
             mapContainer.classList.add('shifted');
         }
+        if (footerElement) {
+            footerElement.classList.add('shifted');
+        }
     } else {
         panel.classList.remove('open');
+        if (headerElement) {
+            headerElement.classList.remove('shifted');
+        }
+        if (introElement) {
+            introElement.classList.remove('shifted');
+        }
         if (mapContainer) {
             mapContainer.classList.remove('shifted');
+        }
+        if (footerElement) {
+            footerElement.classList.remove('shifted');
         }
         sidePanelSelectedEvents = null;
     }
@@ -3322,6 +3324,7 @@ function openEventSidePanel(eventGroup) {
     if (!panel) {
         panel = document.createElement('div');
         panel.id = 'event-side-panel';
+        panel.classList.add('open');
         document.body.appendChild(panel);
     }
 
@@ -3334,7 +3337,7 @@ function openEventSidePanel(eventGroup) {
     if (totalEvents === 0) {
         panel.innerHTML = `
             <div class="panel-header">
-                <h3>📍 No Events</h3>
+                <h3>No Events Found</h3>
                 <button id="panel-close-btn">✕</button>
             </div>
             <div class="panel-content" id="panel-scroll-content">
@@ -3354,7 +3357,7 @@ function openEventSidePanel(eventGroup) {
         
         panel.innerHTML = `
             <div class="panel-header">
-                <h3>📍 ${totalEvents} Event${totalEvents !== 1 ? 's' : ''}</h3>
+                <h3>Latest Events (${totalEvents > 0 ? eventGroup[0].date : 'No data'})</h3>
                 <button id="panel-close-btn">✕</button>
             </div>
             <div class="panel-content" id="panel-scroll-content">
@@ -3409,11 +3412,11 @@ function openEventSidePanel(eventGroup) {
         });
     }
 
-    // Auto open when populated with events
+    // Ensure panel is open when populated with events
     if (!sidePanelOpen) {
         sidePanelOpen = true;
-        updateSidePanelState();
     }
+    updateSidePanelState();
 
     setTimeout(() => {
         const content = document.getElementById('panel-scroll-content');
@@ -3423,9 +3426,46 @@ function openEventSidePanel(eventGroup) {
     }, 100);
 }
 
-// Initialize side panel (hidden by default)
-function initializeSidePanel() {
+// Initialize side panel with latest events on page load
+async function initializeSidePanel() {
     setupMapClickHandler();
+    
+    // Load latest 15 events on page load
+    try {
+        const allEvents = await getAllEvents();
+        
+        // Sort events by date (newest first) and take latest 15
+        const sortedEvents = allEvents
+            .filter(event => event.date && event.title)
+            .sort((a, b) => {
+                const yearA = getEventYear(a.date);
+                const yearB = getEventYear(b.date);
+                return yearB - yearA;
+            })
+            .slice(0, 15);
+        
+        // Get the latest date from the data
+        const latestEvent = sortedEvents[0];
+        const latestDate = latestEvent ? latestEvent.date : 'Unknown';
+        
+        // Open side panel with latest events
+        if (sortedEvents.length > 0) {
+            openEventSidePanel(sortedEvents);
+        }
+        
+        // Update the panel header to show latest date
+        const panel = document.getElementById('event-side-panel');
+        if (panel) {
+            const headerTitle = panel.querySelector('.panel-header h3');
+            if (headerTitle) {
+                headerTitle.textContent = `Latest Events (${latestDate})`;
+            }
+        }
+        
+        console.log('📍 Side panel initialized with latest events:', sortedEvents.length, 'events, latest date:', latestDate);
+    } catch (error) {
+        console.error('Error loading initial events:', error);
+    }
 }
 
 // Setup map click to close sidepanel
@@ -3549,10 +3589,6 @@ function drawAllEventMarkers(events) {
 
                 const priority = calculateEventPriority(event);
                 const isHighPriority = priority > 50;
-
-                const flagOverlay = (window.clusterState && window.clusterState.showFlags && !processedCoordinates.has(coordKey))
-                    ? createFlagOverlayForEvent(event, isHighPriority ? 36 : 28)
-                    : '';
 
                 const iconSize = isHighPriority ? 52 : 44;
                 const iconAnchor = isHighPriority ? 26 : 22;
@@ -3756,13 +3792,18 @@ function drawMovementPaths(events) {
         console.log('🚀 Movement display is disabled');
         return;
     }
-    
+
+    // Clear existing movement markers to prevent ghosting
+    if (mapState.movementLayer) {
+        mapState.movementLayer.clearLayers();
+    }
+
     const movementEvents = events.filter(event => event.movementData);
     console.log('🎯 Drawing movements for year - found:', movementEvents.length, 'events with movement data');
-    
+
     // Track all processed coordinates across ALL movements to prevent overlap
     const allProcessedCoords = new Map(); // coordKey -> { latOffset, lngOffset }
-    
+
     // Process each movement event only once
     movementEvents.forEach((event, eventIndex) => {
         const movement = event.movementData;
@@ -3828,24 +3869,26 @@ function drawMovementPaths(events) {
                 
                 // Bind popup to marker
                 const popupContent = `
-                    <div style="max-width: 280px; background: #1a1a1a; color: #e1e8ed; padding: 12px; border-radius: 8px;">
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                            <div style="width: 28px; height: 28px; margin-right: 10px; background: ${faction.color}; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <div class="movement-popup-content">
+                        <div class="movement-popup-header">
+                            <div class="movement-popup-icon" style="background: ${faction.color};">
                                 <svg width="20" height="20" viewBox="0 0 24 24">
                                     <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
                                 </svg>
                             </div>
-                            <div>
-                                <strong style="font-size: 14px;">${event.title}</strong><br>
-                                <span style="color: #9ca3af; font-size: 12px;">${event.date}</span>
+                            <div class="movement-popup-title">
+                                <strong>${event.title}</strong>
+                                <span class="movement-popup-date">${event.date}</span>
                             </div>
                         </div>
-                        <div style="border-top: 1px solid #374151; padding-top: 8px; font-size: 12px;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-                                <span style="color: #9ca3af;">Operation:</span>
-                                <span style="text-transform: uppercase;">${movement.type.replace(/_/g, ' ')}</span>
-                                <span style="color: #9ca3af;">Waypoint:</span>
-                                <span>${index + 1} of ${movement.coordinates.length}</span>
+                        <div class="movement-popup-details">
+                            <div class="movement-detail-row">
+                                <span class="detail-label">Operation:</span>
+                                <span class="detail-value">${movement.type.replace(/_/g, ' ')}</span>
+                            </div>
+                            <div class="movement-detail-row">
+                                <span class="detail-label">Waypoint:</span>
+                                <span class="detail-value">${index + 1} of ${movement.coordinates.length}</span>
                             </div>
                         </div>
                     </div>
@@ -3861,26 +3904,30 @@ function drawMovementPaths(events) {
         
         // Enhanced popup with NATO symbol and movement details
         path.bindPopup(`
-            <div style="max-width: 280px; background: #1a1a1a; color: #e1e8ed; padding: 12px; border-radius: 8px;">
-                <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <div style="width: 28px; height: 28px; margin-right: 10px; background: ${faction.color}; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+            <div class="movement-popup-content">
+                <div class="movement-popup-header">
+                    <div class="movement-popup-icon" style="background: ${faction.color};">
                         <svg width="20" height="20" viewBox="0 0 24 24">
                             <polygon points="12,2 22,8 18,8 18,16 6,16 6,8 2,8" fill="white" stroke="${faction.color}" stroke-width="1"/>
                         </svg>
                     </div>
-                    <div>
-                        <strong style="font-size: 14px;">${event.title}</strong><br>
-                        <span style="color: #9ca3af; font-size: 12px;">${event.date}</span>
+                    <div class="movement-popup-title">
+                        <strong>${event.title}</strong>
+                        <span class="movement-popup-date">${event.date}</span>
                     </div>
                 </div>
-                <div style="border-top: 1px solid #374151; padding-top: 8px; font-size: 12px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-                        <span style="color: #9ca3af;">Operation:</span>
-                        <span style="text-transform: uppercase;">${movement.type.replace(/_/g, ' ')}</span>
-                        <span style="color: #9ca3af;">Duration:</span>
-                        <span>${movement.startTime} → ${movement.endTime}</span>
-                        <span style="color: #9ca3af;">Waypoints:</span>
-                        <span>${movement.coordinates.length}</span>
+                <div class="movement-popup-details">
+                    <div class="movement-detail-row">
+                        <span class="detail-label">Operation:</span>
+                        <span class="detail-value">${movement.type.replace(/_/g, ' ')}</span>
+                    </div>
+                    <div class="movement-detail-row">
+                        <span class="detail-label">Duration:</span>
+                        <span class="detail-value">${movement.startTime} → ${movement.endTime}</span>
+                    </div>
+                    <div class="movement-detail-row">
+                        <span class="detail-label">Waypoints:</span>
+                        <span class="detail-value">${movement.coordinates.length}</span>
                     </div>
                 </div>
             </div>
@@ -4079,42 +4126,6 @@ function addMajorCities() {
 }
 
 // Draw flags for events
-function drawFlagsForEvents(events) {
-    'use strict';
-    
-    // Clear existing flags first
-    if (mapState.flagLayer) {
-        mapState.flagLayer.clearLayers();
-    }
-    
-    events.forEach(event => {
-        if (event.geography && event.geography.coordinates) {
-            const flagOverlay = createFlagOverlayForEvent(event);
-            if (flagOverlay) {
-                const flagIcon = L.divIcon({
-                    html: flagOverlay,
-                    className: 'event-flag-overlay',
-                    iconSize: [40, 30],
-                    iconAnchor: [20, 15]
-                });
-                
-                const flagMarker = L.marker(event.geography.coordinates, {
-                    icon: flagIcon,
-                    zIndexOffset: 500
-                });
-                
-                flagMarker.bindPopup(`
-                    <strong>${event.title}</strong><br>
-                    <small>${event.date}</small><br>
-                    ${event.description ? event.description.substring(0, 100) + '...' : ''}
-                `);
-                
-                mapState.flagLayer.addLayer(flagMarker);
-            }
-        }
-    });
-}
-
 // Update statistics with comprehensive event counting
 function updateStatistics(events) {
     const militaryEvents = events.filter(e => e.category === 'military').length;
@@ -4159,15 +4170,15 @@ function updateLegendCounts(events) {
     const legendElement = document.querySelector('.map-legend');
     if (legendElement) {
         const countsHTML = `
-            <div style="margin-top: 8px; font-weight: bold; text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 5px; font-size: 10px;">
+            <div class="legend-event-counts">
                 Current Events: ${events.length}<br>
-                <span style="color: #e74c3c;">Military: ${militaryCount}</span> | 
-                <span style="color: #9b59b6;">Political: ${politicalCount}</span> | 
-                <span style="color: #f39c12;">Social: ${socialCount}</span>
+                <span class="count-military">Military: ${militaryCount}</span> | 
+                <span class="count-political">Political: ${politicalCount}</span> | 
+                <span class="count-social">Social: ${socialCount}</span>
             </div>
         `;
         
-        const existingCounts = legendElement.querySelector('div[style*="border-top"]');
+        const existingCounts = legendElement.querySelector('.legend-event-counts');
         if (existingCounts) {
             existingCounts.outerHTML = countsHTML;
         }
@@ -4183,7 +4194,6 @@ function initializeCheckboxStates() {
     const showSettlements = document.getElementById('show-settlements');
     const showCities = document.getElementById('show-cities');
     const showMovements = document.getElementById('show-movements');
-    const showFlags = document.getElementById('show-flags');
     const legendSelect = document.getElementById('map-legend-select');
     const legendContentArea = document.getElementById('legend-content-area');
 
@@ -4266,12 +4276,6 @@ function initializeCheckboxStates() {
     if (showMovements) {
         showMovements.addEventListener('change', async (e) => {
             mapState.showMovements = e.target.checked;
-            await refreshCurrentYear();
-        });
-    }
-    if (showFlags && window.clusterState) {
-        showFlags.addEventListener('change', async (e) => {
-            window.clusterState.showFlags = e.target.checked;
             await refreshCurrentYear();
         });
     }
@@ -4431,6 +4435,23 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Scroll to Map Button Functionality
+function initializeScrollToMapButton() {
+    const scrollBtn = document.getElementById('scroll-to-map-btn');
+    const mapContainer = document.querySelector('.map-container');
+
+    if (scrollBtn && mapContainer) {
+        scrollBtn.addEventListener('click', function() {
+            mapContainer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+}
+
+initializeScrollToMapButton();
 
 // Function to toggle legend visibility
 window.toggleLegend = function() {

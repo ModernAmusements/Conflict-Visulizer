@@ -1,188 +1,429 @@
 // ============================================
 // Text & Typography Styles
+// Swiss Design System
 // ============================================
+
+@use '../variables' as *;
 
 // Base Body Styles
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    color: #e1e8ed;
-    background-color: #000;
+    font-family: $font-primary;
+    font-weight: $font-regular;
+    line-height: $leading-normal;
+    color: $text-primary;
+    background-color: $bg-primary;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+// ============================================
+// Typography Scale
+// ============================================
+
+h1 {
+    font-size: $text-3xl;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+    letter-spacing: $tracking-tight;
+    margin: 0 0 $space-3 0;
+    color: $text-primary;
+}
+
+h2 {
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+    letter-spacing: $tracking-tight;
+    margin: 0 0 $space-2 0;
+    color: $text-primary;
+}
+
+h3 {
+    font-size: $text-xl;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+    letter-spacing: $tracking-normal;
+    margin: 0 0 $space-2 0;
+    color: $text-primary;
+}
+
+h4 {
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+    margin: 0 0 $space-2 0;
+    color: $text-primary;
+}
+
+p {
+    font-size: $text-base;
+    line-height: $leading-relaxed;
+    margin: 0 0 $space-2 0;
+    color: $text-secondary;
+}
+
+small,
+.small {
+    font-size: $text-sm;
+    line-height: $leading-normal;
+    color: $text-muted;
+}
+
+// ============================================
 // Header Styles
+// ============================================
+
 header {
-    background: linear-gradient(135deg, #1a1f2e, #2c3445);
-    color: #e1e8ed;
-    padding: 3rem 1rem;
-    text-align: start;
-    font-weight: 400;
+    background: $bg-secondary;
+    border-bottom: 1px solid $map-border;
+    padding: $space-6 0;
+    margin-bottom: $space-6;
+    transition: margin-left $transition-normal;
+
+    &.shifted {
+        margin-left: $grid-gutter;
+    }
 
     h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        font-weight: 400;
+        font-size: $text-3xl;
+        margin-bottom: $space-2;
     }
 
     h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-        color: #fff;
-        font-weight: 400;
+        font-size: $text-xl;
+        margin-bottom: $space-2;
+        color: $text-secondary;
     }
 
     p {
-        font-size: 1.1rem;
-        max-width: 800px;
-        color: #fff;
+        font-size: $text-base;
+        max-width: 66ch;
+        color: $text-secondary;
     }
 }
 
 // Main Content Area
 main {
-    max-width: 1200px;
+    width: 100%;
+    max-width: $grid-max-width;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0 $grid-gutter;
 }
 
 // Intro Section
 .intro {
-   
-   
-    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: $grid-gutter;
+    margin-bottom: $space-8;
+    padding-top: $space-4;
+    transition: margin-left $transition-normal;
 
-}
-
-
-.badge-icon {
-    font-size: 2rem;
-    margin-right: 1rem;
-}
-
-.badge-text {
-    strong {
-        font-size: 1.2rem;
-        display: block;
-        margin-bottom: 0.2rem;
+    &.shifted {
+        margin-left: $grid-gutter;
     }
 
-    small {
-        font-size: 0.9rem;
-        opacity: 0.9;
+    .intro-content {
+        grid-column: 1;
+    }
+
+    .intro-visual {
+        grid-column: 2;
+    }
+
+    @media (max-width: $breakpoint-lg) {
+        grid-template-columns: 1fr;
+
+        .intro-content,
+        .intro-visual {
+            grid-column: 1;
+        }
+    }
+}
+
+// Placeholder Image
+.placeholder-image {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-3;
+    color: $text-muted;
+
+    .placeholder-icon {
+        opacity: 0.5;
+    }
+
+    span {
+        font-size: $text-sm;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+    }
+}
+
+// Intro Image Container
+.intro-image-container {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    position: relative;
+
+    .intro-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 1px solid $map-border;
+        border-radius: $radius-md;
+    }
+
+    .image-caption {
+        position: absolute;
+        bottom: $space-3;
+        left: $space-3;
+        background: rgba($bg-primary, 0.8);
+        color: $text-muted;
+        font-size: $text-xs;
+        padding: $space-1 $space-2;
+        border-radius: $radius-sm;
+    }
+}
+
+// Scroll to Map Button
+.scroll-to-map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-3 $space-5;
+    background: transparent;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-family: $font-primary;
+    font-size: $text-base;
+    font-weight: $font-regular;
+    cursor: pointer;
+    transition: all $transition-fast;
+    margin-top: $space-3;
+
+    .btn-text {
+        transition: color $transition-fast;
+    }
+
+    .btn-arrow {
+        font-size: $text-lg;
+        line-height: 1;
+        transition: transform $transition-fast;
+    }
+
+    &:hover {
+        background: $bg-secondary;
+        border-color: $text-muted;
+
+        .btn-arrow {
+            transform: translateY(3px);
+        }
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// Accuracy Badge
+.accuracy-badge {
+    display: flex;
+    align-items: center;
+    background: $bg-secondary;
+    border: 1px solid $map-border;
+    border-radius: $radius-md;
+    padding: $space-3 $space-4;
+    margin: $space-4 0;
+    max-width: 400px;
+
+    .badge-text {
+        strong {
+            font-size: $text-base;
+            font-weight: $font-bold;
+            display: block;
+            margin-bottom: $space-1;
+        }
+
+        small {
+            font-size: $text-sm;
+            color: $text-muted;
+        }
     }
 }
 
 // Verification Panel
 .verification-panel {
-     
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-    border-left: 4px solid #28a745;
+    border-left: 3px solid $nato-friendly;
+    padding: $space-3;
+    margin-top: $space-4;
 
     h4 {
-        margin-bottom: 1rem;
-        color: #e1e8ed;
+        margin-bottom: $space-2;
     }
 }
 
 .verification-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: $space-2;
 }
 
 .verification-item {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
-     
-    border: 1px solid #2a3441;
-}
+    padding: $space-2;
+    border: 1px solid $map-border;
+    border-radius: $radius-sm;
 
-.check-mark {
-    color: #27ae60;
-    font-weight: 700;
-    margin-right: 0.5rem;
-    font-size: 1.1rem;
-}
-
-// Map Container
-.map-container {
-    background: #151923;
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 3rem;
-    border: 1px solid #2a3441;
-}
-
-.map-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-
-    h3 {
-        color: #e1e8ed;
-        margin: 0;
+    .check-mark {
+        color: $nato-friendly;
+        font-weight: $font-bold;
+        margin-right: $space-2;
+        font-size: $text-base;
     }
 }
 
-.map-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
+// ============================================
 // Footer Styles
+// ============================================
+
 footer {
-    background: #000;
-    color: white;
-    padding: 2rem 1rem;
-    margin-top: 4rem;
+    padding: $space-8 0;
+    margin-top: $space-12;
+    transition: margin-left $transition-normal;
+
+    &.shifted {
+        margin-left: $grid-gutter;
+    }
 }
 
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: $space-6;
+    margin-bottom: $space-6;
+    padding-top: $space-6;
+    border-top: 2px solid $text-primary;
 }
 
 .footer-section {
     h4 {
-        margin-bottom: 1rem;
-        color: #ecf0f1;
+        font-size: $text-sm;
+        margin-bottom: $space-3;
+        color: $text-primary;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
     }
 
     p {
-        line-height: 1.5;
-        color: #bdc3c7;
+        font-size: $text-sm;
+        line-height: $leading-relaxed;
+        color: $text-muted;
     }
 }
 
 .footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #95a5a6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: $space-4;
+    margin-top: $space-6;
+    color: $text-muted;
+    font-size: $text-sm;
+    border-top: 1px solid $map-border;
 }
 
 // ============================================
-// Responsive Text Styles
+// Swiss Section Dividers
 // ============================================
 
-@media (max-width: 768px) {
+.swiss-divider {
+    width: 100%;
+    height: 1px;
+    background: $map-border;
+    margin: $space-8 0;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -1px;
+        width: 120px;
+        height: 3px;
+        background: $text-primary;
+    }
+}
+
+.section-divider {
+    width: 100%;
+    height: 1px;
+    background: $map-border;
+    margin: $space-6 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: baseline;
+    gap: $space-4;
+    margin-bottom: $space-4;
+    padding-bottom: $space-2;
+    border-bottom: 2px solid $text-primary;
+
+    h2 {
+        margin: 0;
+    }
+
+    .section-number {
+        font-size: $text-sm;
+        color: $text-muted;
+        font-weight: $font-regular;
+    }
+}
+
+// ============================================
+// Responsive Typography
+// ============================================
+
+@media (max-width: $breakpoint-md) {
     header {
+        padding: $space-4 0;
+        margin-bottom: $space-4;
+
         h1 {
-            font-size: 2rem;
+            font-size: $text-2xl;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: $text-lg;
         }
+
+        p {
+            font-size: $text-sm;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    h1 {
+        font-size: $text-xl;
+    }
+
+    h2 {
+        font-size: $text-lg;
+    }
+
+    h3 {
+        font-size: $text-base;
     }
 }

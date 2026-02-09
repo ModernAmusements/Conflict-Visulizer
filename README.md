@@ -1,322 +1,146 @@
 # 2026-Conflict Project
 
-## 📋 Project Overview
-An interactive web application visualizing military conflicts with 1994-era NATO symbology standards. The application features strategic map visualization, military symbol systems, and territorial control displays with a functional, restrained design aesthetic.
+## Project Overview
+An interactive web application visualizing the Israel-Hamas conflict with historical timeline and military map. Features a clean Swiss design aesthetic with white backgrounds, black text, and NATO military symbology.
 
-## 🎯 Key Features
-- **1994 NATO Symbology**: Standard military symbols with complete legend reference
-- **Clean Map Loading**: No symbol repetition or tiling artifacts
-- **Enhanced Flag System**: Larger, clearly legible national flags
-- **Military Movement**: Thin lines with directional arrows
-- **Integrated UI**: National Forces panel within Legend Options
-- **1994-Era Styling**: Functional, restrained visualization without modern embellishments
-- **Timeline Slider**: Interactive year slider with tick marks for event navigation and snap-to-event functionality
+## Key Features
+- **Interactive Timeline**: Slider with year navigation, displays latest 15 events on page load
+- **Swiss Design Theme**: White backgrounds, black text, minimal styling
+- **White Map**: Clean light tile base with military-style overlays
+- **NATO Symbology**: 1994-era military symbols with color-coded affiliations
+- **Side Panel**: 360px drawer that opens on page load showing latest events with date
+- **Smooth Transitions**: All UI elements shift when side panel opens/closes
 
-## 📁 Project Organization
+## Quick Start
 
-```
-2026-Conflict/
-├── index.html                     # Main HTML entry point
-├── package.json                   # Project configuration
-├── .gitignore                     # Git ignore rules
-├── README.md                       # Project documentation
-├── PROJECT_DOCUMENTATION.md         # Technical documentation
-├── ai_js_ruleset.md             # JavaScript coding standards
-│
-├── scss/                         # SCSS stylesheets (migrating from CSS)
-│   ├── styles.scss               # Main styles entry point
-│   ├── _variables.scss           # Design tokens and variables
-│   └── _mixins.scss              # Reusable mixins
-│
-├── css/                          # Legacy CSS (being migrated to SCSS)
-│   ├── styles.css                # Original styles
-│   └── styles.css.backup         # Backup of original
-│
-├── js/                          # JavaScript files
-│   ├── script.js                 # Main application logic
-│   └── components/               # Reusable components
-│       ├── symbols.js            # NATO military symbol system
-│       ├── flags.js              # Flag and territory visualization
-│       └── clustering-system.js   # Event clustering and grouping
-│
-├── data/                        # Data files
-│   └── Hamasterrorattacks.csv   # Hamas attacks database (1987-2023)
-│
-└── assets/                      # Static assets
-    ├── images/                  # Image files
-    └── fonts/                   # Font files
-```
-
-## 🚀 Getting Started
-
-### Development Mode (with Vite + SCSS hot reloading):
 ```bash
-npm run dev
-# Opens at http://localhost:3000
+npm run dev      # Development server at http://localhost:3000
+npm run build    # Production build
+npm run preview  # Preview production build
 ```
 
-### Legacy Mode (Python server):
-```bash
-npm run legacy
-# Opens at http://localhost:8000
+## Architecture
+
+### File Structure
+```
+├── index.html                    # Main HTML entry point
+├── package.json                  # Project configuration
+├── README.md                     # This file
+├── scss/                         # SCSS stylesheets
+│   ├── styles.scss              # Main styles entry
+│   ├── _variables.scss          # Design tokens
+│   └── components/
+│       ├── _map.scss           # Map & legend styles
+│       ├── _popups.scss        # Popup styles
+│       └── _sidepanel.scss     # Side panel styles
+├── js/
+│   ├── script.js               # Main application logic
+│   └── components/
+│       ├── clustering-system.js # Event clustering
+│       ├── flags.js            # Flag system (disabled by default)
+│       └── symbols.js          # NATO symbol generation
+└── data/
+    └── Hamasterrorattacks.csv  # Attack database
 ```
 
-### Build for Production:
-```bash
-npm run build
-# Outputs to dist/ folder
-npm run preview
-# Preview production build
-```
+### Side Panel Behavior
+- **Default**: Opens on page load with latest 15 events
+- **Width**: 360px, slides in from left
+- **Content Shift**: Header, intro, map-container, and footer shift right by 360px when open
+- **Close**: Click X button or click on map to close
+- **Header**: Shows "Latest Events (YYYY-MM-DD)" with the most recent event date
 
-## 🎨 SCSS Architecture
+### Design System
 
-### Variables (`scss/_variables.scss`)
-Design tokens and configuration:
+#### Colors (Swiss Theme)
 ```scss
-// NATO Affiliation Colors
-$nato-friendly: #0066CC;
-$nato-hostile: #CC0000;
-$neutral: #00AA00;
-
-// Nation Colors
-$israel-color: #0038B8;
-$palestine-color: #009C48;
-
-// Theme Colors
-$bg-primary: #0a0a0a;
-$bg-secondary: #1a1a2e;
-$text-primary: #e8e8e8;
-
-// Spacing
-$spacing-sm: 0.5rem;
-$spacing-md: 1rem;
-$spacing-lg: 1.5rem;
-
-// Breakpoints
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
+$bg-primary: #FFFFFF;
+$bg-secondary: #F5F5F5;
+$bg-tertiary: #E8E8E8;
+$text-primary: #000000;
+$text-secondary: #333333;
+$text-muted: #666666;
+$map-border: #E0E0E0;
 ```
 
-### Mixins (`scss/_mixins.scss`)
-Reusable style patterns:
+#### NATO Affiliation Colors
 ```scss
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@mixin btn-primary {
-  padding: 0.5rem 1rem;
-  background: $nato-friendly;
-  color: white;
-  border-radius: 8px;
-}
+$nato-friendly: #0066CC;   // Israeli-aligned
+$nato-hostile: #CC0000;    // Hamas/hostile
+$nato-neutral: #00AA00;   // Neutral forces
+$nato-unknown: #FFAA00;    // Unknown
 ```
 
-### Main Entry (`scss/styles.scss`)
-Imports variables, mixins, and component partials. Migrating incrementally from legacy CSS.
+### Map Configuration
+- **Tiles**: CARTO Light All (white/clean map)
+- **Center**: [31.5, 35.0] (Israel/Palestine region)
+- **Default Zoom**: 7
+- **Grid**: Subtle black dashed lines on white
 
-## 📋 File Dependencies
+### Event Side Panel
+Displays latest 15 events sorted by date (newest first):
+- Event title, date, category (military/political/social)
+- Description, impact, territory control percentages
+- Casualty counts, involved nations
 
-### Script Loading Order (Critical!)
-```html
-<!-- CSS (SCSS compiled automatically by Vite) -->
-<link rel="stylesheet" href="scss/styles.scss">
+## JavaScript Key Functions
 
-<!-- JavaScript (loaded at end of body) -->
-<script src="js/components/symbols.js"></script>        <!-- Base symbols -->
-<script src="js/components/flags.js"></script>          <!-- Flag system -->
-<script src="js/components/clustering-system.js"></script> <!-- Clustering logic -->
-<script src="js/script.js"></script>                     <!-- Main app -->
-```
-
-### Dependencies Flow:
-```
-SCSS → Vite → Compiled CSS → HTML → symbols.js → flags.js → clustering-system.js → script.js
-```
-
-## 🔄 Data Flow
-
-```
-CSV Data → script.js (loadHamasAttacksCSV) → Event Processing
-                                                  ↓
-                          Timeline Events ← getAllEvents()
-                                                  ↓
-                          Timeline Rendering ← createTimelineEvent()
-                                                  ↓
-                          Map Rendering ← updateMapForYear()
-```
-
-## 🛠️ Development Guidelines
-
-### CSS to SCSS Migration Process
-1. **Copy** original CSS to `scss/styles.scss`
-2. **Extract** variables to `_variables.scss`
-3. **Extract** mixins to `_mixins.scss`
-4. **Convert** nested rules to SCSS nesting
-5. **Replace** hardcoded values with variables
-6. **Test** thoroughly before moving on
-
-### Current Migration Status
-- ✅ Variables defined
-- ✅ Mixins created
-- ✅ Map styles (complete)
-- ✅ Legend styles (complete)
-- ✅ Timeline slider styles with tick marks (complete)
-- ⏳ Remaining components
-
-### File Organization Rules:
-1. **SCSS** in `/scss/` folder
-2. **Legacy CSS** in `/css/` folder (being phased out)
-3. **JavaScript** in `/js/` with components in `/js/components/`
-4. **Data files** in `/data/` folder
-5. **Assets** in `/assets/` subfolders
-
-### Integration Requirements:
-1. **Load Order**: SCSS → HTML → JS components (dependency order)
-2. **Path References**: Use relative paths from project root
-3. **Module Dependencies**: Verify modules exist before using
-4. **Error Handling**: Graceful fallbacks for missing files
-
-### Script Loading Sequence:
-1. **symbols.js** - Base military symbol classes
-2. **flags.js** - Flag and territory visualization (depends on symbols.js)
-3. **clustering-system.js** - Event clustering (depends on both)
-4. **script.js** - Main application (depends on all components)
-
-## 📊 Data Structure
-
-### CSV File Format:
-```csv
-Date,Location,AttackType,Weapon,TotalKilled,IsraelisKilled,PalestiniansKilled,TotalWounded,IsraelisWounded,PalestiniansWounded,TotalCasualties,Description,Context,ClaimedBy,TargetType
-```
-
-### Event Object Structure:
+### Side Panel
 ```javascript
-{
-    date: "1994",
-    title: "Event Title",
-    description: "Event description",
-    category: "military|political|social",
-    era: "1987-2005|2006-2023",
-    impact: "Impact description",
-    geography: {
-        type: "attack|territory",
-        coordinates: [lat, lng],
-        affectedArea: [[lat1, lng1], [lat2, lng2]],
-        intensity: "high|medium|low"
-    },
-    territoryControl: { israeli: 85, palestinian: 15, hamas: 2 },
-    casualties: { /* casualty breakdown */ },
-    militaryClassification: { /* NATO classification */ }
-}
+initializeSidePanel()     // Load latest 15 events on page load
+openEventSidePanel()      // Populate panel with events
+toggleSidePanel()         // Open/close drawer
+updateSidePanelState()    // Handle .shifted classes for content
 ```
 
-## 🎨 CSS Organization (Legacy → SCSS)
-
-### Main Sections (in scss/styles.scss):
-- **Base Styles** - Reset, typography, layout
-- **Header Styles** - Main header and navigation
-- **Map Styles** - Container, controls, overlays
-- **Legend Styles** - Military symbols, flags
-- **Timeline Slider Styles** - Tick marks and snap functionality
-- **Footer Styles** - Footer content
-
-### Timeline Slider Tick Marks:
-The timeline slider includes dynamic tick marks generated from event years:
-
-**JavaScript Functions:**
+### Map Rendering
 ```javascript
-getEventYears()           // Extract unique years from timelineEvents
-findNearestEventYear()    // Locate nearest event year (within 3 years)
-createTickMarks()         // Generate tick mark DOM elements
-updateActiveTickMarks()   // Highlight current year tick
-initializeTimelineTicks() // Initialize on DOM ready
+updateMapForYear(year)    // Update markers for year
+drawMovementPaths()       // Draw military movements
+addMapLegend()           // Add legend control
 ```
 
-**Features:**
-- Tick marks at each event year (simplified to decades for readability)
-- Snap-to-tick when dragging within 3 years of an event
-- Decade labels displayed (1900, 1910, 1920, etc.)
-- Active tick highlighting synchronized with current year
-
-### Key Classes:
-- `.map-container` - Map section wrapper
-- `.map-header` - Map controls header
-- `.map-controls` - Play/pause, speed, layer controls
-- `.military-map-legend` - NATO symbol legend
-- `.timeline-slider-container` - Year slider container
-- `.slider-track-container` - Tick mark container
-- `.slider-tick-mark` - Individual tick mark
-- `.slider-tick-label` - Decade label
-- `.cluster-marker` - Intensity-based clustering
-
-## 🔧 Customization
-
-### Map Container Styling:
-Current map container specifications:
-- Height: 650px
-- Border radius: 8px
-- Background: Black with 2px border
-
-To modify map dimensions, edit `scss/components/_map.scss` in the `#map` selector.
-
-### Adding New SCSS Variables:
-1. Add to `scss/_variables.scss`
-2. Use throughout SCSS files
-
-### Adding New Mixins:
-1. Add to `scss/_mixins.scss`
-2. Import in component partials
-
-### Building for Production:
-```bash
-npm run build
-# Creates optimized assets in dist/
+### Timeline
+```javascript
+handleSliderChange()     // Year navigation
+startMapAnimation()      // Auto-play through years
 ```
 
-## 🚨 Important Notes
+## Performance Fixes Applied
 
-### Critical Dependencies:
-- **Vite** - Build tool and dev server
-- **Sass** - SCSS compilation
-- **Leaflet.js** - Map rendering (loaded from CDN)
-- **Font Awesome** - Icons (loaded from CDN)
-- **Modern Browser** - ES6+ features required
+### Ghosting Prevention
+- Zoom handler clears all layers before redrawing
+- Debounced zoom events (150ms)
+- Clustering cache cleared on zoom
+- All layer groups cleared: markerLayer, flagLayer, movementLayer, territoryLayer
 
-### Performance Considerations:
-- Vite provides fast HMR during development
-- SCSS compiled efficiently for production
-- Large CSV files need async loading
-- Map updates are debounced to prevent lag
-- Symbol rendering uses SVG for scalability
+### Flag System
+- Disabled by default (`showFlags: false`)
+- Flags embedded in markers removed to prevent duplicates
+- Legacy flag overlay code preserved but not used
 
-### Browser Compatibility:
-- Chrome/Edge: Full support
-- Firefox: Full support  
-- Safari: Modern versions supported
-- IE: Not supported (ES6+ required)
+## CSS Architecture
 
-## 📱 Responsive Design
+### Component Files
+- `_map.scss`: Map container, tiles, legend, popups, movement paths
+- `_popups.scss`: All popup styling with white theme
+- `_sidepanel.scss`: Side drawer, events list, transitions
 
-Breakpoints defined in `_variables.scss`:
-- `$breakpoint-sm: 576px`
-- `$breakpoint-md: 768px`
-- `$breakpoint-lg: 992px`
-- `$breakpoint-xl: 1200px`
+### Leaflet Overrides
+Comprehensive overrides force white theme on all map elements:
+- Container background
+- Tile layers
+- All popup components
+- Zoom controls
+- Attribution
+- Layer controls
 
-## 🔍 Debug Information
+## Responsive Design
+- Side panel: 360px width on desktop, full-width overlay on mobile (<768px)
+- Map: 600px height, 450px on tablet, 350px on mobile
+- All transitions disabled on mobile for panel
 
-### Console Logs:
-- 🔄 Loading operations
-- 📊 Data processing statistics  
-- 🎯 Symbol creation status
-- ✅ Map update completion
-
-### Error Handling:
-- CSV parsing failures with fallback data
-- Symbol creation errors with default markers
-- Map loading issues with retry logic
+## Dependencies
+- Leaflet.js (CDN)
+- Font Awesome (CDN)
+- Vite + Sass (dev/build)
