@@ -1851,12 +1851,7 @@ main {
     color: white;
 }
 
-footer {
-    background: #000;
-    color: white;
-    padding: 2rem 1rem;
-    margin-top: 4rem;
-}
+
 
 .flag-overlay {
     background: transparent !important;
