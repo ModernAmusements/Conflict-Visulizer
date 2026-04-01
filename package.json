@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp -r js dist/ && cp -r data dist/",
     "preview": "vite preview",
     "legacy": "python -m http.server 8000",
     "docs:update": "node scripts/generate-architecture.js"
