@@ -373,11 +373,23 @@ main {
         position: relative;
         top: auto;
         left: auto;
+        right: auto;
         margin: $space-4 0;
         max-width: 100%;
+        min-width: auto;
     }
 
     .flags-legend {
         grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 0 $space-2;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    main {
+        padding: 0 $space-1;
     }
 }

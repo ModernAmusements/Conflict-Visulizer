@@ -278,4 +278,40 @@ footer.shifted {
     footer.shifted {
         margin-left: 0;
     }
+
+    #event-side-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    #event-side-panel {
+        width: 100%;
+        max-width: 100%;
+
+        .panel-header {
+            padding: $space-2 $space-3;
+
+            h3 {
+                font-size: $text-sm;
+            }
+        }
+
+        .panel-content {
+            padding: $space-2;
+        }
+
+        .panel-event {
+            padding: $space-2;
+
+            .event-title {
+                font-size: $text-sm;
+            }
+
+            .event-description {
+                font-size: $text-xs;
+            }
+        }
+    }
 }
