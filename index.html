@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Israel-Hamas Conflict: A Historical Timeline (1900-2025)</title>
+    <title>Israel-Hamas Conflict: A Historical Timeline (1900-2026)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,11 +18,22 @@
 </head>
 
 <body>
+    <header id="main-header">
+        <div class="header-left">
+            <h1>Historical Tension</h1>
+        </div>
+        <div class="header-right">
+            <button id="header-panel-toggle" class="panel-toggle-btn" title="Toggle Events Panel">
+                <span class="toggle-icon">☰</span>
+                <span class="toggle-text">Events</span>
+            </button>
+        </div>
+    </header>
     <main>
         <section class="intro">
             <div class="intro-content">
                 <h1>Understanding the Historical Tension</h1>
-                <h2>A Timeline of the Israel-Hamas Conflict (1900-2025)</h2>
+                <h2>A Timeline of the Israel-Hamas Conflict (1900-2026)</h2>
                 <p>An educational resource exploring the complex historical events that shaped this ongoing conflict</p>
 
                 <!-- <div class="accuracy-badge">
@@ -41,7 +52,7 @@
             </div>
             <div class="intro-visual">
                 <div class="intro-image-container">
-                    <img src="assets/images/picasso.webp" alt="Historical visualization" class="intro-image">
+                    <img src="assets/images/flat-israel-palestine-war-flag-illustration_23-2150918548.avif" alt="Historical visualization" class="intro-image">
                     <span class="image-caption">[Image 1]</span>
                 </div>
             </div>
@@ -49,7 +60,7 @@
         <div class="swiss-divider"></div>
         <section class="map-container">
             <div class="map-header">
-                <h3>Strategic Conflict Map (1900-2025)</h3>
+                <h3>Strategic Conflict Map (1900-2026)</h3>
                 <!-- <div class="map-controls">
                   
                     <div class="control-group animation-controls">
@@ -248,14 +259,16 @@
             </div>
 
             <div class="timeline-slider-container">
-                <input type="range" id="timeline-slider" min="1900" max="2025" value="1994" step="1"
+                <input type="range" id="timeline-slider" min="1900" max="2026" value="1994" step="1"
                     class="timeline-slider">
                 <div class="slider-labels">
-
                     <span id="current-year">Current Year: 1994</span>
-
                 </div>
-            </div>
+                <div class="timeline-controls-mobile">
+                    <button id="timeline-prev" class="control-btn" title="Previous Year">⏮</button>
+                    <button id="timeline-play" class="control-btn play-btn" title="Play/Pause">▶</button>
+                    <button id="timeline-next" class="control-btn" title="Next Year">⏭</button>
+                </div>
 
           
         </section>
@@ -281,7 +294,7 @@
             </div>
             <div class="footer-bottom">
                 <p>© Shady Tawfik all rights reserved</p>
-                <p>Last updated: 2025 | Educational Use Only | Version 1.0</p>
+                <p>Last updated: 2026 | Educational Use Only | Version 1.0</p>
             </div>
         </footer>
     </main>

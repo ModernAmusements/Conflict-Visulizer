@@ -32,7 +32,7 @@ body {
 main {
     width: 100%;
     margin: 0 auto;
-    padding: 0 $grid-gutter;
+    padding: 56px $grid-gutter 0;
 }
 
 // ============================================
@@ -384,12 +384,12 @@ main {
     }
 
     main {
-        padding: 0 $space-2;
+        padding: 56px $space-2 0;
     }
 }
 
 @media (max-width: $breakpoint-sm) {
     main {
-        padding: 0 $space-1;
+        padding: 48px $space-1 0;
     }
 }

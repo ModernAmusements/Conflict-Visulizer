@@ -2268,6 +2268,15 @@ function setupMapControls() {
     if (timelineSlider) timelineSlider.addEventListener('input', handleSliderChange);
     if (speedSelect) speedSelect.addEventListener('change', handleSpeedChange);
     
+    // Mobile timeline controls
+    const mobilePlayBtn = document.getElementById('timeline-play');
+    const mobilePrevBtn = document.getElementById('timeline-prev');
+    const mobileNextBtn = document.getElementById('timeline-next');
+
+    if (mobilePlayBtn) mobilePlayBtn.addEventListener('click', toggleTimelinePlay);
+    if (mobilePrevBtn) mobilePrevBtn.addEventListener('click', timelinePrevYear);
+    if (mobileNextBtn) mobileNextBtn.addEventListener('click', timelineNextYear);
+    
     // Layer controls - handle all event types
     const showAttacks = document.getElementById('show-attacks');
     const showPolitical = document.getElementById('show-political');
@@ -2334,12 +2343,14 @@ function startMapAnimation() {
     mapState.isPlaying = true;
     const playBtn = document.getElementById('play-btn');
     const pauseBtn = document.getElementById('pause-btn');
+    const mobilePlayBtn = document.getElementById('timeline-play');
 
     if (playBtn) playBtn.classList.add('hidden');
     if (pauseBtn) pauseBtn.classList.remove('hidden');
+    if (mobilePlayBtn) mobilePlayBtn.innerHTML = '⏸';
 
     mapState.playInterval = setInterval(() => {
-        if (mapState.currentYear >= 2025) {
+        if (mapState.currentYear >= 2026) {
             pauseMapAnimation();
             return;
         }
@@ -2351,7 +2362,7 @@ function startMapAnimation() {
             slider._isProgrammatic = true;
             slider.value = mapState.currentYear;
         }
-        if (yearDisplay) yearDisplay.textContent = mapState.currentYear;
+        if (yearDisplay) yearDisplay.textContent = `Current Year: ${mapState.currentYear}`;
         updateMapForYear(mapState.currentYear);
         updateActiveTickMarks(mapState.currentYear);
     }, mapState.playSpeed);
@@ -2362,13 +2373,60 @@ function pauseMapAnimation() {
     mapState.isPlaying = false;
     const playBtn = document.getElementById('play-btn');
     const pauseBtn = document.getElementById('pause-btn');
+    const mobilePlayBtn = document.getElementById('timeline-play');
     
     if (playBtn) playBtn.classList.remove('hidden');
     if (pauseBtn) pauseBtn.classList.add('hidden');
+    if (mobilePlayBtn) mobilePlayBtn.innerHTML = '▶';
     
     if (mapState.playInterval) {
         clearInterval(mapState.playInterval);
         mapState.playInterval = null;
+    }
+}
+
+// Toggle play/pause for mobile
+function toggleTimelinePlay() {
+    if (mapState.isPlaying) {
+        pauseMapAnimation();
+    } else {
+        startMapAnimation();
+    }
+}
+
+// Navigate to previous year
+function timelinePrevYear() {
+    if (mapState.currentYear > 1900) {
+        pauseMapAnimation();
+        mapState.currentYear--;
+        const slider = document.getElementById('timeline-slider');
+        const yearDisplay = document.getElementById('current-year');
+
+        if (slider) {
+            slider._isProgrammatic = true;
+            slider.value = mapState.currentYear;
+        }
+        if (yearDisplay) yearDisplay.textContent = `Current Year: ${mapState.currentYear}`;
+        updateMapForYear(mapState.currentYear);
+        updateActiveTickMarks(mapState.currentYear);
+    }
+}
+
+// Navigate to next year
+function timelineNextYear() {
+    if (mapState.currentYear < 2026) {
+        pauseMapAnimation();
+        mapState.currentYear++;
+        const slider = document.getElementById('timeline-slider');
+        const yearDisplay = document.getElementById('current-year');
+
+        if (slider) {
+            slider._isProgrammatic = true;
+            slider.value = mapState.currentYear;
+        }
+        if (yearDisplay) yearDisplay.textContent = `Current Year: ${mapState.currentYear}`;
+        updateMapForYear(mapState.currentYear);
+        updateActiveTickMarks(mapState.currentYear);
     }
 }
 
@@ -3241,12 +3299,22 @@ const clusterEventsMap = new Map();
 // Update side panel visual state
 function updateSidePanelState() {
     const panel = document.getElementById('event-side-panel');
-    const headerElement = document.querySelector('header');
+    const headerElement = document.getElementById('main-header');
     const introElement = document.querySelector('.intro');
     const mapContainer = document.querySelector('.map-container');
     const footerElement = document.querySelector('footer');
 
     if (!panel) return;
+
+    // Update toggle button state
+    const headerToggleBtn = document.getElementById('header-panel-toggle');
+    if (headerToggleBtn) {
+        if (sidePanelOpen) {
+            headerToggleBtn.classList.add('active');
+        } else {
+            headerToggleBtn.classList.remove('active');
+        }
+    }
 
     if (sidePanelOpen) {
         panel.classList.add('open');
@@ -3286,18 +3354,11 @@ function toggleSidePanel() {
     updateSidePanelState();
 }
 
-// Handle "Show all events" button clicks
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('show-all-events-btn')) {
-        const coords = e.target.dataset.coords;
-        // Check both local and global map
-        const eventsMap = window.clusterEventsMap || clusterEventsMap;
-        if (coords && eventsMap && eventsMap.has(coords)) {
-            const events = eventsMap.get(coords);
-            if (Array.isArray(events)) {
-                openEventSidePanel(events);
-            }
-        }
+// Header panel toggle button
+document.addEventListener('DOMContentLoaded', function() {
+    const headerToggleBtn = document.getElementById('header-panel-toggle');
+    if (headerToggleBtn) {
+        headerToggleBtn.addEventListener('click', toggleSidePanel);
     }
 });
 

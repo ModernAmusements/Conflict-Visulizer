@@ -1,10 +1,128 @@
 // ============================================
-// Side Panel Styles
-// Swiss Design System
+// Header Styles
 // ============================================
 
 @use 'sass:color';
 @use '../variables' as *;
+
+#main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: $bg-primary;
+    border-bottom: 1px solid $map-border;
+    z-index: 1500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 $space-4;
+    transition: all $transition-normal;
+
+    &.shifted {
+        padding-left: 360px;
+    }
+
+    .header-left {
+        h1 {
+            font-size: $text-lg;
+            font-weight: $font-bold;
+            color: $text-primary;
+            margin: 0;
+        }
+    }
+
+    .header-right {
+        .panel-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: $space-2;
+            padding: $space-2 $space-3;
+            background: $bg-secondary;
+            border: 1px solid $map-border;
+            border-radius: $radius-sm;
+            color: $text-primary;
+            cursor: pointer;
+            font-size: $text-sm;
+            font-weight: $font-regular;
+            transition: all $transition-fast;
+
+            .toggle-icon {
+                font-size: $text-base;
+            }
+
+            &:hover {
+                background: $bg-tertiary;
+                border-color: $text-muted;
+            }
+
+            &.active {
+                background: rgba($nato-friendly, 0.1);
+                border-color: $nato-friendly;
+                color: $nato-friendly;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    #main-header {
+        padding: 0 $space-3;
+
+        &.shifted {
+            padding-left: $space-3;
+        }
+
+        .header-left h1 {
+            font-size: $text-base;
+        }
+
+        .panel-toggle-btn {
+            .toggle-text {
+                display: none;
+            }
+            padding: $space-2;
+            
+            .toggle-icon {
+                font-size: $text-lg;
+            }
+        }
+    }
+}
+
+@media (max-width: $breakpoint-sm) {
+    #main-header {
+        padding: 0 $space-2;
+        height: 48px;
+
+        &.shifted {
+            padding-left: $space-2;
+        }
+
+        .header-left h1 {
+            font-size: $text-sm;
+            font-weight: $font-bold;
+        }
+
+        .header-right {
+            .panel-toggle-btn {
+                padding: $space-1 $space-2;
+                min-width: 36px;
+                min-height: 36px;
+
+                .toggle-icon {
+                    font-size: $text-base;
+                }
+            }
+        }
+    }
+}
+
+// ============================================
+// Side Panel Styles
+// Swiss Design System
+// ============================================
 
 #event-side-panel {
     position: fixed;
@@ -282,7 +400,30 @@ footer.shifted {
     #event-side-panel {
         width: 100%;
         max-width: 100%;
+        height: calc(100vh - 48px);
+        top: 48px;
+        
+        &.open {
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+        }
     }
+    
+    .panel-backdrop {
+        display: block;
+        top: 48px;
+    }
+}
+
+.panel-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1399;
+    backdrop-filter: blur(2px);
 }
 
 @media (max-width: $breakpoint-sm) {
