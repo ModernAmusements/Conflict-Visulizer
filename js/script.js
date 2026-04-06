@@ -1619,12 +1619,13 @@ const timelineEvents = [
 
 // Strategic Map Variables
 let mapContainer;
+const isMobile = window.innerWidth <= 768;
 let mapState = {
     currentYear: 1994, // Start at 1994 to show Hamas attacks
     showAttacks: true,
     showPolitical: true,
     showSocial: true,
-    showTerritory: true,
+    showTerritory: !isMobile, // Hide territory on mobile
     showSettlements: true,
     showCities: true,
     showMovements: true, // Enable faction markers by default
@@ -2030,6 +2031,10 @@ function addMapLegend() {
     
 // Generate territory control legend content
 function generateTerritoryLegend() {
+    if (isMobile) {
+        return '<div class="legend-info">Territory layer hidden on mobile</div>';
+    }
+    
     return `
         <div class="territory-legend">
             <h5>Territory Control</h5>
@@ -3292,7 +3297,7 @@ function createClusterCountMarker(group, coordinates) {
 }
 
 // Side panel state
-let sidePanelOpen = true; // Open by default
+let sidePanelOpen = !isMobile; // Closed on mobile, open on desktop
 let sidePanelSelectedEvents = null;
 const clusterEventsMap = new Map();
 
@@ -3475,6 +3480,12 @@ function openEventSidePanel(eventGroup) {
 // Initialize side panel with latest events on page load
 async function initializeSidePanel() {
     setupMapClickHandler();
+    
+    // Only load and show events on desktop (not mobile)
+    if (isMobile) {
+        console.log('📍 Side panel initialized (closed on mobile)');
+        return;
+    }
     
     // Load latest 15 events on page load
     try {

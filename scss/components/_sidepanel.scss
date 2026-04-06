@@ -20,10 +20,6 @@
     padding: 0 $space-4;
     transition: all $transition-normal;
 
-    &.shifted {
-        padding-left: 360px;
-    }
-
     .header-left {
         h1 {
             font-size: $text-lg;
@@ -38,8 +34,8 @@
             display: flex;
             align-items: center;
             gap: $space-2;
-            padding: $space-2 $space-3;
-            background: $bg-secondary;
+            padding: 10px;
+            background: $bg-primary;
             border: 1px solid $map-border;
             border-radius: $radius-sm;
             color: $text-primary;
@@ -49,12 +45,13 @@
             transition: all $transition-fast;
 
             .toggle-icon {
-                font-size: $text-base;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             &:hover {
                 background: $bg-tertiary;
-                border-color: $text-muted;
             }
 
             &.active {

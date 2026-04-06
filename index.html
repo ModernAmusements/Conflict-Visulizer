@@ -24,7 +24,7 @@
         </div>
         <div class="header-right">
             <button id="header-panel-toggle" class="panel-toggle-btn" title="Toggle Events Panel">
-                <span class="toggle-icon">☰</span>
+                <svg class="toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 <span class="toggle-text">Events</span>
             </button>
         </div>
@@ -53,7 +53,6 @@
             <div class="intro-visual">
                 <div class="intro-image-container">
                     <img src="assets/images/flat-israel-palestine-war-flag-illustration_23-2150918548.avif" alt="Historical visualization" class="intro-image">
-                    <span class="image-caption">[Image 1]</span>
                 </div>
             </div>
         </section>
@@ -265,9 +264,16 @@
                     <span id="current-year">Current Year: 1994</span>
                 </div>
                 <div class="timeline-controls-mobile">
-                    <button id="timeline-prev" class="control-btn" title="Previous Year">⏮</button>
-                    <button id="timeline-play" class="control-btn play-btn" title="Play/Pause">▶</button>
-                    <button id="timeline-next" class="control-btn" title="Next Year">⏭</button>
+                    <button id="timeline-prev" class="control-btn" title="Previous Year">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+                    </button>
+                    <button id="timeline-play" class="control-btn play-btn" title="Play/Pause">
+                        <svg class="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button id="timeline-next" class="control-btn" title="Next Year">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
                 </div>
 
           

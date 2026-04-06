@@ -1052,7 +1052,8 @@
     .legend-panel-content,
     .map-controls,
     .layer-controls,
-    .priority-controls {
+    .priority-controls,
+    .legacy-map-legend {
         display: none !important;
     }
 
@@ -1062,6 +1063,11 @@
         flex-direction: column;
         align-items: center;
         gap: $space-2;
+
+        .slider-track-container,
+        .timeline-slider {
+            display: none;
+        }
         padding: $space-2;
     }
 
@@ -1112,11 +1118,13 @@
 
         .control-btn {
             padding: $space-2 $space-3;
-            background: $bg-secondary;
+            background: $bg-primary;
             border: 1px solid $map-border;
+            border-radius: $radius-sm;
             color: $text-primary;
             cursor: pointer;
-            font-size: $text-sm;
+            font-size: $text-xs;
+            font-weight: $font-regular;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1128,6 +1136,11 @@
 
             &.play-btn {
                 padding: $space-2 $space-4;
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
             }
         }
     }
