@@ -1,44 +1,38 @@
-# Conversation Summary - April 6, 2026
+# Conversation Summary - April 9, 2026
 
-## Issues Fixed
+## Tasks Completed
 
-### 1. Button Styling Consistency
-- **Header toggle button**: Changed from unicode ☰ to SVG icon, used design system variables for styling
-- **Timeline mobile controls**: Replaced emoji controls (⏮ ▶ ⏭) with SVG icons, added play/pause toggle support
-- Both buttons now use consistent design tokens from `_variables.scss`
+### 1. Architecture Diagrams Creation
+- Read all existing .md files in the project (README.md, CONSOLIDATED_DOCUMENTATION.md, DEVELOPMENT_LOG.md, CONVERSATION_SUMMARY.md, CONVERSATION_TRANSCRIPT.md)
+- Created comprehensive `ARCHITECTURE_DIAGRAMS.md` with 15 mermaid diagrams:
+  1. Project Structure - File tree visualization
+  2. Component Hierarchy - HTML components and map layers
+  3. Script Loading Order - Critical dependency sequence
+  4. Data Flow - From sources to user
+  5. Event Lifecycle - State machine of user interactions
+  6. State Management - mapState, clusterState, performanceOptimizer
+  7. Key Functions - Initialization, rendering, data, side panel
+  8. Layer Management - Clear/redraw pattern
+  9. Deployment Flow - Git push to Vercel
+  10. Development Timeline - Gantt chart of 4 phases
+  11. Color System - NATO affiliation colors
+  12. Event Data Structure - Class diagram
+  13. Problem-Solution - Common issues and fixes
+  14. User Interaction Flow - Timeline, filters, map, side panel
+  15. SCSS Architecture - Import hierarchy
 
-### 2. Mobile Footer Padding
-- Added `padding: $space-2` (16px) to footer on mobile breakpoint
+### 2. README Update
+- Added Documentation section linking to ARCHITECTURE_DIAGRAMS.md
+- Listed all 12 diagram categories covered
 
-### 3. Header Shifted Class Removed
-- Removed `#main-header.shifted { padding-left: 360px; }` from `_sidepanel.scss`
-
-### 4. Territory Layer Hidden on Mobile
-- Added `isMobile` check at top of script.js
-- Set `showTerritory: !isMobile` in mapState
-- Updated `generateTerritoryLegend()` to show "hidden on mobile" message
-
-### 5. Mobile UI Elements Hidden
-- Hidden `.legacy-map-legend` (Leaflet control)
-- Hidden `.slider-track-container` (tick marks)
-- Hidden `.timeline-slider` (input range)
-- All hidden on mobile (< 576px)
-
-### 6. Side Panel Mobile Behavior
-- Panel now initializes closed on mobile (`sidePanelOpen = !isMobile`)
-- `initializeSidePanel()` skips loading events on mobile
-- Panel not created on page load for mobile devices
-
-### 7. Other Fixes
-- Removed `<span class="image-caption">[Image 1]</span>` from intro image
-- Changed header toggle button padding to 10px
+### 3. Git Commit and Push
+- Staged both files: README.md and ARCHITECTURE_DIAGRAMS.md
+- Committed with message: "docs: add architecture diagrams with mermaid charts"
+- Pushed to remote main branch
 
 ## Files Modified
-- `index.html` - SVG icons, removed caption
-- `js/script.js` - Mobile checks, territory, side panel
-- `scss/components/_map.scss` - Mobile hiding rules, timeline controls
-- `scss/components/_sidepanel.scss` - Button styles, removed shifted padding
-- `scss/components/_text.scss` - Mobile footer padding
+- `README.md` - Added documentation section
+- `ARCHITECTURE_DIAGRAMS.md` - Created new file with 15 mermaid diagrams
 
 ## Deployment
 - Committed and pushed to GitHub
