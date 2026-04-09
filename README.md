@@ -37,3 +37,21 @@ vercel --prod
 - Leaflet
 - SCSS
 - Vanilla JavaScript
+
+## Documentation
+
+See [ARCHITECTURE_DIAGRAMS.md](./ARCHITECTURE_DIAGRAMS.md) for comprehensive architecture diagrams including:
+
+- Project structure
+- Component hierarchy
+- Script loading order
+- Data flow
+- Event lifecycle
+- State management
+- Key functions reference
+- Layer management
+- Deployment flow
+- Development timeline
+- Event data structure
+- User interaction flow
+- SCSS architecture
